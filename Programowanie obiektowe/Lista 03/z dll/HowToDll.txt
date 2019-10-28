@@ -1,0 +1,4 @@
+What to do:
+- add namespace which is being used in your dll file
+- compile a .cs file to .dll using: mcs -t:library name.cs
+- compile main.cs using: mcs -r:name.dll main.cs

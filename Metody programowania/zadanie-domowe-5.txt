@@ -1,0 +1,102 @@
+Zadanie:
+Niech xs i ys będą dowolnymi listami, tj. (list? xs) i (list? ys) są prawdą.
+Czemu jest wtedy równe:
+(1) (map f (append xs ys)) dla pewnej jednoargumentowej procedury f,
+(2) (filter p? (append xs ys)) dla pewnego jednoargumentowego predykatu p?.
+
+Definicje procedur z wykładu:
+
+(define (append as bs)
+  (if (null? as)
+      bs
+      (cons (car as)
+            (append (cdr as) bs))))
+
+(define (map f xs)
+  (if (null? xs)
+      null
+      (cons (f (car xs))
+            (map f (cdr xs)))))
+
+(define (filter p? xs)
+  (if (null? xs)
+      null
+      (if (p? (car xs))
+          (cons (car xs)
+                (filter p? (cdr xs)))
+          (filter p? (cdr xs)))))
+
+Rozwiązanie podpunktu (1):
+
+    Dowód indukcyjny dla:
+        (map f (append xs ys)) = (append (map f xs) (map f ys)) po xs.
+
+    Podstawa indukcyjna dla (null? xs):
+        (map f (append null ys))
+    =>  (map f ys)
+        
+        (append (map f null) (map f ys))
+    =>  (append null (map f ys))
+    =>  (map f ys)
+    
+    Założenia indukcyjne:
+        ((list? xs) AND (list? ys) AND (procedure? f))
+    =>  (map f (append xs ys)) = (append (map f xs) (map f ys)))
+
+    Dowód dla (cons x xs):
+        (map f (append (cons x xs) ys))
+    =>  (map f (cons (car (cons x xs)) (append (cdr (cons x xs)) ys)))
+    =>  (map f (cons x (append xs ys)))
+    =>  (cons (f (car (cons x (append xs ys))) (map f (cdr (cons x (append xs ys))))))
+    =>  (cons (f x) (map f (append xs ys)))
+
+        (append (map f (cons x xs)) (map f ys))
+    =>  (append (cons (f x) (map f xs)) (map f ys))
+    =>  (cons (car (cons (f x) (map f xs))) (append (cdr (cons (f x) (map f xs))) (map f ys))) 
+    =>  (cons (f x) (append (map f xs) (map f ys)))
+    =>* (cons (f x) (map f (append xs ys)))
+
+* - z założenia 
+
+    Więc udowodniliśmy, że (map f (append xs ys)) = (append (map f xs) (map f ys)).
+
+Rozwiązanie podpunktu (2):
+
+    Dowód indukcyjny dla:
+        (filter p? (append xs ys)) = (append (fliter p? xs) (filter p? ys)) po xs.
+    
+    Podstawa indukcyjna dla (null? xs):
+        (filter p? (append null ys)) 
+    =>  (filter p? ys)
+
+        (append (filter p? null) (filter p? ys))
+    =>  (append null (filter p? ys))
+    =>  (filter p? ys)
+
+    Założenia indukcyjne:
+        ((list? xs) AND (list? ys) AND (procedure? p?))
+    =>  (filter p? (append xs ys)) = (append (fliter p? xs) (filter p? ys))
+
+    Dowód dla (cons x xs):
+        Należy rozpatrzyć dwa przypadki, tj:
+        
+        (1) Wyrażenie (p? x) ma wartość #t:
+        (filter p? (append (cons x xs) ys))
+    =>  (filter p? (cons x (append xs ys)))
+    =>  (cons x (filter p? (append xs ys)))
+
+        (append (filter p? (cons x xs)) (filter p? ys))
+    =>  (append (cons x (filter p? xs)) (filter p? ys))
+    =>  (cons x (append (filter p? xs) (filter p? ys)))
+    =>* (cons x (filter p? (append xs ys)))
+
+        (2) Wyrażenie (p? x) ma wartość #f:
+        (filter p? (append (cons x xs) ys))
+    =>  (filter p? (cons x (append xs ys)))
+    =>  (filter p? (append xs ys))
+
+        (append (filter p? (cons x xs)) (filter p? ys))
+    =>  (append (filter p? xs) (filter p? ys))
+    =>* (filter p? (append xs ys))
+
+    Więc udowodniliśmy, że (filter p? (append xs ys)) = (append (fliter p? xs) (filter p? ys)).
