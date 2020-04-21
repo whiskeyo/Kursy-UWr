@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<HelpKI>
+  <HelpKINode Title="Grid class">
+    <HelpKINode Title="Grid Class" Url="html/0ca6e433-1122-3212-5271-eca2fc1742ec.htm" />
+    <HelpKINode Title="constructor" Url="html/863b9553-930c-5d4d-4fd1-426c1c249882.htm" />
+    <HelpKINode Title="methods" Url="html/962af560-d18a-528f-859f-9e7c1bbd2e98.htm" />
+    <HelpKINode Title="properties" Url="html/d6cbedf9-4de8-a72e-264f-94fd14509938.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Grid.Grid constructor" Url="html/863b9553-930c-5d4d-4fd1-426c1c249882.htm" />
+  <HelpKINode Title="Grid.Item property" Url="html/c28b2d70-1a31-b251-83aa-815a13e2a3fd.htm" />
+  <HelpKINode Title="Item property" Url="html/c28b2d70-1a31-b251-83aa-815a13e2a3fd.htm" />
+  <HelpKINode Title="Main method" Url="html/43a99ec4-a569-6239-2b6a-9b346d00d8d8.htm" />
+  <HelpKINode Title="Program class">
+    <HelpKINode Title="Program Class" Url="html/c9fe57ae-bab9-7519-4e49-509276714e60.htm" />
+    <HelpKINode Title="constructor" Url="html/e96dbf77-e51e-e831-2326-f61a10c302da.htm" />
+    <HelpKINode Title="methods" Url="html/1aaf7ceb-3fbf-c0fc-234a-ae97cf2354c9.htm" />
+  </HelpKINode>
+  <HelpKINode Title="Program.Main method" Url="html/43a99ec4-a569-6239-2b6a-9b346d00d8d8.htm" />
+  <HelpKINode Title="Program.Program constructor" Url="html/e96dbf77-e51e-e831-2326-f61a10c302da.htm" />
+  <HelpKINode Title="zadanie_1._1._2 namespace" Url="html/e3db3465-ddee-2f8a-ff94-35e2b8396363.htm" />
+  <HelpKINode Title="zadanie_1._1._2.Grid class" Url="html/0ca6e433-1122-3212-5271-eca2fc1742ec.htm" />
+  <HelpKINode Title="zadanie_1._1._2.Program class" Url="html/c9fe57ae-bab9-7519-4e49-509276714e60.htm" />
+</HelpKI>

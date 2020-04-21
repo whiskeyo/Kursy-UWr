@@ -1,0 +1,1 @@
+W folderze z plikiem: "%SystemRoot%\Microsoft.NET\Framework64\v4.0.30319\csc.exe" [nazwa pliku.cs]
