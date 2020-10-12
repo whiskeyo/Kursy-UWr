@@ -1,0 +1,21 @@
+000000000000173d <fun7>:
+    173d:	48 85 ff             	test   %rdi,%rdi
+    1740:	74 32                	je     1774 <fun7+0x37>
+    1742:	48 83 ec 08          	sub    $0x8,%rsp
+    1746:	8b 17                	mov    (%rdi),%edx
+    1748:	39 f2                	cmp    %esi,%edx
+    174a:	7f 0c                	jg     1758 <fun7+0x1b>
+    174c:	b8 00 00 00 00       	mov    $0x0,%eax
+    1751:	75 12                	jne    1765 <fun7+0x28>
+    1753:	48 83 c4 08          	add    $0x8,%rsp
+    1757:	c3                   	retq   
+    1758:	48 8b 7f 08          	mov    0x8(%rdi),%rdi
+    175c:	e8 dc ff ff ff       	callq  173d <fun7>
+    1761:	01 c0                	add    %eax,%eax
+    1763:	eb ee                	jmp    1753 <fun7+0x16>
+    1765:	48 8b 7f 10          	mov    0x10(%rdi),%rdi
+    1769:	e8 cf ff ff ff       	callq  173d <fun7>
+    176e:	8d 44 00 01          	lea    0x1(%rax,%rax,1),%eax
+    1772:	eb df                	jmp    1753 <fun7+0x16>
+    1774:	b8 ff ff ff ff       	mov    $0xffffffff,%eax
+    1779:	c3                   	retq   

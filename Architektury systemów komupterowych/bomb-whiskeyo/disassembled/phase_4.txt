@@ -1,0 +1,23 @@
+0000000000001567 <phase_4>:
+    1567:	48 83 ec 18          	sub    $0x18,%rsp
+    156b:	48 8d 4c 24 0c       	lea    0xc(%rsp),%rcx
+    1570:	48 8d 54 24 08       	lea    0x8(%rsp),%rdx
+    1575:	48 8d 35 6b 1d 00 00 	lea    0x1d6b(%rip),%rsi        # 32e7 <array.3195+0x147>
+    157c:	b8 00 00 00 00       	mov    $0x0,%eax
+    1581:	e8 aa fb ff ff       	callq  1130 <__isoc99_sscanf@plt>
+    1586:	83 f8 02             	cmp    $0x2,%eax
+    1589:	75 0c                	jne    1597 <phase_4+0x30>
+    158b:	8b 44 24 0c          	mov    0xc(%rsp),%eax
+    158f:	83 e8 02             	sub    $0x2,%eax
+    1592:	83 f8 02             	cmp    $0x2,%eax
+    1595:	76 05                	jbe    159c <phase_4+0x35>
+    1597:	e8 d9 03 00 00       	callq  1975 <explode_bomb>
+    159c:	8b 74 24 0c          	mov    0xc(%rsp),%esi
+    15a0:	bf 06 00 00 00       	mov    $0x6,%edi
+    15a5:	e8 85 ff ff ff       	callq  152f <func4>
+    15aa:	39 44 24 08          	cmp    %eax,0x8(%rsp)
+    15ae:	75 05                	jne    15b5 <phase_4+0x4e>
+    15b0:	48 83 c4 18          	add    $0x18,%rsp
+    15b4:	c3                   	retq   
+    15b5:	e8 bb 03 00 00       	callq  1975 <explode_bomb>
+    15ba:	eb f4                	jmp    15b0 <phase_4+0x49>

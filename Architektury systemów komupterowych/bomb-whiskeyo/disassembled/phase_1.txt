@@ -1,0 +1,10 @@
+0000000000001405 <phase_1>:
+    1405:	48 83 ec 08          	sub    $0x8,%rsp
+    1409:	48 8d 35 3c 1d 00 00 	lea    0x1d3c(%rip),%rsi        # 314c <_IO_stdin_used+0x14c>
+    1410:	e8 54 04 00 00       	callq  1869 <strings_not_equal>
+    1415:	85 c0                	test   %eax,%eax
+    1417:	75 05                	jne    141e <phase_1+0x19>
+    1419:	48 83 c4 08          	add    $0x8,%rsp
+    141d:	c3                   	retq   
+    141e:	e8 52 05 00 00       	callq  1975 <explode_bomb>
+    1423:	eb f4                	jmp    1419 <phase_1+0x14>

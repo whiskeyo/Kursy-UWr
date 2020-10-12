@@ -1,0 +1,26 @@
+0000000000001425 <phase_2>:
+    1425:	55                   	push   %rbp
+    1426:	53                   	push   %rbx
+    1427:	48 83 ec 28          	sub    $0x28,%rsp
+    142b:	48 89 e6             	mov    %rsp,%rsi
+    142e:	e8 68 05 00 00       	callq  199b <read_six_numbers>
+    1433:	83 3c 24 01          	cmpl   $0x1,(%rsp)
+    1437:	75 09                	jne    1442 <phase_2+0x1d>
+    1439:	48 89 e3             	mov    %rsp,%rbx
+    143c:	48 8d 6b 14          	lea    0x14(%rbx),%rbp
+    1440:	eb 15                	jmp    1457 <phase_2+0x32>
+    1442:	e8 2e 05 00 00       	callq  1975 <explode_bomb>
+    1447:	eb f0                	jmp    1439 <phase_2+0x14>
+    1449:	e8 27 05 00 00       	callq  1975 <explode_bomb>
+    144e:	48 83 c3 04          	add    $0x4,%rbx
+    1452:	48 39 eb             	cmp    %rbp,%rbx
+    1455:	74 0b                	je     1462 <phase_2+0x3d>
+    1457:	8b 03                	mov    (%rbx),%eax
+    1459:	01 c0                	add    %eax,%eax
+    145b:	39 43 04             	cmp    %eax,0x4(%rbx)
+    145e:	74 ee                	je     144e <phase_2+0x29>
+    1460:	eb e7                	jmp    1449 <phase_2+0x24>
+    1462:	48 83 c4 28          	add    $0x28,%rsp
+    1466:	5b                   	pop    %rbx
+    1467:	5d                   	pop    %rbp
+    1468:	c3                   	retq   

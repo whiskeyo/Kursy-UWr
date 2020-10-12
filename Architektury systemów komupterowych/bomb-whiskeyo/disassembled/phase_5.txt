@@ -1,0 +1,29 @@
+00000000000015bc <phase_5>:
+    15bc:	53                   	push   %rbx
+    15bd:	48 83 ec 10          	sub    $0x10,%rsp
+    15c1:	48 89 fb             	mov    %rdi,%rbx
+    15c4:	e8 83 02 00 00       	callq  184c <string_length>
+    15c9:	83 f8 06             	cmp    $0x6,%eax
+    15cc:	75 45                	jne    1613 <phase_5+0x57>
+    15ce:	b8 00 00 00 00       	mov    $0x0,%eax
+    15d3:	48 8d 0d c6 1b 00 00 	lea    0x1bc6(%rip),%rcx        # 31a0 <array.3195>
+    15da:	0f b6 14 03          	movzbl (%rbx,%rax,1),%edx
+    15de:	83 e2 0f             	and    $0xf,%edx
+    15e1:	0f b6 14 11          	movzbl (%rcx,%rdx,1),%edx
+    15e5:	88 54 04 09          	mov    %dl,0x9(%rsp,%rax,1)
+    15e9:	48 83 c0 01          	add    $0x1,%rax
+    15ed:	48 83 f8 06          	cmp    $0x6,%rax
+    15f1:	75 e7                	jne    15da <phase_5+0x1e>
+    15f3:	c6 44 24 0f 00       	movb   $0x0,0xf(%rsp)
+    15f8:	48 8d 7c 24 09       	lea    0x9(%rsp),%rdi
+    15fd:	48 8d 35 66 1b 00 00 	lea    0x1b66(%rip),%rsi        # 316a <_IO_stdin_used+0x16a>
+    1604:	e8 60 02 00 00       	callq  1869 <strings_not_equal>
+    1609:	85 c0                	test   %eax,%eax
+    160b:	75 0d                	jne    161a <phase_5+0x5e>
+    160d:	48 83 c4 10          	add    $0x10,%rsp
+    1611:	5b                   	pop    %rbx
+    1612:	c3                   	retq   
+    1613:	e8 5d 03 00 00       	callq  1975 <explode_bomb>
+    1618:	eb b4                	jmp    15ce <phase_5+0x12>
+    161a:	e8 56 03 00 00       	callq  1975 <explode_bomb>
+    161f:	eb ec                	jmp    160d <phase_5+0x51>

@@ -1,0 +1,24 @@
+000000000000152f <func4>:
+    152f:	b8 00 00 00 00       	mov    $0x0,%eax
+    1534:	85 ff                	test   %edi,%edi
+    1536:	7e 2e                	jle    1566 <func4+0x37>
+    1538:	89 f0                	mov    %esi,%eax
+    153a:	83 ff 01             	cmp    $0x1,%edi
+    153d:	74 27                	je     1566 <func4+0x37>
+    153f:	41 54                	push   %r12
+    1541:	55                   	push   %rbp
+    1542:	53                   	push   %rbx
+    1543:	41 89 f4             	mov    %esi,%r12d
+    1546:	89 fb                	mov    %edi,%ebx
+    1548:	8d 7f ff             	lea    -0x1(%rdi),%edi
+    154b:	e8 df ff ff ff       	callq  152f <func4>
+    1550:	42 8d 2c 20          	lea    (%rax,%r12,1),%ebp
+    1554:	8d 7b fe             	lea    -0x2(%rbx),%edi
+    1557:	44 89 e6             	mov    %r12d,%esi
+    155a:	e8 d0 ff ff ff       	callq  152f <func4>
+    155f:	01 e8                	add    %ebp,%eax
+    1561:	5b                   	pop    %rbx
+    1562:	5d                   	pop    %rbp
+    1563:	41 5c                	pop    %r12
+    1565:	c3                   	retq   
+    1566:	c3                   	retq   

