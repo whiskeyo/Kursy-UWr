@@ -1,0 +1,88 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage[left = 3cm, right = 3cm, top = 2cm, bottom = 2cm]{geometry}
+\usepackage{enumerate}
+\usepackage{amssymb}		% pakiet do symboli
+\usepackage{amsmath}		% pakiet do matmy
+\usepackage{enumitem}		% punktowanie (a), (b), ...
+\usepackage{nopageno}		% brak numerow stron
+\usepackage{graphicx}		% wstawianie obrazkow
+\usepackage{float}			% wstawianie obrazkow w dowolnym miejscu
+\usepackage{titling}
+%\usepackage[]{algorithm2e} 	% algorytmy :))
+\usepackage{algpseudocode}	
+%\usepackage{program}
+%\usepackage{algorithmicx}
+\usepackage{algorithm}
+
+% nowe komendy dla wygodniejszego pisania :)
+\newcommand{\subtitle}[1]{ \posttitle{ \par\end{center} \begin{center}\large#1\end{center} \vskip0.5em}}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\fractional}[1]{\left\{ #1 \right\}}
+\newcommand{\set}[1]{\left \{ #1 \right \}}
+\newcommand{\pair}[1]{\left( #1 \right)}
+\newcommand{\code}[1]{\fontfamily{qcr}\selectfont\textbf{#1}\fontfamily{cmr}\selectfont}
+
+\begin{document}
+\noindent \textbf{Matematyka dyskretna L, Lista 1 - Tomasz Woszczyński}\newline
+
+\noindent \newline \textbf{Zadanie 2} \newline
+Niech $A = \left[ 1, 10^{10} \right]$, wtedy $|A| = 10^{10}$. Prawie każdą liczbę takiej postaci możemy zapisać jako 
+$$a = a_0, a_1, a_2, a_3, a_4, a_5, a_6, a_7, a_8, a_9 $$
+gdzie $a_i$ to kolejne cyfry. Używając takiego schematu obejmiemy liczbę $0$, jednak nie obejmiemy $10^{10}$, liczby te nie zawierają jednak cyfry $9$, więc moc zbioru $A$ pozostaje taka sama. Dla wszystkich cyfr $a_i$ liczby $a$, aby nie było w niej cyfry $9$, będziemy mieć $9$ możliwości wyboru innej cyfry (ze zbioru $\set{0,1, \ldots, 8}$). Nazwijmy zbiór liczb bez cyfry $9$ zbiorem $B$, wtedy $|B| = 9^{10} = 3486784401$. Ostatnim krokiem jest odjęcie od siebie mocy tych zbiorów: $|A|-|B| = 10^{10} - 9^{10} = 6513215599$. Stąd wiemy, że liczb zawierających cyfrę $9$ w zadanym przedziale jest więcej niż tych, które jej nie zawierają.
+
+\noindent \newline \textbf{Zadanie 3} \newline
+Mamy policzyć ile jest podzbiorów $n$-elementowego zbioru $A$ o parzystej i nieparzystej ilości elementów. Korzystając z symbolu Newtona dla $0 \leq k \leq n$ możemy obliczyć liczbę podzbiorów $k$-elementowych ze zbioru $n$-elementowego. Łącznie zbiorów o parzystej ilości elementów będziemy mieli tyle:
+$$\binom{n}{0} + \binom{n}{2} + \ldots + \binom{n}{2m}$$
+gdzie $2m$ jest maksymalną parzystą liczbą nieprzekraczającą $n$. Wiemy też, że wszystkich podzbiorów zbioru $n$ elementowego jest $2^n$. Wiemy też, że wszystkich pozdbiorów zbioru $A$ jest $2^{|A|}=2^n$. Używając dwumianu Newtona dla $a=1, b=1$ możemy rozpisać $2^n$:
+$$2^n = (1+1)^n  = \sum\limits_{k=0}^{n} \binom{n}{k} 1^{n-k}1^{k} = \sum\limits_{k=0}^{n} \binom{n}{k}$$
+\noindent Rozpiszmy jednak dwumian Newtona również na inny sposób, tym razem podstawiając wartości $a=1, b=-1$:
+$$
+\begin{aligned}
+0 	&= 0^n \\
+  	&= (1 + (-1))^{n}	\\
+	&= \sum\limits_{k=0}^{n} \binom{n}{k} 1^{n-k} (-1)^{k}	\\
+	&= \binom{n}{0} - \binom{n}{1} + \binom{n}{2} - \binom{n}{3} + \ldots + (-1)^n \binom{n}{n}	\\
+	&= \sum\limits_{k=0}^{\floor{\frac{n}{2}}} \binom{n}{2k} - \sum\limits_{k=0}^{\floor{\frac{n}{2}}} \binom{n}{2k+1} \\
+	&\Rightarrow \sum\limits_{k=0}^{\floor{\frac{n}{2}}} \binom{n}{2k} = \sum\limits_{k=0}^{\floor{\frac{n}{2}}} \binom{n}{2k+1}
+\end{aligned}
+$$
+Stąd mamy, że liczba podzbiorów zbioru $n$-elementowego zawierających parzystą liczbę elementów jest równa liczbie podzbiorów o nieparzystej ilości elementów. Ponadto, skoro zbiór $A$ ma $2^n$ podzbiorów i jest tyle samo podzbiorów o parzystej jak i nieparzystej ilości elementóW, to łatwo policzyć, że jest ich po $\frac{1}{2}\cdot 2^n = 2^{n-1}$.
+
+\noindent \newline \textbf{Zadanie 4} \newline
+Mieszkańcy osady $X$ (jest ich $n$) mają możliwość zapisu na wycieczki do kanionu $K$ oraz nad wodospad $W$. Każdy mieszkaniec może wybrać, na które wycieczki się wybierze lub czy w ogóle na jakąś pojedzie - za tym wyborem stoi zbiór $Y$. 
+$$Y =\{\text{żadna}, K, W, \text{obie}\}$$
+Wybór mieszkańca możemy przedstawić jako funkcję $f: X \to Y$. Ilość tych funkcji liczymy ze wzoru $|Y|^{|X|} = 4^n$ i to jest odpowiedź na nasze zadanie.
+
+\noindent \newline \textbf{Zadanie 5 (-)} \newline
+Są 3 kobiety i 3 mężczyzn, usadzamy ich najpierw w rzędzie. Nie zwracamy więc uwagi na to jakiej kto jest płci, tylko na to ile mamy osób. Jest $6! = 720$ możliwości takich ustawień. Kolejnym celem jest ustawienie 3 kobiet i 3 mężczyzn tak, aby siedzieli na przemian. Możemy na dwa sposoby wybrać kto będzie siedział pierwszy, a następnie z dwóch puli po 3 osoby dobieramy kolejne osoby bez powtórzeń:
+$$2 \cdot 3! \cdot 3! = 72$$ 
+
+\noindent \newline \textbf{Zadanie 6} \newline
+Mamy wybrać parę liczb $\pair{a,b}$ taką, że liczby $a, b$ są z przedziału $[1, n]$ oraz suma $a+b$ jest parzysta. Aby suma ta była parzysta, $a$ i $b$ muszą być obie parzyste lub obie nieparzyste. Zakładam też, że liczby $a, b$ mogą się powtarzać. Rozważmy więc dwa przypadki:
+\begin{itemize}
+\item $n$ jest parzyste: mamy wtedy po $\frac{n}{2}$ elementów parzystych i nieparzystych. Możemy więc wybrać te liczby na tyle sposobów:
+$$\underbrace{\frac{n}{2}\cdot\frac{n}{2}}_{\text{parzyste}} + \underbrace{\frac{n}{2}\cdot\frac{n}{2}}_{\text{nieparzyste}} = \frac{n^2}{4} + \frac{n^2}{4} = \frac{n^2}{2}$$
+\item $n$ jest nieparzyste: mamy wtedy $\ceil{\frac{n}{2}}$ elementów nieparzystych i $\floor{\frac{n}{2}}$ parzystych. W podobny sposób liczymy liczbę możliwości w tym przypadku:
+$$\underbrace{\ceil{\frac{n}{2}}\cdot\ceil{\frac{n}{2}}}_{\text{nieparzyste}} + \underbrace{\floor{\frac{n}{2}}\cdot\floor{\frac{n}{2}}}_{\text{parzyste}} = \ceil{\frac{n}{2}}^2 + \floor{\frac{n}{2}}^2$$
+\end{itemize}
+\noindent Rozpatrzyliśmy wszystkie przypadki, co kończy zadanie.
+
+
+\noindent \newline \textbf{Zadanie 7 (-)} \newline
+Rejestracja samochodu jest postaci $LLL\ DDDD$, gdzie $L$ to litera z łacińskiego alfabetu, a $D$ to cyfra. Wiemy, że $|L|=26$ i $|D|=10$, więc jest $26^3\cdot 10^4$ możliwości.
+
+\noindent \newline \textbf{Zadanie 12} \newline
+Dzieci zebrały 10 rumianków, 16 bławatków i 14 niezapominajek. Kwiaty w obrębie swojego rodzaju są nierozróżnialne, a więc dzieci (rozróżnialne) mogą podzielić się nimi w taki sposób:
+$$
+\begin{aligned}
+&R = \set{ \pair{0,10}, \pair{1,9}, \pair{2,8}, \pair{3,7}, \pair{4,6}, \pair{5,5}, \pair{6,4}, \pair{7,3}, \pair{8,2}, \pair{9,1}, \pair{10,0} } \\
+&B = \set{ \pair{0, 16},\pair{1, 15}, \pair{2, 14}, \ldots, \pair{14, 2}, \pair{15, 1}, \pair{16, 0} } \\
+&N = \set{ \pair{0, 14},\pair{1, 13}, \pair{2, 12}, \ldots, \pair{12, 2}, \pair{13, 1}, \pair{14, 0} }
+\end{aligned}
+$$
+\noindent Mamy więc $|R| = 11$, $|B| = 17$, $|N| = 15$, a więc istnieje $|R| \cdot |B| \cdot |N| = 2805$ możliwości.
+
+\end{document}
