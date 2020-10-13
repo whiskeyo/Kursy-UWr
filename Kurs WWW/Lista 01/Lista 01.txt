@@ -1,0 +1,72 @@
+1.  cmd -> nslookup, pozniej wpisujemy podane linki i mamy:
+        Name:    www.ii.uni.wroc.pl
+        Address:  156.17.4.11
+        Name:    www.uj.edu.pl
+        Address:  149.156.169.67    
+    Pozniej dla sprawdzenia jakie sa serwery poczty "set type=MX" i znow linki, mamy:
+        > ii.uni.wroc.pl
+            primary name server = swiatowit.ii.uni.wroc.pl
+            responsible mail addr = rashad.swiatowit.ii.uni.wroc.pl     <----
+            serial  = 2019083901
+            refresh = 1800 (30 mins)
+            retry   = 3600 (1 hour)
+            expire  = 259200 (3 days)
+            default TTL = 86400 (1 day)
+        > www.uj.edu.pl   
+            www.uj.edu.pl   MX preference = 0, mail exchanger = mailin1b.srv.uj.edu.pl <----
+            www.uj.edu.pl   MX preference = 0, mail exchanger = mailin1a.srv.uj.edu.pl <----
+
+            uj.edu.pl       nameserver = theta.uoks.uj.edu.pl
+            uj.edu.pl       nameserver = nms.cyf-kr.edu.pl
+            uj.edu.pl       nameserver = io.coi.pw.edu.pl
+            uj.edu.pl       nameserver = jetta.uoks.uj.edu.pl
+            uj.edu.pl       nameserver = europa.coi.pw.edu.pl
+            uj.edu.pl       nameserver = eta.im.uj.edu.pl
+            mailin1a.srv.uj.edu.pl  internet address = 149.156.73.222
+            mailin1b.srv.uj.edu.pl  internet address = 149.156.73.223
+            nms.cyf-kr.edu.pl       internet address = 149.156.1.3
+            europa.coi.pw.edu.pl    internet address = 194.29.128.2
+            eta.im.uj.edu.pl        internet address = 149.156.75.201
+            theta.uoks.uj.edu.pl    internet address = 149.156.89.30
+            io.coi.pw.edu.pl        internet address = 194.29.128.1
+            jetta.uoks.uj.edu.pl    internet address = 149.156.89.2
+
+2.  Wchodzimy sobie do C:\Windows\System32\drivers\etc, odpalamy plik hosts w notepadzie,
+    dodajemy tam linijke: 
+        79.96.11.200    pawel.ii.uni.wroc.pl 
+    i na stronie pojawia się, że jest w przygotowaniu, bo do URL przypisujemy IP innej strony.
+    Po zmianie linijki na:
+        156.17.4.11     pawel.ii.uni.wroc.pl
+    otrzymujemy błąd "Bad Request (400)", a po skasowaniu jej znów strona zaczyna działać.
+
+3.  Bezstanowość HTTP - infromacje o zapytaniach nie są przechowywane ani przez klienta, ani
+    przez serwer, dzięki czemu każde zapytanie do serwera jest traktowane jako "nowe", aby
+    obejść bezstanowość na stronach używane są ciasteczka, dzięki czemu dane są zapisywane.
+
+4.  Pobieramy Fiddlera, klikamy sobie z prawej strony "Composer", niżej wybieramy kolejno:
+        GET         http://www.google.com/      HTTP/1.1
+    I dodajemy do naszego zapytania "Accept-Language: fr-CH", po czym klikamy Execute.
+    Przechodzimy do zakładki Inspectors, wybieramy po lewej stronie w tabelce najnowsze
+    zapytanie, a później WebView - dzięki temu widzimy, że strona wczytuje się w wybranym
+    przez nas języku (używamy kolejno pl-PL, fr-CH, en-UK).
+
+5.  http://whiskeyo.azurewebsites.net/list1/zadanie5.php
+    Aby wysłać dane w Postmanie zmieniamy metodę na POST, wklejamy powyższy link, przechodzimy 
+    do zakładki Body, a następnie 'none' zmieniamy na 'form-data'. Teraz wpisujemy odpowiednio
+    w kolumnie KEY: key, val (nazwy "inputów" z formularza), a w VALUE nasze wybrane wartości.
+    Content-length to parametr mówiący nam ile bitów ma przesyłana zawartość podczas korzystania
+    z metody POST. Aby dodać element do tablicy $_GET dodajemy do linku zapytanie, np: ?test=cos.
+    Wtedy tablica $_REQUEST zawiera zmienne z tablic $_POST oraz $_GET, jednak gdy zmienne
+    mają taką samą wartość, przechowywane są tylko wartości z $_POST. $_SERVER zawiera wszystkie
+    informacje na temat nagłówków, ścieżek, skryptów, jak i właściwości serwera.
+
+7.  http://whiskeyo.azurewebsites.net/list1/zadanie7.php
+    Włączamy Postmana, do zapytań zasobu w linku dodajemy ?test=jakistekst (albo wybieramy metodę
+    GET i w Params wypełniamy KEY: "test", VALUE: "jakistekst"), wysyłamy zapytanie i widzimy, że
+    zwracane jest nasze (ostatnie) zapytanie. Teraz w Fiddlerze ustawiamy automatic breakpoints,
+    czyli Rules -> Automatic Breakpoints -> Before Requests (domyślnie Disabled), po zmianie
+    wchodzimy znów w Postmana i wysyłamy takie zapytanie jak poprzednio (będziemy widzieć napis
+    "Sending request..."), w Fiddlerze wchodzimy w to zapytanie, po czym w Request headers lub
+    WebForms zmieniamy nasze dane, klikamy Run to completion i w Postmanie widzimy zmienione dane,
+    a nie te, które wysłaliśmy w zapytaniu.
+    Po uruchomieniu automatic breakpoints w Fiddlerze automatycznie włącza nam się proxy.

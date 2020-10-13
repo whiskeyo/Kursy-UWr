@@ -1,0 +1,126 @@
+<html lang="pl">
+<head>
+    <title>Lista 6 - Zadanie 1</title>
+    <script src="jquery-3.1.1.js" type="text/javascript"></script>
+    <script language="JavaScript">
+
+        var przyslowki = new Array(
+            'słodko', 'nie', 'dobrze', 'źle', 'pięknie' 
+        );
+
+        var czasowniki = new Array(
+            'skacze', 'gra', 'pływa', 'myśli', 'śpiewa', 'śpi' 
+        );
+
+        var przymiotniki = new Array(
+            'czarny', 'biały', 'nijaki', 'nowy', 'małomiasteczkowy', 'rzeczywisty', 'wygenerowany'
+        );
+
+        var rzeczowniki = new Array(
+            'kot', 'pies', 'wieżowiec', 'samochód', 'człowiek', 'webowiec'  
+        );
+
+        function process() 
+        {
+            var textfield = document.getElementById('syf');
+            textfield.value = buzzword();
+        }
+
+        function randomarray(a) 
+        {
+            var i;
+            for (i = a.length; i--;) {
+                var j = Math.floor((i + 1) * Math.random());
+                var temp = a[i];
+                a[i] = a[j];
+                a[j] = temp;
+            }
+            return a;
+        }
+
+        function buzzword() 
+        {
+            przymiotniki = randomarray(przymiotniki);
+            rzeczowniki = randomarray(rzeczowniki);
+            przyslowki = randomarray(przyslowki);
+            czasowniki = randomarray(czasowniki);
+            
+            var statement = przymiotniki[przymiotniki.length - 1];
+            przymiotniki.length -= 1;
+            statement = statement + " " + rzeczowniki[rzeczowniki.length - 1];
+            rzeczowniki.length -= 1;
+            statement = statement + " " + przyslowki[przyslowki.length - 1];
+            przyslowki.length -= 1;
+            statement = statement + " " + czasowniki[czasowniki.length - 1];
+            czasowniki.length -= 1;
+
+            return statement;
+        }
+    </script>
+</head>
+
+<body>
+    <div style="text-align: center">
+
+        <h2>Generator syfu</h2>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+            <tr>
+                <td valign="top">
+                    <form>
+                        <br />
+                        <p><input value="Generuj" onclick="process()" type="button"></p>
+                        <p>Wygenerowany syf:
+                            <input type="text" name="syf" id="syf" size="60" />
+                        </p>
+
+                        <br />
+                        <table border="0" cellpadding="0" cellspacing="1" width="100%">
+                            <tr>
+                                <td bgcolor="#aaaaaa">
+                                    <table border="0" cellpadding="3" cellspacing="1" width="100%">
+                                        <tr bgcolor="#ffffff">
+                                            <td>
+                                                <nobr><strong>Przysłówki</strong></nobr>
+                                            </td>
+
+                                            <td>
+                                                <nobr><strong>Czasowniki</strong></nobr>
+                                            </td>
+                                            <td>
+                                                <nobr><strong>Przymiotniki</strong></nobr>
+                                            </td>
+                                            <td>
+                                                <nobr><strong>Rzeczowniki</strong></nobr>
+                                            </td>
+                                        </tr>
+                                        <tr id="wordsTable" bgcolor="#ffffff" valign="top">
+                                            <script type="text/javascript">
+                                                $(function () {
+                                                    var words = [przyslowki, czasowniki, przymiotniki, rzeczowniki];
+                                                    var content = '<td align="left">';
+                                                    for (i = 0; i <= 3; i++) {
+                                                        words[i].forEach(elem => {
+                                                            content += elem + '<br />';
+                                                        });
+                                                        if(i < 3)
+                                                            content += '</td>\n<td align="left">';
+                                                        else content += '</td>';
+                                                    }
+                                                    $('#wordsTable').append(content);
+                                                });
+                                            </script>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <p>&nbsp;</p>
+</body>
+
+</html>

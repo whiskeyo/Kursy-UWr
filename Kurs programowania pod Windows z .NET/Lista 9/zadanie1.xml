@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ListaStudentow nazwa="studenci" xmlns="mojedane">
+    <Student>
+        <Imie>Jan</Imie>
+        <Nazwisko>Kowalski</Nazwisko>
+        <AdresStaly>
+            <Miasto>Wrocław</Miasto>
+            <Ulica>ul. Wąska 3</Ulica>
+        </AdresStaly>
+        <AdresTymczasowy>
+            <Miasto>Warszawa</Miasto>
+            <Ulica>ul. Szeroka 5</Ulica>
+        </AdresTymczasowy>
+        <ListaZajec>
+            <Przedmiot>
+                <Nazwa>AiSD</Nazwa>
+                <Ocena>2.0</Ocena>
+            </Przedmiot>
+            <Przedmiot>
+                <Nazwa>MDM</Nazwa>
+                <Ocena>3.0</Ocena>
+            </Przedmiot>
+            <Przedmiot>
+                <Nazwa>.NET</Nazwa>
+                <Ocena>4.0</Ocena>
+            </Przedmiot>
+        </ListaZajec>
+    </Student>
+    <Student>
+        <Imie>Arnold</Imie>
+        <Nazwisko>Gąbka</Nazwisko>
+        <AdresStaly>
+            <Miasto>Nowizna</Miasto>
+            <Ulica>ul. Graniczna 4</Ulica>
+        </AdresStaly>
+        <AdresTymczasowy>
+            <Miasto>Wrocław</Miasto>
+            <Ulica>ul. Normalna 2</Ulica>
+        </AdresTymczasowy>
+        <ListaZajec>
+            <Przedmiot>
+                <Nazwa>.NET</Nazwa>
+                <Ocena>3.5</Ocena>
+            </Przedmiot>
+            <Przedmiot>
+                <Nazwa>AiSD</Nazwa>
+                <Ocena>2.0</Ocena>
+            </Przedmiot>
+        </ListaZajec>
+    </Student>
+</ListaStudentow>

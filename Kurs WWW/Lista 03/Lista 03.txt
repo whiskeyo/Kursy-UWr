@@ -1,0 +1,40 @@
+1.  W zależności od kolejności linkowania plików .css, html korzysta z najnowszych deklaracji, chyba że któryś ze znaczników przy swojej wartości ma dopisek !important.
+2.  Box model CSS:
+    +---margin------------------+   
+    |                           |
+    |   +---border-----------+  |   
+    |   |                    |  |
+    |   |   +---padding--+   |  |   
+    |   |   |            |   |  |
+    |   |   |   CONTENT  |   |  |
+    |   |   |            |   |  |
+    |   |   +------------+   |  |
+    |   |                    |  |
+    |   +--------------------+  |
+    |                           |
+    +---------------------------+
+
+    padding - wypełnienie, zapobieganie przylegania tekstu do granic
+    border  - obramowanie - styl ramki box'a
+    margin  - margines - odległość box'a od innego
+
+3.  Wyśrodkowanie tekstu w ramach block: text-align: center;
+    Wyśrodkowanie tekstu w ramach inline: automatycznie wycentrowany (zmiana parametrem float)
+
+4.  Pozycjonowanie:
+        - static    -> domyślny atrybut, nie wpływa na nich właściwość top/bottom/left/right, wyświetla się w standardowym stylu
+        - relative  -> pozycja relatywna do standardowej, tzn. możemy wpłynąć na nią poprzez parametry top/bottom/left/right, aby ją przesunąć o daną liczbę pikseli, jednak poozstałe elementy nie zostaną dopasowane do ustalonej pozycji
+        - absolute  -> pozycja relatywna do przodka
+        - fixed     -> pozycja ustalona na stronie, zawsze pozostaje w tym samym miejscu na stronie i może być nad innymi elementami
+
+5.  Możemy stworzyć div zawierający wszystkie produkty, a parametrem absolute lub relative ustawić je w obrębie tego diva, jednak lepszym rozwiązaniem zapewniającym ładniejszy wygląd na urządzeniach mobilnych byłoby użycie jakiegoś frameworka.
+
+6.  Najłatwiej zaimplementować to poprzez list-image-style: ... i ta opcja zapewnia najlepszą przenośność między przeglądarkami.
+
+7.  Pseudoklasa :before tworzy element będący pierwszym dzieckiem klasy, a :after ostatnim dzieckiem klasy.
+    https://krasimirtsonev.com/blog/article/CSS-before-and-after-pseudo-elements-in-practice
+
+8.  Gdy elementy nie zmieszczą się w jednym wierszu, to przejdą do kolejnego zachowując swoje "przyklejenie", tzn. float: left; będzie sprawiał, że elementy będą przyklejone w nowym wierszu do lewej strony, a float: right; do prawej.
+    Działanie clear przedstawione na przykładzie.
+
+9.  Wszystko widać na przykładzie, flex-basis to parametr elementu określający jego szerokość.

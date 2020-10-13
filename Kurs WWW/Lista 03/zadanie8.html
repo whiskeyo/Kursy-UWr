@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta charset="utf-8">
+        <title>Lista 3 - Zadanie 8</title>
+        <style>
+            div.container
+            {
+                width: 1000px;
+                height: 500px;
+            }
+            div.floatingL
+            {
+                width: 150px;
+                height: 150px;
+                float: left;
+                border: 1px dashed #010101;
+                text-align: center;
+                vertical-align: middle;
+            }
+            div.floatingR
+            {
+                width: 150px;
+                height: 150px;
+                float: right;
+                border: 1px dashed #c00202;
+                text-align: center;
+                vertical-align: middle;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="floatingL">1</div>
+            <div class="floatingR">2</div>
+            <div class="floatingL">3</div>
+            <div class="floatingL">4</div>
+            <div class="floatingR">5</div>
+            <div class="floatingR">6</div>
+            <div class="floatingR">7</div>
+        </div>
+        <br/><br/>
+        <div class="container">
+                <div class="floatingL">1</div>
+                <div class="floatingR">2</div>
+                <div style="clear: both;"></div>
+                <div class="floatingL">3</div>
+                <div class="floatingL">4</div>
+                <div class="floatingR">5</div>
+                <div style="clear: left;"></div>
+                <div class="floatingR">6</div>
+                <div style="clear: right;"></div>
+                <div class="floatingR">7</div>
+            </div>
+    </body>
+</html>
