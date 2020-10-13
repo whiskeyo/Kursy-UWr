@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+
+import os
+import argparse
+import subprocess
+import sys
+
+
+def shell(prog, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
+    return subprocess.run(prog, stdout=stdout, stderr=stderr)
+
+
+def run_profiler(prog, source, proc, l1_cache, ll_cache):
+    callgrind = shell(['valgrind', '--tool=callgrind',
+                       '--verbose',
+                       '--branch-sim=yes',
+                       '--cache-sim=yes',
+                       '--simulate-hwpref=yes',
+                       '--toggle-collect=' + proc,
+                       '--I1=' + l1_cache,
+                       '--D1=' + l1_cache,
+                       '--LL=' + ll_cache,
+                       '--callgrind-out-file=callgrind.out'] + prog,
+                      stdout=sys.stdout)
+    if callgrind.returncode:
+        # print(callgrind.stderr.decode())
+        raise SystemExit('Your program gives wrong answer!')
+
+    annotate = shell(['callgrind_annotate', 'callgrind.out'])
+
+    section = None
+    columns = None
+    procinst = {}
+    for line in annotate.stdout.decode().splitlines():
+        if not line or line.startswith('---'):
+            continue
+        if section == 'Ir':
+            line = line.strip().replace(',', '').split()
+            info = {}
+            for col, field in zip(columns, line):
+                try:
+                    if field == '.':
+                        field = 0
+                    info[col] = int(field)
+                except ValueError:
+                    info[col] = field
+            loc = info['file:function'].split('\'')[0]
+            if loc in procinst:
+                for key, value in info.items():
+                    procinst[loc][key] += value
+            else:
+                procinst[loc] = info
+        if 'Ir' in line and 'file:function' in line:
+            columns = line.strip().split()
+            section = 'Ir'
+
+    if len(procinst) > 1:
+        print(procinst)
+
+    os.remove('callgrind.out')
+    return procinst
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(
+        description='Run program and check number of executed instructions.')
+    parser.add_argument('--l1-cache', type=str, default='32768,4,64',
+                        help='description of L1 cache structure')
+    parser.add_argument('--ll-cache', type=str, default='524288,16,64',
+                        help='description of LL cache structure')
+    parser.add_argument('--l1-miss-max', type=float, default=None,
+                        help='maximum miss ratio for L1 cache (in percent)')
+    parser.add_argument('--ll-miss-max', type=float, default=None,
+                        help='maximum miss ratio for LL cache (in percent)')
+    parser.add_argument('--branch-miss-max', type=float, default=None,
+                        help='maximum branch misprediction ratio (in percent)')
+    parser.add_argument('procedure', type=str,
+                        help=('source file name and procedure name '
+                              'separated by colon'))
+    parser.add_argument('program', type=str, nargs='+',
+                        help='print analysis information')
+    args = parser.parse_args()
+
+    source, procedure = args.procedure.split(':')
+
+    profile = run_profiler(args.program, source, procedure,
+                           args.l1_cache, args.ll_cache)
+    info = profile.get(args.procedure, None)
+    if not info:
+        raise SystemExit('Procedure "%s" not found in "%s"!' % (
+                         procedure, source))
+
+    instructions = info['Ir']
+    references = info['Dr'] + info['Dw']
+    branches = info['Bc'] + info['Bi']
+
+    l1_misses = 1.0
+    ll_misses = 1.0
+    branch_misses = 1.0
+
+    if references > 0:
+        l1_misses = (info['D1mr'] + info['D1mw']) / references
+        ll_misses = (info['DLmr'] + info['DLmw']) / references
+    if branches > 0:
+        branch_misses = (info['Bcm'] + info['Bim']) / branches
+
+    print('> Branch misprediction ratio: %2.3f%%' % (100.0 * branch_misses))
+    print('> L1 miss ratio: %2.3f%%' % (100.0 * l1_misses))
+    print('> LL miss ratio: %2.3f%%' % (100.0 * ll_misses))
+
+    if args.branch_miss_max and 100.0 * branch_misses > args.branch_miss_max:
+        raise SystemExit('Exceeded brach misprediction ratio of %2.3f%%!' %
+                         args.branch_miss_max)
+    if args.l1_miss_max and 100.0 * l1_misses > args.l1_miss_max:
+        raise SystemExit('Exceeded L1 cache miss ratio of %2.3f%%!' %
+                         args.l1_miss_max)
+    if args.ll_miss_max and 100.0 * ll_misses > args.ll_miss_max:
+        raise SystemExit('Exceeded LL cache miss ratio of %2.3f%%!' %
+                         args.ll_miss_max)
