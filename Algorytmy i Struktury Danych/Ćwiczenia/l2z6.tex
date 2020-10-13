@@ -1,0 +1,36 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage[left = 3cm, right = 3cm, top = 2cm, bottom = 2cm]{geometry}
+\usepackage{enumerate}
+\usepackage{amssymb}		% pakiet do symboli
+\usepackage{amsmath}		% pakiet do matmy
+\usepackage{enumitem}		% punktowanie (a), (b), ...
+\usepackage{nopageno}		% brak numerow stron
+\usepackage{graphicx}		% wstawianie obrazkow
+\usepackage{float}			% wstawianie obrazkow w dowolnym miejscu
+\usepackage{titling}
+
+% nowe komendy dla wygodniejszego pisania :)
+\newcommand{\subtitle}[1]{ \posttitle{ \par\end{center} \begin{center}\large#1\end{center} \vskip0.5em}}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+
+\begin{document}
+\noindent \textbf{Lista 2, zadanie 6 - Tomasz Woszczyński}\newline
+
+\noindent \newline \textbf{Treść:} Ułóż algorytm, który dla danego spójnego grafu $G$ oraz krawędzi $e$ sprawdza w czasie $O(n+m)$, czy krawędź $e$ należy do jakiegoś minimalnego drzewa spinającego grafu $G$. Możesz założyć, że wszystkie wagi krawędzi są różne. \newline
+
+\noindent \textbf{Rozwiązanie:} Skorzystamy z cycle property dla MST mówiącego o tym, że dla każdego cyklu $C$, jeśli waga krawędzi $e$ należącej do $C$ jest większa od pozostałych wag w $C$, to ta krawędź \textbf{nie może} być w MST. Załóżmy więc, że $e$ nie jest maksymalna na żadnym cyklu w grafie $G$ i nie należy do MST. Rozpatrzmy więc przypadki:
+\begin{enumerate}
+\item krawędź $e$ nie leży na żadnym cyklu: stąd oczywiste jest, że $e$ należy do MST.
+\item krawędź $e$ leży na jakimś cyklu $C$: weźmy MST i dołóżmy do niego krawędź $e$ - po tym kroku powstaje nam cykl, jako że $e$ nie należało do MST. W tym drzewie rozpinającym musi istnieć jakaś krawędź maksymalna $\hat{e}$. Po usunięciu jej otrzymamy MST o mniejszej wadze, a więc dochodzimy do sprzeczności (MST to drzewo rozpinające o najmniejszej wadze).
+\end{enumerate}
+
+\noindent \textbf{Algorytm:} Wiemy, że krawędź $e$ łączy wierzchołki $v, w$. Zapamiętajmy wagę tej krawędzi i ją usuńmy. Z wierzchołka $v$ puszczamy DFS, ale sprawdzamy jedynie wierzchołki połączone krawędziami o wagach nie większych od $e$. Jeśli dotrzemy do $w$, wypisujemy NIE, w przeciwnym wypadku wypisujemy TAK. \newline
+
+\noindent \textbf{Wyjaśnienie:} Jeśli nie dotarliśmy do $w$, to albo $e$ jest mostem, albo $e$ nie była maksymalna na żadnym cyklu, bo gdyby była, to przeszlibyśmy po każdej krawędzi tych cykli pomijając krawędź $e$. Złożoność czasową $O(n+m)$ osiągamy w bardzo łatwy sposób, gdyż wiemy, że DFS działa właśnie w takim czasie.
+
+
+
+\end{document}

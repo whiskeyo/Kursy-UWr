@@ -1,0 +1,171 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage[left = 3cm, right = 3cm, top = 2cm, bottom = 2cm]{geometry}
+\usepackage{enumerate}
+\usepackage{amssymb}		% pakiet do symboli
+\usepackage{amsmath}		% pakiet do matmy
+\usepackage{enumitem}		% punktowanie (a), (b), ...
+\usepackage{nopageno}		% brak numerow stron
+\usepackage{graphicx}		% wstawianie obrazkow
+\usepackage{float}			% wstawianie obrazkow w dowolnym miejscu
+\usepackage{titling}
+%\usepackage[]{algorithm2e} 	% algorytmy :))
+\usepackage{algpseudocode}	
+%\usepackage{program}
+%\usepackage{algorithmicx}
+\usepackage{algorithm}
+
+% nowe komendy dla wygodniejszego pisania :)
+\newcommand{\subtitle}[1]{ \posttitle{ \par\end{center} \begin{center}\large#1\end{center} \vskip0.5em}}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+
+\begin{document}
+\noindent \textbf{Lista 3, zadanie 2 - Tomasz Woszczyński}\newline
+
+\noindent \newline \textbf{Treść:} Przeanalizuj następujący algorytm oparty na strategii dziel i zwyciężaj jednoczesnego znajdowania maksimum i minimum w zbiorze $S = \{ a_1, \dots, a_n\}$: \newline
+\begin{algorithmic}
+\Function{MaxMin}{$S$: Set}
+\If {$\vert S \vert = 1$} 
+	\State \Return $\{ a_1, a_1 \}$ 
+\ElsIf {$\vert S \vert = 2$}
+	\State \Return (max$(a_1, a_2)$, min$(a_1, a_2)$)
+\Else 
+	\State Podziel $S$ na dwa równoliczne podzbiory $S_1, S_2$
+	\State (max1, min1) $\gets$ MaxMin($S_1$)
+	\State (max2, min2) $\gets$ MaxMin($S_2$)
+	\State \Return (max(max1, max2), min(min1, min2))
+\EndIf
+\EndFunction
+\end{algorithmic} 
+
+~\\ \noindent Uwaga: Operacja \textbf{return}  (max$(a_1, a_2)$, min$(a_1, a_2)$) wykonuje jedno porównanie.
+\begin{enumerate}
+\item Jak pokażemy na jednym z wykładów każdy algorytm dla tego problemu, który na elementach zbioru wykonuje jedynie operacje porównania, musi wykonać co najmniej $\ceil{\frac{3}{2}n-2}$ porównania. Dla jakich danych powyższy algorytm wykonuje tyle porównań? Podej wzorem wszystkie takie wartości.
+\item Jak bardzo może różnić się liczba porównań wykonywanych przez algorytm od dolnej granicy?
+\item Popraw algorytm, aby osiągał on tę granicę dla każdej wartości $n$.
+\end{enumerate} 
+
+\noindent \textbf{Rozwiązanie (1):} Oznaczmy optymalną ilość porównań przez $Opt(n) = \ceil{\frac{3}{2}n-2}$. Rozpatrzmy sposób działania algorytmu przedstawionego w treści zadania: poza przypadkami brzegowymi, zbiór $S$ jest dzielony na dwie równe części (z dokładnością do jednego elementu), a więc jedna część ma $\floor{\frac{n}{2}}$ elementów, a druga $\ceil{\frac{n}{2}}$. Procedura wykonuje później dwa porównania, a więc zbiór rekurencyjny wyraża się przez:
+$$ T(n) = T\left( \floor{\frac{n}{2}} \right) + T\left( \ceil{\frac{n}{2}} \right) + 2$$
+\noindent Warunki początkowe możemy odczytać z dwóch pierwszych instrukcji warunkowych, a więc $T(1) = 0$, gdyż zwracana jest para powstała z jednego elementu oraz $T(2) = 1$, ponieważ wykonywane jest tylko jedno porównanie (co wiemy z uwagi). \newline
+
+\noindent \textbf{Dowód (1):} Pokażemy zgodność powyższego wzoru rekurencyjnego ze wzorem jawnym $T'(n)$, a więc należy indukcyjnie udowodnić, że $\forall n T(n) = T'(n)$ względem $k$, gdzie $n = 2^{k+1} + r$.
+$$
+T(n) = 
+\begin{cases}
+0, 			& \text{dla } n=1\\
+3\cdot 2^k + 2r-2, 	& \text{dla } 0 \leq r \leq 2^k\\
+4\cdot 2^k + r - 2, 	& \text{dla } 2^k < r < 2^{k+1} 
+\end{cases}
+$$
+
+\noindent Podstawa indukcyjna dla $k = 0$ oraz $r \in \{ 0, 1 \}$ jest oczywista, wynika to bezpośrednio z definicji, wiemy również, że $T'(1) = T(1)$ z definicji. Przejdźmy do kroku indukcyjnego: załóżmy, że nasza teza zachodzi dla wszystkich $k' \leq k-1$, a więc dla $n < 2^{k+1}$. Musimy rozpatrzyć następujące przypadki:
+\begin{itemize}
+\item $0 \leq r \leq 2^k$: wzór jawny jest wtedy postaci $T'(n) = 3\cdot 2^k + 2r - 2$. Po rozwinięciu wzoru rekurencyjnego łatwo zauważyć, że będziemy korzystać z drugiego przypadku wzoru jawnego, czyli $\floor{\frac{r}{2}}$ oraz $\ceil{\frac{r}{2}}$ mieszczą się w przedziale $\left[ 0; 2^{k-1} \right]$.
+$$
+\begin{aligned}
+T(2^{k+1}+r) &= T \left( 2^k + \floor{\frac{r}{2}} \right) + T \left( 2^k + \ceil{\frac{r}{2}} \right) + 2 = \\
+		   &= \left(3 \cdot 2^{k-1} + 2 \cdot  \floor{\frac{r}{2}} - 2 \right) +  \left(3 \cdot 2^{k-1} + 2 \cdot  \ceil{\frac{r}{2}} - 2 \right) = \\
+		   &= 3 \cdot 2^k + 2 \left( \floor{\frac{r}{2}} + \ceil{\frac{r}{2}} \right) - 2 =\\
+		   &= 3 \cdot 2^k + 2r - 2 = \\
+		   &= T'(2^{k+1} + r)
+\end{aligned}
+$$
+\item $2^k < r < 2^{k+1}$: tutaj musimy rozpatrzyć kolejne wartości, które będziemy podstawiać do wzoru:
+$$ T(2^{k+1}+r) = T \left( 2^k + \floor{\frac{r}{2}} \right) + T \left( 2^k + \ceil{\frac{r}{2}} \right) + 2 = *$$
+\begin{itemize}
+\item dla $r = 2^k + 1$:
+$$
+\begin{aligned}
+* &= \left( 3 \cdot 2^{k-1} + 2 \cdot 2^{k-1} - 2 \right) + \left( 4 \cdot 2^{k-1} + 2^{k-1} + 1 - 2 \right) + 2 =\\
+   &= 4 \cdot 2^k + \left( 2^k + 1 \right) - 2 = Opt(n)
+\end{aligned}
+$$
+\item dla $r = 2^{k+1} - 1$:
+$$
+\begin{aligned}
+* &=  \left( 4 \cdot 2^{k-1} + 2^{k} - 1 - 2 \right) + \left( 3 \cdot 2^k + 2\cdot 0 - 2 \right) + 2 =\\
+   &= 4 \cdot 2^k + \left( 2^{k+1} - 1 \right) -2 = Opt(n)
+\end{aligned}
+$$
+\item dla $r \in \left(2^{k} + 1; 2^{k+1} -1 \right)$:
+$$
+\begin{aligned}
+* &=  \left( 4 \cdot 2^{k-1} + \floor{\frac{r}{2}} - 2 \right) + \left( 4 \cdot 2^{k-1} + \ceil{\frac{r}{2}} - 2 \right) + 2 =\\
+   &= 4 \cdot 2^k + r - 2 = Opt(n)
+\end{aligned}
+$$
+\end{itemize}
+\end{itemize}
+
+\noindent Teraz należy sprawdzić, dla jakich wartości algorytm ten jest optymalny, a więc kiedy zachodzi $T(n) = Opt(n)$. Po prostym przekształceniu otrzymujemy $Opt(n) = \ceil{\frac{3}{2}n-2} = 3 \cdot 2^k + \ceil{\frac{3}{2}r} - 2$. Musimy rozpatrzyć więc dwa przedziały naszego wzoru:
+\begin{itemize}
+\item $0 \leq r \leq 2^k$: $3\cdot 2^k + 2r - 2 = 3\cdot 2^k + \ceil{\frac{3}{2}r} - 2 \Longrightarrow r = \ceil{\frac{r}{2}}$, czyli $r \in \{ 0, 1 \}$;
+\item $2^k < r < 2^{k+1}$: $4 \cdot 2^k + r - 2 = 3 \cdot 2^k + \ceil{\frac{3}{2}r} - 2 \Longrightarrow 2^k = \ceil{\frac{r}{2}}$. Rozwiązanie to pasuje dla $r=2^{k+1}-1$ oraz dla $r=2^{k+1}$, jednak drugi przypadek wykracza poza dziedzinę.
+\end{itemize}
+\noindent Algorytm jest optymalny więc dla takich $n$, gdzie $r \in \{ 0, 1, 2^{k+1}-1\}$. \newline
+
+\noindent \textbf{Rozwiązanie (2):} W drugim podpunkcie musimy sprawdzić jak bardzo algorytm może odbiegać od optymalnego rozwiązania, zdefiniujmy więc funkcję $R(n)=T(n)-Opt(n)$. Po przeprowadzonym wcześniej rozumowaniu możemy rozbić ją na funkcję złożoną dla dwóch przedziałów $r$:
+
+$$ R(n) = 
+\begin{cases}
+\floor{\frac{r}{2}}, 	& \text{dla } 0 \leq r \leq 2^k\\
+2^k - \ceil{\frac{r}{2}}, 	& \text{dla } 2^k < r < 2^{k+1} 
+\end{cases}
+$$
+
+\noindent Funkcja $\floor{\frac{r}{2}}$ jest funkcją niemalejącą, a $2^k - \ceil{\frac{r}{2}}$ nierosnącą, skąd możemy wywnioskować, że ich maksymalna różnica powinna znajdować się gdzieś po środku, a więc przy $r = 2^k$. Rozpatrzmy więc wartości różniące się niewiele od takiego $r$:
+\begin{itemize}
+\item $R(2^{k+1}+2^k-1) = 2^{k-1} - 1$
+\item $R(2^{k+1}+2^k) = 2^{k-1}$
+\item $R(2^{k+1}+2^k+1) = 2^{k-1} - 1$
+\end{itemize}
+\noindent Stąd wiemy, że algorytm działa najgorzej dla $n = 2^{k+1}+2^k = 3\cdot 2^k$ i różni się wtedy o $2^{k-1} = \frac{n}{6}$ porównań od optymalnego. \newline
+
+\noindent \textbf{Rozwiązanie (3):} Poprawienie działania algorytmu:
+
+\begin{algorithmic}
+\Function{MaxMin}{$S$: Set}
+\If {$\vert S \vert = 1$} 
+	\State \Return $\{ a_1, a_1 \}$ 
+\ElsIf {$\vert S \vert = 2$}
+	\State \Return (max$(a_1, a_2)$, min$(a_1, a_2)$)
+\ElsIf {$\vert S \vert$ jest potęgą $2$}
+	\State Podziel $S$ na dwa równoliczne podzbiory $S_1, S_2$
+	\State (max1, min1) $\gets$ MaxMin($S_1$)
+	\State (max2, min2) $\gets$ MaxMin($S_2$)
+	\State \Return (max(max1, max2), min(min1, min2))
+\Else 
+	\State $k \gets \floor{\log_{2}\vert S \vert}$
+	\State $S_1 \gets [a_1 \dots a_{2^k}]$
+	\State  $S_1 \gets [a_{2^k+1} \dots a_{\vert S \vert}]$
+	\State (max1, min1) $\gets$ MaxMin($S_1$)
+	\State (max2, min2) $\gets$ MaxMin($S_2$)
+	\State \Return (max(max1, max2), min(min1, min2))
+\EndIf
+\EndFunction
+\end{algorithmic} 
+
+~\\ \noindent Weźmy $P(n)$ określające ilość porównań ulepszonego algorytmu szukania minimum i maksimum:
+$$
+P(n) = 
+\begin{cases}
+0, 					& \text{dla } n=1\\
+1, 					& \text{dla } n=2\\
+2\cdot P(\frac{n}{2}) + 2, 	& \text{dla } n = 2^k\\
+P(2^k)+P(r)+2			& \text{w p.p., czyli dla } n = 2^k + r 
+\end{cases}
+$$
+
+\noindent Udowodnimy to również indukcyjnie po $k$, gdzie $n = 2^k + r$. Dla podstawy indukcji, a więc dla $n =1$ oraz $n=2$ jest to oczywiste, załóżmy że algorytm działa dla $k-1$.
+\newline Niech $r=0$, wtedy:
+$$ P(2^k) = 2\cdot P(\frac{n}{2}) + 2 = 2 \cdot \ceil{\frac{3}{2}\cdot\frac{n}{2}-2} + 2  = \ceil{\frac{3}{2}2^k-2} = Opt(2^k)$$
+\noindent Niech $r \neq 0$, wtedy:
+$$ P(2^k+r) = P(2^k) + P(r) + 2 = \ceil{\frac{3}{2}2^k-2} + \ceil{\frac{3}{2}r-2} + 2 = 3\cdot 2^{k-1} + \ceil{\frac{3}{2}r} - 2 = Opt(2^k+r)$$
+\noindent Stąd mamy, że $P(n) = Opt(n)$, a więc algorytm jest w każdym przypadku optymalny, a więc doszliśmy do końca rozwiązania.
+
+
+
+\end{document}
