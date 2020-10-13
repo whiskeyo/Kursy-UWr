@@ -1,4 +1,4 @@
-# Kursy UWr
+# All courses
 
 ## Previously taken courses
 * Calculus (1 and 2)
