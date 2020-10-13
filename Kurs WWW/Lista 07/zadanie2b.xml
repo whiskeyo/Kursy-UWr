@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-2"?>
+<transactionOrder>
+	<cardNumber>1111-1111-1111-1111</cardNumber>
+	<expirationDate>02/23</expirationDate>
+	<CVC>111</CVC>
+	<firstName>Kasia</firstName>
+	<surName>Kowalska</surName>
+	<email>kkk@o2.pl</email>
+	<phoneNumber>666-777-888</phoneNumber>
+	<amount>11111111110</amount>
+</transactionOrder>

@@ -1,0 +1,10 @@
+{
+	"cardNumber": "3333-3333-3333-3333",
+    "expirationDate": "01/21",
+    "CVC": "555",
+    "firstName": "Aleks",
+    "surrName": "Gąbka",
+    "email": "ag@gmail.com",
+    "phoneNumber": "(+48)123-456-789",
+    "amount": 2
+}

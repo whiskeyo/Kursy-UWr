@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <head>
+        <meta charset="utf-8">
+        <title>Lista 3 - Zadanie 9</title>
+        <style>
+            #flex
+            { 
+                display: flex;
+                width: 500px;
+                height: 100px;
+                border: 2px solid #cccccc; 
+            }
+            #flex div { flex: 1; }
+
+            #grow
+            {
+                display: flex;
+                width: 500px;
+                height: 100px;
+                border: 2px solid #cccccc;
+            }
+            #grow div:nth-of-type(1) { flex-grow: 1; }
+            #grow div:nth-of-type(2) { flex-grow: 3; }
+            #grow div:nth-of-type(3) { flex-grow: 1; }
+            #grow div:nth-of-type(4) { flex-grow: 2; }
+            #grow div:nth-of-type(5) { flex-grow: 1; }
+
+            #shrink
+            {
+                display: flex;
+                width: 500px;
+                height: 100px;
+                border: 2px solid #cccccc;
+            }
+            #shrink div
+            {
+                flex-grow: 1;
+                flex-shrink: 1;
+                flex-basis: 150px;
+            }
+            #shrink div:nth-of-type(2) { flex-shrink: 4; }
+            
+        </style>
+    </head>
+    <body>
+        <h3>flex</h3>
+        <div id="flex">
+            <div style="background-color: red;">rozmiar box'a jest taki sam niezaleznie od contentu</div>
+            <div style="background-color: green;">2</div>
+            <div style="background-color: blue;">da da da da</div>
+
+        </div>
+
+        <h3>flex-grow</h3>
+        <div id="grow">
+            <div style="background-color: red;"></div>
+            <div style="background-color: green;"></div>
+            <div style="background-color: blue;"></div>
+            <div style="background-color: yellow;"></div>
+            <div style="background-color: yellowgreen;"></div>
+        </div>
+
+        <h3>flex-shrink</h3>
+        <div id="shrink">
+            <div style="background-color: red;"></div>
+            <div style="background-color: green;"></div>
+            <div style="background-color: blue;"></div>
+            <div style="background-color: yellow; flex-shrink: 3;"></div>
+            <div style="background-color: yellowgreen;"></div>
+        </div>
+    </body>
+</html>

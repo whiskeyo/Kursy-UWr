@@ -1,0 +1,132 @@
+Odpalamy serwer ponizsza komenda, pozniej klienta (w dwoch okienkach cmd),
+wszystkie komendy wpisujemy w kliencie i "gadamy" JavaScriptem.
+(1)     mongod --dbpath e:\mongodb\data 
+(2)     mongo
+W rozwiązaniu pomijam ISBN, bo nie przydaje mi się do niczego.
+
+show dbs
+use Biblioteka
+db.createCollection("Ksiazki")
+db.createCollection("Czytelnicy")
+show collections
+
+db.Ksiazki.insert({
+    _id: 1,
+    Tytul: "Microsoft Access. Podrecznik administratora",
+    Autor: "Helen Feddema",
+    RokWydania: 2006,
+    Cena: 35,
+    Egzemplarze: [
+        {
+            Sygnatura: "S0001"
+        }
+    ]
+})
+
+db.Ksiazki.insert({
+    _id: 2,
+    Tytul: "SQL Server 2005. Programowanie od podstaw",
+    Autor: "Robert Vieira",
+    RokWydania: 2007,
+    Cena: 59,
+    Egzemplarze: [
+        {
+            Sygnatura: "S0002"
+        },
+        {
+            Sygnatura: "S0003"
+        }
+    ]
+})
+
+db.Ksiazki.find().pretty() -- pokazanie wszystkich ksiazek w kolekcji
+db.ksiazki.drop() -- usuniecie danej kolekcji (wazna jest wielkosc liter)
+
+db.Czytelnicy.insert({
+    _id: 1,
+    PESEL: "55101011111",
+    Nazwisko: "Kowalski",
+    Miasto: "Wroclaw",
+    DataUrodzenia: new Date("1955-10-10"),
+    OstatnieWypozyczenie: new Date("2020-02-01"),
+    Wypozyczenia: [
+        {   
+            SyngaturaEgzemplarza: "S0002",
+            Data: new Date("2020-02-01"),
+            LiczbaDni: 14
+        },
+        {   
+            SyngaturaEgzemplarza: "S0001",
+            Data: new Date("2019-12-01"),
+            LiczbaDni: 28
+        }
+    ]
+})
+
+db.Czytelnicy.insert({
+    _id: 2,
+    PESEL: "60101033333",
+    Nazwisko: "Maliniak",
+    Miasto: "Wroclaw",
+    DataUrodzenia: new Date("1960-10-10"),
+    OstatnieWypozyczenie: new Date("2020-03-01"),
+    Wypozyczenia: [
+        {   
+            SyngaturaEgzemplarza: "S0001",
+            Data: new Date("2020-02-01"),
+            LiczbaDni: 14
+        },
+        {   
+            SyngaturaEgzemplarza: "S0003",
+            Data: new Date("2020-01-15"),
+            LiczbaDni: 14
+        }
+    ]
+})
+
+-- ZAPYTANIA --
+
+Czytelnicy, którzy wypożyczają ksiązkę od 2020-02-01:
+db.Czytelnicy.find( {"Wypozyczenia.Data": new Date("2020-02-01")}).pretty()
+
+Czytelnicy urodzeni przed 1960:
+db.Czytelnicy.find( {DataUrodzenia: {$lt: new Date("1960-01-01")}} ).pretty()
+
+Liczenie egzemplarzy danej książki poprzez grupowanie po tytule:
+db.Ksiazki.aggregate([{
+    $group: {
+        _id: "$Tytul",
+        IloscEgzemplarzy: {$sum: {$size: "$Egzemplarze"}}}
+}])
+
+Zmiana ceny książki:
+db.Ksiazki.find( {Tytul: "Microsoft Access. Podrecznik administratora"} ).pretty()
+db.Ksiazki.update({Tytul: "Microsoft Access. Podrecznik administratora"}, {$set: {Cena: 59}})
+
+Dodanie nowego egzemplarza książki:
+db.Ksiazki.update(
+    { Tytul: "Microsoft Access. Podrecznik administratora" },
+    { $push: { Egzemplarze: { Sygnatura: "S0004" } } })
+
+Usuniecie czytelnika o nazwisku Maliniak:
+db.Czytelnicy.find().pretty()
+db.Czytelnicy.remove( {Nazwisko: "Maliniak"} )
+
+
+Ilosc wypozyczen danej ksiazki (dziala jak join dla dwoch tabel):
+db.Ksiazki.aggregate([
+    {
+        $lookup:{
+            from: "Czytelnicy",
+            localField: "Egzemplarze.Sygnatura",
+            foreignField: "Wypozyczenia.SyngaturaEgzemplarza",
+            as: "Czytelnicy"
+        }
+    },
+    {
+        $group: {
+            _id: "$Tytul",
+            IloscWypozyczen: {$sum: {$size: "$Czytelnicy"}}
+        }
+    }
+]).pretty();

@@ -1,0 +1,10 @@
+{
+	"cardNumber": "1234-1234-1234-1234",
+    "expirationDate": "12/23",
+    "CVC": "123",
+    "firstName": "Damian",
+    "surrName": "Testowy",
+    "email": "damtest@op.pl",
+    "phoneNumber": "123-456-789",
+    "amount": 2134
+}

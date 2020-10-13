@@ -1,0 +1,20 @@
+1.  W przeglądarce wchodzimy na stronkę, klikamy F12, na pasku na górze Elements, rozwijamy
+    <head> ... </head> i szukamy <title> ... </title>, zawartość zmieniamy na WTF, dzięki
+    czemu nazwa strony (karty) zmienia się na WTF.
+    Po zmianie linka do CSS strona wygląda beznadziejnie, nie ma na niej styli.
+    Ostatniego newsa szukamy w <body> ... </body>, kopiujemy, wklejamy, zmieniamy datę.
+
+2.  Zawiera kilka errorów mówiących o braku deklaracji kodowania znaków, nagłówka
+    <!DOCTYPE html> oraz elementu <title> ... </title> w headzie, jest również jedno
+    ostrzeżenie o braku atrybutu lang. Z tego powodu index.html edytuje poprawiając wszystkie
+    błędy występujące w walidatorze.
+
+3.  <a href="[caly link]">link</a>                  - odnośnik bezwzględny
+    <a href="[nazwa pliku]">link</a>                - odnośnik względny
+    <base href="[home]"> (w <head> ... </head>)     - bazowy URL dla adresów względnych
+    <a id="kotwica">kotwica</a>                     - kotwica w dokumencie
+    <a href="#kotwica">odsyłacz do kotwicy</a>      - odsyłacz do kotwicy
+
+4.  Zasada działania w pliku zadanie4.html.
+5.  Jak wyżej.
+6.  Jak wyżej.

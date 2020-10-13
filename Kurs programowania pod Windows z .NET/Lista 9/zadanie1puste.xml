@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ListaStudentow nazwa="studenci">
+    <Student>
+        <Imie></Imie>
+        <Nazwisko></Nazwisko>
+        <AdresStaly>
+            <Miasto></Miasto>
+            <Ulica></Ulica>
+        </AdresStaly>
+        <AdresTymczasowy>
+            <Miasto></Miasto>
+            <Ulica></Ulica>
+        </AdresTymczasowy>
+        <ListaZajec>
+            <Przedmiot>
+                <Nazwa></Nazwa>
+                <Ocena></Ocena>
+            </Przedmiot>
+        </ListaZajec>
+    </Student>
+</ListaStudentow>

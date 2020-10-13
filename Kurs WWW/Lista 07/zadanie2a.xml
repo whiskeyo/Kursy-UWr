@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-2"?>
+<transactionOrder>
+    <cardNumber>1234-1234-1234-1234</cardNumber>
+    <expirationDate>12/23</expirationDate>
+    <CVC>234</CVC>
+    <firstName>Adam</firstName>
+    <surName>Kowalski</surName>
+    <email>ako@op.pl</email>
+    <phoneNumber>123-123-123</phoneNumber>
+    <amount>0</amount>
+</transactionOrder>
