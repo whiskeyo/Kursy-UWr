@@ -30,6 +30,7 @@
 * Algorithms and Data Structures
 * Computer Architecture for Programmers
 * Design and development of .NET Windows Applications
+* Design of database applications
 * Another View of Economy
 
 ## Semester 5 (Winter 2020/2021)
