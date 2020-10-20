@@ -17,9 +17,8 @@ void func (const std::string& str, name person)
             case name::Dawid:     return "Dawid";
             case name::Konrad:    return "Konrad";
             case name::Mikolaj:   return "Mikolaj";
+            default:              return "";
         }
-
-        return "";
     };
     
     std::cout << convert_name(person) << ": " << str << std::endl;

@@ -28,7 +28,7 @@ void solve_quadratic_equation (double a, double b, double c)
     }
     else
     {
-        using namespace std::complex_literals; // użycie 1i
+        using namespace std::complex_literals; // użycie 1i (jednostka urojona)
 
         std::complex<double> imaginary = std::sqrt(-delta) * 1i / (2.0 * a);
         double real = -b / (2.0 * a);

@@ -42,14 +42,14 @@ $$2^n = (1+1)^n  = \sum\limits_{k=0}^{n} \binom{n}{k} 1^{n-k}1^{k} = \sum\limits
 $$
 \begin{aligned}
 0 	&= 0^n \\
-  	&= (1 + (-1))^{n}	\\
+ 	&= (1 + (-1))^{n}	\\
 	&= \sum\limits_{k=0}^{n} \binom{n}{k} 1^{n-k} (-1)^{k}	\\
 	&= \binom{n}{0} - \binom{n}{1} + \binom{n}{2} - \binom{n}{3} + \ldots + (-1)^n \binom{n}{n}	\\
 	&= \sum\limits_{k=0}^{\floor{\frac{n}{2}}} \binom{n}{2k} - \sum\limits_{k=0}^{\floor{\frac{n}{2}}} \binom{n}{2k+1} \\
 	&\Rightarrow \sum\limits_{k=0}^{\floor{\frac{n}{2}}} \binom{n}{2k} = \sum\limits_{k=0}^{\floor{\frac{n}{2}}} \binom{n}{2k+1}
 \end{aligned}
 $$
-Stąd mamy, że liczba podzbiorów zbioru $n$-elementowego zawierających parzystą liczbę elementów jest równa liczbie podzbiorów o nieparzystej ilości elementów. Ponadto, skoro zbiór $A$ ma $2^n$ podzbiorów i jest tyle samo podzbiorów o parzystej jak i nieparzystej ilości elementóW, to łatwo policzyć, że jest ich po $\frac{1}{2}\cdot 2^n = 2^{n-1}$.
+Stąd mamy, że liczba podzbiorów zbioru $n$-elementowego zawierających parzystą liczbę elementów jest równa liczbie podzbiorów o nieparzystej ilości elementów. Ponadto, skoro zbiór $A$ ma $2^n$ podzbiorów i jest tyle samo podzbiorów o parzystej jak i nieparzystej ilości elementów, to łatwo policzyć, że jest ich po $\frac{1}{2}\cdot 2^n = 2^{n-1}$.
 
 \noindent \newline \textbf{Zadanie 4} \newline
 Mieszkańcy osady $X$ (jest ich $n$) mają możliwość zapisu na wycieczki do kanionu $K$ oraz nad wodospad $W$. Każdy mieszkaniec może wybrać, na które wycieczki się wybierze lub czy w ogóle na jakąś pojedzie - za tym wyborem stoi zbiór $Y$. 
@@ -73,6 +73,28 @@ $$\underbrace{\ceil{\frac{n}{2}}\cdot\ceil{\frac{n}{2}}}_{\text{nieparzyste}} + 
 
 \noindent \newline \textbf{Zadanie 7 (-)} \newline
 Rejestracja samochodu jest postaci $LLL\ DDDD$, gdzie $L$ to litera z łacińskiego alfabetu, a $D$ to cyfra. Wiemy, że $|L|=26$ i $|D|=10$, więc jest $26^3\cdot 10^4$ możliwości.
+
+\newpage
+\noindent \newline \textbf{Zadanie 9} \newline
+Rozpiszmy sobie $\floor{nx}$, wiedząc że $n\in\mathbb{N}, x\in\mathbb{R}$.
+\[
+	\floor{nx} = \floor{ n\floor{x} + n \left\{ x \right\}} = n \floor{x} + \floor{n \left\{ x \right\}}
+\]
+Chcemy, aby $\floor{n \left\{ x \right\}} = 0$, a więc $n \left\{ x \right\} < 1$ oraz $x < \frac{1}{n}$.
+
+\noindent \newline \textbf{Zadanie 10} \newline
+Mamy pokazać, że dla $x \in \mathbb{R}, x \geq 0$ zachodzi $\floor{\sqrt{\floor{x}}} = \floor{\sqrt{x}}$.
+\[
+\begin{aligned}
+	\floor{\sqrt{x}} &\leq \sqrt{x} \leq \floor{\sqrt{x}} + 1 \\
+	\left(\floor{\sqrt{x}}\right)^2 &\leq x \leq \left(\floor{\sqrt{x}} + 1\right)^2 \\
+	\left(\floor{\sqrt{x}}\right)^2 &\leq \floor{x} < \left(\floor{\sqrt{x}} + 1\right)^2 \\
+	\floor{\sqrt{x}} &\leq \sqrt{\floor{x}} < \floor{\sqrt{x}} + 1 \\
+	\floor{\floor{\sqrt{x}}} \stackrel{\text{def}}{=} \floor{\sqrt{x}} &\leq \floor{\sqrt{\floor{x}}} < \floor{\sqrt{x}} + 1 \\
+	&\Rightarrow \floor{\sqrt{\floor{x}}} = \floor{\sqrt{x}}
+\end{aligned}
+\]
+
 
 \noindent \newline \textbf{Zadanie 12} \newline
 Dzieci zebrały 10 rumianków, 16 bławatków i 14 niezapominajek. Kwiaty w obrębie swojego rodzaju są nierozróżnialne, a więc dzieci (rozróżnialne) mogą podzielić się nimi w taki sposób:
