@@ -1,0 +1,93 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage[left = 3cm, right = 3cm, top = 2cm, bottom = 2cm]{geometry}
+\usepackage{enumerate}
+\usepackage{amssymb}		% pakiet do symboli
+\usepackage{amsmath}		% pakiet do matmy
+\usepackage{enumitem}		% punktowanie (a), (b), ...
+\usepackage{nopageno}		% brak numerow stron
+\usepackage{graphicx}		% wstawianie obrazkow
+\usepackage{float}			% wstawianie obrazkow w dowolnym miejscu
+\usepackage{titling}
+%\usepackage[]{algorithm2e} 	% algorytmy :))
+\usepackage{algpseudocode}	
+%\usepackage{program}
+%\usepackage{algorithmicx}
+\usepackage{algorithm}
+
+% nowe komendy dla wygodniejszego pisania :)
+\newcommand{\subtitle}[1]{ \posttitle{ \par\end{center} \begin{center}\large#1\end{center} \vskip0.5em}}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\fractional}[1]{\left\{ #1 \right\}}
+\newcommand{\set}[1]{\left \{ #1 \right \}}
+\newcommand{\pair}[1]{\left( #1 \right)}
+\newcommand{\code}[1]{\fontfamily{qcr}\selectfont\textbf{#1}\fontfamily{cmr}\selectfont}
+
+\begin{document}
+\noindent \textbf{Matematyka dyskretna L, Lista 2 - Tomasz Woszczyński}\newline
+\noindent \newline \textbf{Zadanie 1} \newline
+Dla $k \geq 1$ należy wykazać tożsamość absorpcyjną:
+$$ \binom{n}{k} = \frac{n!}{k!(n-k)!} = \frac{n}{k} \cdot \frac{(n-1)!}{(k-1)!(n-k)!} = \frac{n}{k} \binom{n-1}{k-1}$$
+
+\noindent Wzór ten można też przekształcić do takiej postaci:
+$$ k\binom{n}{k} = n \binom{n-1}{k-1} $$
+Po lewej stronie wybieramy drużynę o $k$ zawodnikach spośród $n$ zawodników, a następnie wybieramy kapitana. Po prawej stronie wybieramy kapitana z $n$ zawodników, a następnie wybieramy $k-1$ zawodników z pozostałych $n-1$ zawodników.
+
+\noindent \newline \textbf{Zadanie 4} \newline
+Udowadniam indukcyjnie po $n$ prawdziwość stwierdzenia 
+$$(a+b)^n = \sum\limits_{i=0}^{n}\binom{n}{i}a^{i}b^{n-i}$$
+Sprawdzę najpierw, czy zachodzi to dla $n=1$ (baza indukcyjna):
+$$ \sum\limits_{i=0}^{1}\binom{1}{i}a^{i}b^{1-i} = \binom{1}{0}a^0\cdot b^1 + \binom{1}{1} a^1\cdot b^0 = a+b = (a+b)^1 \ \checkmark$$
+Przechodzę więc do kroku indukcyjnego: jeżeli twierdzenie $(a+b)^n = \sum\limits_{i=0}^{n}\binom{n}{i}a^{i}b^{n-i}$ zachodzi dla $n$, to zachodzi też dla $n+1$:
+$$
+\begin{aligned}
+(a+b)^{n+1} 	&= (a+b)\cdot (a+b)^n = \\
+			&= (a+b) \sum\limits_{i=0}^{n}\binom{n}{i}a^{i}b^{n-i} = \\
+		  	&= a\cdot \sum\limits_{i=0}^{n}\binom{n}{i}a^{i}b^{n-i} + b\cdot \sum\limits_{i=0}^{n}\binom{n}{i}a^{i}b^{n-i} = \\
+		  	&= \sum\limits_{i=0}^{n}\binom{n}{i}a^{i+1}b^{n-i} + \sum\limits_{i=0}^{n}\binom{n}{i}a^{i}b^{n-i+1} = \\
+		  	&= \sum\limits_{i=0}^{n-1}\binom{n}{i}a^{i+1}b^{n-i} + \binom{n}{n}a^{i+1} + \sum\limits_{i=1}^{n}\binom{n}{i}a^{i}b^{n-i+1} + \binom{n}{0}b^{n+1} = \\
+		  	&= \sum\limits_{i=1}^{n}\binom{n}{i-1}a^{i}b^{n-i+1} + \binom{n+1}{n+1}a^{i+1} + \sum\limits_{i=1}^{n}\binom{n}{i}a^{i}b^{n-i+1} + \binom{n+1}{0}b^{n+1} = \\
+		  	&= \binom{n+1}{n+1}a^{i+1} + \sum\limits_{i=1}^{n} \left[\binom{n}{i-1} + \binom{n}{i} \right] a^{i}b^{n-i+1} + \binom{n+1}{0}b^{n+1} = \\
+		  	&= \binom{n+1}{n+1}a^{i+1} + \sum\limits_{i=1}^{n} \binom{n+1}{i} a^{i}b^{n-i+1} + \binom{n+1}{0}b^{n+1} = \\
+		  	&= \sum\limits_{i=0}^{n+1} \binom{n+1}{i} a^{i} b^{n+1-i}
+\end{aligned}
+$$
+
+\newpage
+\noindent \textbf{Zadanie 8} \newline
+W tym zadaniu należy sprawdzić, czy poniżej podane relacje są prawdziwe. Przydatna będzie do tego definicja notacji dużego O:
+$$ f(x) \in O\left(g(x)\right) \Longleftrightarrow \lim_{x\to\infty} \left| \frac{f(x)}{g(x)} \right| < \infty$$
+\begin{itemize}
+\item $n^2 \in O(n^3)$: $\lim\limits_{n\to\infty} \frac{n^2}{n^3} = 0$, więc relacja prawdziwa $\checkmark$
+\item $n^3 \in O(n^{2.99})$: $\lim\limits_{n\to\infty} \frac{n^3}{n^{2.99}} = \lim\limits_{n\to\infty} n^{0.01} = \infty$, więc relacja fałszywa
+\item $2^{n+1} \in O(2^n)$: $\lim\limits_{n\to\infty} \frac{2^{n+1}}{2^n} = 2$, więc relacja prawdziwa $\checkmark$
+\item $(n+1)! \in O(n!)$: $\lim\limits_{n\to\infty} \frac{(n+1)!}{n!} = \lim\limits_{n\to\infty} (n+1) = \infty$, więc relacja fałszywa
+\item $\log_{2}n \in O(\sqrt{n})$: 
+$$\lim\limits_{n\to\infty} \frac{\log_{2}n}{\sqrt{n}} = \lim\limits_{n\to\infty} \frac{\frac{1}{n\ln2}}{\frac{1}{2\sqrt{n}}} = \lim\limits_{n\to\infty} \frac{2}{\ln2 \sqrt{n}} = \frac{2}{\ln2} \cdot \lim\limits_{n\to\infty} \frac{1}{\sqrt{n}} = \left[ \frac{2}{\ln2} \cdot \frac{1}{\infty} \right] = 0$$
+więc relacja prawdziwa $\checkmark$
+\item $\sqrt{n} \in O(\log_{2}n)$: $\lim\limits_{n\to\infty} \frac{\sqrt{n}}{\log_{2}n} = \infty$ (symetria z poprzednim), więc fałszywa
+\end{itemize}
+
+\noindent \newline \textbf{Zadanie 9} \newline
+Niech $f, g, h : \mathbb{N} \to \mathbb{R}$, należy pokazać:
+\begin{itemize}
+\item jeśli $f(n) = O(g(n))$ i $g(n) = O(h(n))$, to $f(n)=O(h(n))$: \\
+	Mając $f(n) = O(g(n))$, wiemy że funkcja $f$ jest rzędu $n$, a funkcja $g$ jest tego samego rzędu lub wyższego. Niech rząd funkcji $g$ będzie oznaczony jako $m$, wtedy $m \geq n$. Jeżeli $g(n) = O(h(n))$, to $h$ jest wyższego rzędu niż $g$, a więc jednocześnie też jest wyższego rzędu niż $f$. Rząd $h$ oznaczmy przez $k$, wtedy $k \geq m \geq n$. Stąd wnioskujemy, że $\lim\limits_{n\to\infty} \frac{f(x)}{h(x)} < \infty$.
+\item $f(n) = O(g(n))$ wtedy i tylko wtedy, gdy $g(n) = \Omega(f(n))$: \\
+	Z definicji dużego $O$ wiemy, że funkcja $f$ jest co najwyżej rzędu $g$, a więc $f(n) \leq c\cdot g(n)$. Z definicji $\Omega$ mamy, że $g$ jest co najmniej rzędu $f$, czyli $g(n) \geq c\cdot f(n)$. Łącząc oba wnioski dochodzimy do konkluzji:
+	$$ f(n) \leq c_1 \cdot g(n) \Longleftrightarrow g(n) \geq c_2 \cdot f(n) $$
+\item $f(n) = \Theta(g(n))$ wtedy i tylko wtedy, gdy $g(n) = \Theta(f(n))$: \\
+	Definicja $\Theta$ mówi o tym, że funkcja $f$ jest dokładnie rzędu funkcji $g$. Stąd wynika symetria, a więc funkcja $g$ jest również rzędu funkcji $f$, co dowodzi twierdzenie.
+
+\end{itemize}
+
+\newpage
+\noindent \textbf{Zadanie 10} \newline
+Mamy dwa wielomiany $f$ oraz $g$ odpowiednio stopnia $k$ i $l$, takie że $k < l$. Mamy pokazać, że $f(n) = o(g(n))$. Definicja notacji małego $o$ jest następująca:
+$$f(n)\in o(g(n)) \text{ jeśli } \lim\limits_{n\to\infty} \frac{f(n)}{g(n)}=0$$
+Wynik powstały z dzielenia $\frac{f(n)}{g(n)}$ będzie wynikiem z dzielenia wielomianu stopnia niższego przez wielomian stopnia wyższego, a granica takiego wyrażenia jest zawsze równa 0, co kończy dowód.
+
+
+\end{document}
