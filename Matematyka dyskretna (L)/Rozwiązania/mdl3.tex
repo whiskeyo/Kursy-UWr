@@ -1,0 +1,117 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage[left = 3cm, right = 3cm, top = 2cm, bottom = 2cm]{geometry}
+\usepackage{enumerate}
+\usepackage{amssymb}		% pakiet do symboli
+\usepackage{amsmath}		% pakiet do matmy
+\usepackage{enumitem}		% punktowanie (a), (b), ...
+\usepackage{nopageno}		% brak numerow stron
+\usepackage{graphicx}		% wstawianie obrazkow
+\usepackage{float}		% wstawianie obrazkow w dowolnym miejscu
+\usepackage{titling}
+%\usepackage[]{algorithm2e} 	% algorytmy :))
+\usepackage{algpseudocode}	
+%\usepackage{program}
+%\usepackage{algorithmicx}
+\usepackage{algorithm}
+
+% nowe komendy dla wygodniejszego pisania :)
+\newcommand{\subtitle}[1]{ \posttitle{ \par\end{center} \begin{center}\large#1\end{center} \vskip0.5em}}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\fractional}[1]{\left\{ #1 \right\}}
+\newcommand{\set}[1]{\left \{ #1 \right \}}
+\newcommand{\pair}[1]{\left( #1 \right)}
+\newcommand{\code}[1]{\fontfamily{qcr}\selectfont\textbf{#1}\fontfamily{cmr}\selectfont}
+\DeclareMathOperator{\lcm}{lcm}
+
+\begin{document}
+\noindent \textbf{Matematyka dyskretna L, Lista 3 - Tomasz Woszczyński}\newline
+
+\noindent \newline \textbf{Zadanie 1} \newline
+Należy wykazać, że wśród $n+1$ różnych liczb spośród $2n$ kolejnych liczb naturalnych (od $1$ wzwyż) istnieje przynajmniej jedna para, z których jedna liczba dzieli drugą. \\ \\
+Zauważmy, że każdą liczbę naturalną można zapisać jako $2^m \cdot q$, gdzie $q$ jest liczbą nieparzystą. Podzielmy więc zbiór $\{ 1, \dots, 2n \}$ na szufladki składające się zliczb o ustalonym $q > 1$, tzn. w pierwszej szufladce będą liczby postaci $2^m \cdot 1$, w drugiej $2^m \cdot 3$ i tak dalej. Nieparzystych liczb w zbiorze $\{ 1, \dots, 2n \}$ jest $n$, a my wybraliśmy $n + 1$ liczb, więc pewne dwie liczby są postaci $2^m \cdot q$ oraz $2^k \cdot q$, co oznacza że jedna z nich jest podzielna przez drugą.
+
+\noindent \newline \textbf{Zadanie 2} \newline
+Na kartce w kratce zaznaczamy $5$ punktów kratowych (współrzędne całkowitoliczbowe), chcemy wykazać, że środek odcinka łączącego któreś dwa spośród tych punktów jest także punktem kratowym. \\ \\
+
+\noindent Na wybór punktów kratowych mamy następujące cztery możliwości:
+$$\pair{P, P}, \pair{N, N}, \pair{P, N}, \pair{N, P}$$
+\noindent gdzie $P$ oznacza liczbę parzystą, a $N$ liczbę nieparzystą. Skoro wybieramy $5$ punktów spośród $4$ możliwości, to jakieś dwa punkty muszą być w takiej samej kombinacji. Jeśli w obu tych punktach pierwsza współrzędna jest parzysta, to suma tych liczb jest również parzysta, czyli podzielona przez $2$ da nam liczbę całkowitą. Podobnie jeśli jest nieparzysta, wtedy suma tych liczb jest parzysta, a wynikiem dzielenia przez $2$ będzie liczba całkowita. Dla drugiej współrzędnej działa to tak samo, a więc otrzymany punkt będzie również punktem kratowym.
+
+\noindent \newline \textbf{Zadanie 5} \newline
+W każde pole szachownicy $n \times n$ wpisujemy jedną z liczb: $-1, 0, 1$. Dodajemy do siebie te, które są w jednej kolumnie, jednym wierszu lub jednej przekątnej. Mamy pokazać, że co najmniej dwie sumy są równe. \\ \\
+
+\noindent Dla dowolnego $n$ mamy $2n+1$ możliwych do uzyskania sum, np. dla $n = 3$ są to 
+$$\{ \underbrace{-3, -2, -1}_{n}, \underbrace{0}_{1}, \underbrace{1, 2, 3}_{n}\}$$
+Wszystkich sum, które uzyskamy, będziemy mieli $2n+2$: są to $n$ kolumn, $n$ wierszy oraz $2$ przekątne. Mamy więc $2n+2$ sum (kulek) i tylko $2n+1$ możliwości (szufladek), więc co najmniej jedna suma się powtórzy, co kończy dowód.
+
+\newpage
+\noindent \textbf{Zadanie 6} \newline
+Na okręgu zapisujemy w dowolnej kolejności liczby naturalne od $1$ do $10$, mamy pokazać że zawsze znajdzie się grupa trzech sąsiednich liczb, których suma wyniesie przynajmniej $18$. \\ \\
+
+\noindent Umieśćmy losowo $10$ liczb naturalnych i pogrupujmy je w taki sposób, aby $1$ nie należało do żadnej grupy. Pozostałe liczby sumują się do $2+3+\dots+9+10=54$. Jeśli podzielimy sumę $54$ na $3$ równe grupy, to każda z nich będzie miała sumę $18$. Jeśli jedna z grup ma mniej niż $18$, to wtedy jedna z grup ``przejmuje'' wartość większą, dzięki czemu jedna grupa będzie miała więcej niż $18$, co kończy dowód.
+
+\noindent \newline \textbf{Zadanie 8 (-)} \newline
+Poniżej wzór na znalezienie $\lcm(a,b)$, mając dane $a, b$ oraz $\gcd(a,b)$. Wynika on stąd, że mając $\gcd(a,b)=g$ wiemy, że istnieją takie liczby względnie pierwsze $m, n$, że $a = m\cdot g$ oraz $b = n \cdot g$. Skoro $\lcm$ to najmniejsza wspólna wielokrotność, to jest to iloczyn liczb względnie pierwszych $m, n$ oraz wspólnego im czynnika $g$, tzn. $\lcm(a,b)=m\cdot n \cdot g$. Możemy wykonać następujące działanie:
+$$ \gcd(a,b) \cdot \lcm(a,b) = g \cdot m\cdot n \cdot g = \underbrace{g\cdot m}_{a} \cdot \underbrace{g \cdot n}_{b} = a \cdot b$$ 
+A następnie dzieląc równanie obustronnie przez $\gcd(a,b)$ otrzymamy wynik:
+$$ \lcm(a,b) = \frac{ab}{\gcd(a,b)} $$
+
+\noindent \textbf{Zadanie 9 (-)} \newline
+Obliczmy najpierw $\gcd(13,8)$:
+\begin{center}
+\begin{tabular}{ c c c }
+$a$ 	& $b$		& równanie \\
+$13$ 	& $8$		& $13 - 1\cdot 8 = 5$ \\
+$8$	& $5$		& $8 - 1\cdot 5  = 3$ \\
+$5$	& $3$		& $5 - 1\cdot 3  = 2$ \\
+$3$	& $2$		& $3 - 1\cdot 2  = 1$ \\
+$2$	& $1$		& $2 - 2\cdot 1  = 0$ \\
+$1$	& $0$		&  $-$
+\end{tabular}
+\end{center}
+Mamy więc, że $\gcd(13,8) = 1$. Teraz policzmy współczynniki $x, y$, aby $8x + 13y = \gcd(8,13) = 1$:
+$$ 
+\begin{aligned}
+1 &= 3 - 2 = 3 - (5 - 3) = 2\cdot 3 - 5 = 2\cdot (8-5) - 5 = \\
+  &= 2\cdot 8 - 3\cdot 5 = 2\cdot 8 - 3\cdot (13-8) = \\
+  &= 5\cdot 8 - 3\cdot 13
+\end{aligned}
+$$
+\noindent Więc szukane wartości to $x = 5$ oraz $y = -3$.
+
+\newpage
+\noindent \textbf{Zadanie 11} \newline
+Trzeba pokazać, że dla $a>b$, $a$ względnie pierwszego do $b$ i $0 \leq m < n$ zachodzi:
+$$\gcd(a^n - b^n, a^m - b^m) = a^{\gcd(m, n)} - b^{\gcd(m, n)}$$
+
+\noindent Udowodnię to indukcyjnie po $n$:
+\begin{enumerate}
+\item Podstawa indukcji: $n = 1$, wtedy mamy 
+$$\gcd(a^1 - b^1, a^m - b^m) = a^{\gcd(m, 1)} - b^{\gcd(m, 1)} = a^1 - b^1 = a - b$$
+\item Krok indukcyjny: załóżmy, że $\forall n_0 < n$ zachodzi 
+$$\gcd(a^n - b^n, a^m - b^m) = a^{\gcd(m, n)} - b^{\gcd(m, n)}$$
+Pokażę, że zachodzi to dla wszystkich $n$.
+$$
+\begin{aligned}
+\gcd(a^n - b^n, a^m - b^m) &\stackrel{1}{=} \gcd(a^{m+k} - b^{m+k}, a^m - b^m) = \\
+					&= \gcd(a^m - b^m, [a^{m+k} - a^m\cdot b^k] + [a^m\cdot b^k - b^{m+k}]) = \\
+					&= \gcd(\underbrace{a^m - b^m}_{x}, \underbrace{a^m[a^k-b^k]}_{y} + \underbrace{b^k[a^m-b^m]}_{z\cdot x}) = \\
+					&\stackrel{2}{=} \gcd(a^m - b^m, a^m[a^k-b^k]) = \\
+					&\stackrel{3}{=} \gcd(a^m - b^m, a^k - b^k) = \\
+					&\stackrel{\text{zał}}{=} a^{\gcd(m, k)} - b^{\gcd(m, k)} = \\
+					&= a^{\gcd(m, n-m)} - b^{\gcd(m, n-m)} = \\
+					&= a^{\gcd(m, n)} - b^{\gcd(m, n)}
+\end{aligned}
+$$
+\end{enumerate}
+Wyjaśnienie poszczególnych przejść:
+\begin{enumerate}
+\item skoro $0 \leq m < n$, to $\exists k > 0: m+k = n$
+\item $\gcd(x, y + z\cdot x) = \gcd(x, y)$
+\item jeśli $b \perp c$, to $\gcd(ab, c) = \gcd(a, c)$
+\end{enumerate}
+
+\end{document}
