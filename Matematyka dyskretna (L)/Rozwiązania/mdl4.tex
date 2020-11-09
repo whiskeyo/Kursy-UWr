@@ -1,0 +1,108 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage[left = 3cm, right = 3cm, top = 2cm, bottom = 2cm]{geometry}
+\usepackage{enumerate}
+\usepackage{amssymb}		% pakiet do symboli
+\usepackage{amsmath}		% pakiet do matmy
+\usepackage{enumitem}		% punktowanie (a), (b), ...
+\usepackage{nopageno}		% brak numerow stron
+\usepackage{graphicx}		% wstawianie obrazkow
+\usepackage{float}		% wstawianie obrazkow w dowolnym miejscu
+\usepackage{titling}
+%\usepackage[]{algorithm2e} 	% algorytmy :))
+\usepackage{algpseudocode}	
+%\usepackage{program}
+%\usepackage{algorithmicx}
+\usepackage{algorithm}
+
+% nowe komendy dla wygodniejszego pisania :)
+\newcommand{\subtitle}[1]{ \posttitle{ \par\end{center} \begin{center}\large#1\end{center} \vskip0.5em}}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\fractional}[1]{\left\{ #1 \right\}}
+\newcommand{\set}[1]{\left \{ #1 \right \}}
+\newcommand{\pair}[1]{\left( #1 \right)}
+\newcommand{\code}[1]{\fontfamily{qcr}\selectfont\textbf{#1}\fontfamily{cmr}\selectfont}
+\newcommand{\Mod}[1]{\ \mathrm{mod\ #1}}
+\DeclareMathOperator{\lcm}{lcm}
+
+\begin{document}
+\noindent \textbf{Matematyka dyskretna L, Lista 4 - Tomasz Woszczyński}\newline
+
+\noindent \newline \textbf{Zadanie 1} \newline
+Chcemy obliczyć dwie ostatnie cyfry liczby $71^{71}$, więc rozwiązujemy równanie:
+$$ 71^{71} \Mod 100 \equiv 71^{64 + 4 + 2 + 1} \Mod 100$$
+Policzmy najpierw kolejne potęgi korzystając z zależności
+$$(a\cdot b) \Mod n = ((a \Mod n)\cdot (b \Mod n)) \Mod n$$
+$$
+\begin{aligned}
+71^1 		&\equiv 71 \Mod 100 \\
+71^2		&\equiv 41 \Mod 100 \\
+71^4 		&\equiv 71^2 \Mod 100 \cdot 71^2 \Mod 100 		&\equiv 41\cdot 41 \Mod 100 &\equiv 1681 \Mod 100 &\equiv 81 \Mod 100 \\
+71^8 		&\equiv 71^4 \Mod 100 \cdot 71^4 \Mod 100 		&\equiv 81\cdot 81 \Mod 100 &\equiv 6561 \Mod 100 &\equiv 61 \Mod 100 \\
+71^{16} 	&\equiv 71^8 \Mod 100 \cdot 71^8 \Mod 100	 	&\equiv 61\cdot 61 \Mod 100 &\equiv 3721 \Mod 100 &\equiv 21 \Mod 100 \\
+71^{32}	&\equiv 71^{16} \Mod 100 \cdot 71^{16} \Mod 100	&\equiv 21\cdot 21 \Mod 100 &\equiv  441 \Mod 100 &\equiv 41 \Mod 100 \\
+71^{64}	&\equiv 71^{32} \Mod 100 \cdot 71^{32} \Mod 100 &\equiv 41\cdot 41 \Mod 100 &\equiv 1681 \Mod 100 &\equiv 81 \Mod 100
+\end{aligned}
+$$
+Wiemy, że $71 = 64 + 4 + 2 + 1$, dzięki czemu możemy obliczyć wynik całego działania:
+$$ 
+\begin{aligned}
+71^{71} \Mod 100	&\equiv 71^{64 + 4 + 2 + 1} \Mod 100 \\
+				&\equiv 71^{64}\cdot 71^4\cdot 71^2\cdot 71^1 \Mod 100 \\
+				&\equiv (81 \cdot 81 \Mod 100) \cdot 71^2\cdot 71^1 \Mod 100 \\
+				&\equiv (61 \cdot 41 \Mod 100) \cdot 71^1 \Mod 100 \\
+				&\equiv 1 \cdot 71 \Mod 100 \\
+				&\equiv 71 \Mod 100
+\end{aligned}
+$$
+
+\noindent \newline \textbf{Zadanie 2} \newline
+Należy rozwiązać układ kongurencji:
+$$
+\begin{cases}
+x \equiv 2 \Mod 5 \\
+x \equiv 3 \Mod 7 \\
+x \equiv 4 \Mod 13
+\end{cases}
+$$
+
+\noindent Ogólne rozwiązanie pierwszego równania to $2 + 5i$, szukamy więc najmniejszego $i$ takiego, że $x = 2 + 5i$ spełnia drugie równanie: 
+$$2(0), 7(1), 12(2), 17(3), \text{ bo } 17 \Mod 7 \equiv 3$$
+więc najmniejsze $i$ to $3$. Z dwóch pierwszych równań uzyskujemy kongurencję $x \equiv 17 \Mod 35$. Ogólnym rozwiązaniem dwóch pierwszych równań jest $17 + (5\cdot 7)j$, szukamy więc najmniejszego $j$ takiego, że $x = 17 + 35j$ spełnia trzecie równanie:
+$$17(0), \text{ bo } 17 \Mod 13 \equiv 4$$
+Najmniejszym rozwiązaniem jest więc $17$, a ogólnym $17 + (5 \cdot 7 \cdot 13)k$ dla $k \in \mathbb{N}$.
+
+\newpage
+\noindent \textbf{Zadanie 3} \newline
+Należy wykazać, że jeśli $2^n - 1$ jest liczbą pierwszą, to $n$ jest liczbą pierwszą. \\ \\
+Załóżmy więc nie wprost, że $2^n - 1$ jest liczbą pierwszą, ale $n$ nie jest liczbą pierwszą. Niech $n = a\cdot b$ dla $a, b \in \mathbb{N}_+$. Wtedy mamy
+$$ 2^n - 1 = 2^{ab} - 1 = (2^a)^b - 1 = (2^a - 1)\cdot \left( 2^{a\cdot(b-1)} + 2^{a\cdot(b-2)} + \dots + 2^a + 1 \right) $$
+zatem $2 \leq 2^a - 1 < 2^n - 1$, czyli $(2^a - 1)$ jest dzielnikiem $2^n - 1$, a więc liczba $2^n - 1$ nie jest liczbą pierwszą. Dochodzimy do sprzeczności, więc $n$ musi być liczbą pierwszą, aby $2^n - 1$ było liczbą pierwszą, co kończy dowód.
+
+\noindent \newline \textbf{Zadanie 4} \newline
+Należy wykazać, że jeśli $a^n - 1$ jest liczbą pierwszą, to $a = 2$. \\ \\
+W podobny sposób jak wyżej rozpiszmy $a^n - 1$:
+$$a^n - 1 = \underbrace{(a - 1) \cdot (a^{n-1} + a^{n-2} + \dots + a + 1)}_{\text{wyrazy } a \text{ i } a^{n-1} \text{ dają } a^n, \text{ a } -1 \text{ i } 1 \text{ dają } -1, \atop \text{ pozostałe wyrazy się wzajemnie wykluczają}}$$
+Aby $a^n - 1$ było liczbą pierwszą, to musi być $(a - 1) = 1$, a jeśli $(a - 1) = 1 \Rightarrow a = 2$.
+
+\noindent \newline \textbf{Zadanie 8} \newline
+Mamy pokazać, że dwie kolejne liczby Fibonacciego są względnie pierwsze i powinniśmy skorzystać z algorytmu Euklidesa. \\ \\
+Wiemy, że kolejnymi wyrazami ciągu Fibonacciego są $F_1 = 1, F_2 = 1, F_3 = 2, \dots$, a kolejne wyrazy są zdefiniowane wzorem $F_{n} = F_{n-1} + F_{n-2}$. Możemy więc indukcyjnie po $n$ (dla $F_n$) udowodnić twierdzenie z zadania.
+\begin{enumerate}
+\item Podstawa indukcji: $n = 1$, wtedy $\gcd(F_1, F_2) = \gcd(1, 1) = 1$. $\checkmark$ 
+\item Krok indukcyjny: załóżmy, że dla $n$ zachodzi $\gcd(F_n, F_{n+1}) = 1$, pokażemy, że dla $n+1$ zachodzi $\gcd(F_{n+1}, F_{n+2}) = 1$:
+$$
+\begin{aligned}
+\gcd(F_{n+1}, F_{n+2})	&= \gcd(F_{n+1}, F_{n} + F_{n+1}) 	&\left(\text{definicja liczb Fibonacciego}\right) \\
+					&= \gcd(F_{n+1}, F_{n})		  	&\left(\text{bo } \gcd(a+b, b) = \gcd(a, b)\right) \\
+					&= \gcd(F_{n}, F_{n+1})			&\left(\text{przemienność wyrazów w $\gcd$}\right) \\
+					&= 1							&\left(\text{założenie indukcyjne}\right)
+\end{aligned}
+$$
+\end{enumerate}
+Udowodniliśmy więc, że dwie kolejne liczby Fibonacciego są względnie pierwsze.
+
+
+\end{document}
