@@ -39,6 +39,17 @@ auto find_minmax(const Ts& elements)
     return std::pair{min, max};
 }
 
+auto func(std::vector<double> vec_doubles, int p, int k)
+{
+    std::for_each(vec_doubles.begin() + p, vec_doubles.end(), [&k](double val) {
+    static int k_counter = 0;
+    if (!k_counter) std::cout << "counter = 0" << std::endl;
+
+    if (k_counter++ % k == 0)
+        std::cout << val << " ";
+    });
+}
+
 int main()
 {
     std::vector<double>    vec_doubles({1.21, 3.41, -3.15, 4.312, 4.1235, 7.123, 8.865, 9.12, -1.55, -10.53,
@@ -65,6 +76,10 @@ int main()
         if (k_counter++ % k == 0)
             std::cout << val << " ";
     });
+    func(vec_doubles, k, p); std::cout << std::endl;
+    func(vec_doubles, k, p); std::cout << std::endl;
+    func(vec_doubles, k, p); std::cout << std::endl;
+
     std::cout << std::endl;
 
     auto list_iterator = list_strings.begin();

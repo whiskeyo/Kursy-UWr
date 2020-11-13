@@ -19,11 +19,7 @@ private:
 public:
     Compose_f_gx_hy(F f, G g, H h) : _f(f), _g(g), _h(h) {};
 
-    typename F::result_type operator() (typename G::argument_type x, 
-                                        typename H::argument_type y) 
-    {
-        return _f(_g(x), _h(y));
-    }
+    auto operator() (auto x, auto y) { return _f(_g(x), _h(y)); }
 };
 
 template <typename F, typename G, typename H>
@@ -41,4 +37,17 @@ int main()
 {
     // TODO: ogarnac jak dziala skladanie funkcji w tak zaimplementowanym
     // adapterze, bo poki co wywala pelno bledow :(
+
+    // std::cout << compose_f_gx_hy(
+    //     [](int x, int y) -> int { return x + y; },
+    //     [](int x) -> int { return x * x; },
+    //     [](int y) -> int { return y + 1; })
+    //     (5, 10) << std::endl;
+
+    auto comp = Compose_f_gx_hy(add, square, increment)(5, 10);
+    std::cout << comp << std::endl;
+    // typ comp:
+    // int (*)(int x, int y) operator()(int (*x)(int x), int (*y)(int x))
+    // wiec comp(5, 10) nie zadziała
+
 }
