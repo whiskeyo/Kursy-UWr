@@ -1,0 +1,287 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage[left = 3cm, right = 3cm, top = 2cm, bottom = 2cm]{geometry}
+\usepackage{enumerate}
+\usepackage{amssymb}		% pakiet do symboli
+\usepackage{mathtools}		% pakiet do matmy (rozszerza amsmath)
+\usepackage{enumitem}		% punktowanie (a), (b), ...
+\usepackage{nopageno}		% brak numerow stron
+\usepackage{graphicx}		% wstawianie obrazkow
+\usepackage{float}			% wstawianie obrazkow w dowolnym miejscu
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{titling}
+\usepackage{algpseudocode}	
+\usepackage{algorithm}
+
+% nowe komendy dla wygodniejszego pisania :)
+
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}	% podłoga
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}		% sufit
+\newcommand{\fractional}[1]{\left\{ #1 \right\}}		% część ułamkowa {x}
+\newcommand{\abs}[1]{\left| #1 \right|}					% wartosc bezwzgledna
+\newcommand{\set}[1]{\left \{ #1 \right \}}				% zbiór elementów {a,b,c}
+\newcommand{\pair}[1]{\left( #1 \right)}				% para elementów (a,b)
+\newcommand{\Mod}[1]{\ \mathrm{mod\ #1}}				% lekko zmodyfikowane modulo
+\newcommand{\comp}[1]{\overline{ #1 }} 					% dopełnienie zbioru 
+\newcommand{\annihilator}{\mathbf{E}}					% operator E
+\newcommand{\seqAnnihilator}[1]{\annihilator \left\langle #1 \right\rangle} % E(a_n)
+\newcommand{\sequence}[1]{\left\langle #1 \right\rangle} % <a_n>
+\DeclareMathOperator{\lcm}{lcm}							% obsługa lcm w mathmode
+
+\begin{document}
+\noindent \textbf{Matematyka dyskretna L, Lista 6 - Tomasz Woszczyński}\newline
+
+\noindent \newline \textbf{Zadanie 1 (-)} \newline
+Stosując metodę podstawiania, należy rozwiązać dwie zależności rekurencyjne:
+\begin{enumerate}
+	\item $t_n = t_{n-1} + 3^n$ dla $n > 1, t_1 = 3$
+	\item $h_n = h_{n-1} + (-1)^{n+1}n$ dla $n > 1, h_1 = 1$
+\end{enumerate}
+\begin{align*}
+	t_n &= t_{n-1} + 3^n = t_{n-2} + 3^{n-1} + 3^n = t_{n-3} + 3^{n-2} + 3^{n-1} + 3^n = \ldots = \\[10pt] %[10pt] to odleglosc linebreak'a
+		&= t_1 + 3^2 + 3^3 + \ldots + 3^{n-2} + 3^{n-1} + 3^n = \\[0pt]
+		&= 3^1 + 3^2 + 3^3 + \ldots + 3^{n-2} + 3^{n-1} + 3^n = \sum\limits_{i=1}^{n} 3^i = 
+		\begin{cases}
+			3 								&\text{ dla } n = 1 \\
+			3 \cdot \frac{1 - 3^n}{1 - 3} 	&\text{ dla } n \geq 2
+		\end{cases} \\ \\ 
+	h_n &= h_{n-1} + (-1)^{n+1}n = h_{n-2} + (-1)^n (n-1) + (-1)^{n+1}n = \\
+		&= h_{n-3} + (-1)^{n-1}(n-2) + (-1)^n (n-1) + (-1)^{n+1}n = \ldots = \\
+		&= 1 + \underbrace{(-1)^{3}\cdot 2}_{h_2 = -1} +  \ldots + (-1)^n (n-1) + (-1)^{n+1}n = \ldots
+\end{align*}
+\noindent W pierwszym przykładzie nie trzeba udowadniać poprawności otrzymanego wzoru, gdyż zamiana sumy na wzór jawny jest prosta, tzn. jest to suma pierwszych $n$ wyrazów ciągu geometrycznego i jest powszechnie znana. \\
+
+\noindent W drugim przypadku, takim podejściem jak wyżej może być ciężko wywnioskować wzór, dlatego można policzyć kilka pierwszych wyrazów:
+\[ h_1 = 1, h_2 = (-1)^{3}\cdot 2 = -1, h_3 = -1 + (-1)^4 \cdot 3 = 2, h_4 = 2 + (-1)^5\cdot 4 = -2, \ldots \]
+A następnie na ich podstawie "zgadnąć" wzór na $h_n$ i go udowodnić. Zauważmy, że
+\[ h_n =
+	\begin{cases}
+	- \frac{n}{2} 	&\text{ dla } n \text{ parzystych} \\
+	\frac{n+1}{2} 	&\text{ dla } n \text{ nieparzystych}
+	\end{cases}
+\]
+Udowodnię ten wzór indukcyjnie po $n$:
+\begin{enumerate}
+	\item Podstawa indukcyjna: $n=1$, wtedy $h_1 = \frac{1+1}{2} = 2$, więc się zgadza. $\checkmark$
+	\item Krok indukcyjny: załóżmy, że dla $n$ powyższy wzór działa, pokażę że dla $n+1$ jest również prawdziwy, a więc że $h_{n+1} = h_n + (-1)^{n+2}(n+1)$ sprowadza się do zależności
+	\[ h_{n+1} =
+	\begin{cases}
+	- \frac{(n+1)}{2}									&\text{ dla } n+1 \text{ parzystych} \\
+	\frac{(n+1)+1}{2} = \frac{n+2}{2} = \frac{n}{2} + 1	&\text{ dla } n+1 \text{ nieparzystych}
+	\end{cases}
+	\]
+	Należy rozpatrzyć dwa przypadki:
+	\begin{enumerate}
+		\item $n$ parzyste, więc $h_{n+1}$ nieparzyste:
+		\[ h_{n+1} = -\frac{n}{2} + \underbrace{(-1)^{n+2}}_{\mathclap{n+2 \text{ parzyste, więc } 1}} (n+1) = -\frac{n}{2} + (n + 1) = \frac{n}{2} + 1, \checkmark \]
+			
+		\item $n$ nieparzyste, więc $h_{n+1}$ parzyste: 
+		\begin{align*}
+			h_{n+1} &= \frac{n+1}{2} + \underbrace{(-1)^{n+2}}_{\mathclap{n+2 \text{ nieparzyste, więc } -1}} (n+1) = \frac{n+1}{2} - (n + 1) = \\ 
+					&= \frac{n + 1 - 2n - 2}{2} = \frac{-n - 1}{2} = \frac{-(n+1)}{2}, \checkmark
+		\end{align*}
+	\end{enumerate}
+\end{enumerate}
+Udowodniliśmy więc, że wzór na $h_n$ jest poprawny dla wszystkich $n \in \mathbb{N}_+$.
+
+\noindent \newline \textbf{Zadanie 2} \newline
+Należy rozwiązać podane zależności rekurencyjne:
+\begin{enumerate}
+	\item $a_{n+1} = \abs{\sqrt{a_n^2 + a_{n-1}^2}}$ dla $a_0 = a_1 = 1$,
+	\item $b_{n+1} = \abs{\sqrt{b_n^2 + 3}}$ dla $b_0 = 8$,
+	\item $c_{n+1} = (n+1) \cdot c_n + (n^2 + n) \cdot c_{n-1}$ dla $c_0 = 0, c_1 = 1$.
+\end{enumerate}
+
+\noindent \newline \textbf{Przykład 1:}
+Podnieśmy całe wyrażenie do kwadratu, dzięki czemu uzyskamy jakiej postaci są kolejne wyrazy ciągu $\sequence{a_n}$:
+\begin{align*}
+	a_{i+1}^2 &= \abs{\sqrt{a_i^2 + a_{i-1}^2}}^2 \\
+	a_{i+1}^2 &= a_i^2 + a_{i-1}^2 \\
+	\text{więc } a_i^2 &= a_{i-1}^2 + a_{i-2}^2
+\end{align*}
+Teraz można rozpisać rozwinięcie rekurencyjne wyrazu $a_{n+1}$:
+\begin{align*}
+	a_{n+1}	&= \abs{\sqrt{a_n^2 + a_{n-1}^2}} = \abs{\sqrt{a_{n-1}^2 + a_{n-2}^2 + a_{n-1}^2}} = \abs{\sqrt{2 a_{n-1}^2 + a_{n-2}^2}} =\\
+			&= \abs{\sqrt{2\abs{\sqrt{a_{n-2}^2 + a_{n-3}^2}}^2 + a_{n-2}^2}} = \abs{\sqrt{2 a_{n-2}^2 + 2 a_{n-3}^2 + a_{n-2}^2}} = \abs{\sqrt{3 a_{n-2}^2 + 2 a_{n-3}^2}} = \\
+			&= \abs{\sqrt{3\abs{\sqrt{a_{n-3}^2 + a_{n-4}^2}}^2 + 2 a_{n-3}^2}} = \abs{\sqrt{5 a_{n-3}^2 + 3 a_{n-4}^2}} = \ldots = \\
+			&= \abs{\sqrt{8 a_{n-4}^2 + 5 a_{n-5}^2}} = \abs{\sqrt{13 a_{n-5}^2 + 8 a_{n-6}^2}} = \ldots = \\
+			&= \abs{\sqrt{ F_n + F_{n-1} }} = \abs{\sqrt{ F_{n+1} }}
+\end{align*}
+Obliczenie wyrazu $a_{n+1}$ sprowadza się więc do obliczenia pierwiastka z $F_{n+1}$, jako że wszystkie wyrazy ciągu Fibonacciego są dodatnie.
+
+\noindent \newline \textbf{Przykład 2:} Podstawmy kilka kolejnych wyrazów ciągu $\sequence{b_n}$:
+\begin{align*}
+	b_{n+1} &= \abs{\sqrt{b_n^2 + 3}} = \abs{\sqrt{\abs{\sqrt{b_{n-1}^2 + 3}}^2 + 3}} = \abs{\sqrt{b_{n-1}^2 + 3 + 3}} = \abs{\sqrt{\abs{\sqrt{b_{n-2}^2 + 3}}^2 + 3 + 3}} = \\
+	&= \abs{\sqrt{b_{n-2}^2 + 3 + 3 + 3}} = \abs{\sqrt{b_{n-3}^2 + 3 + 3 + 3 + 3}} = \abs{\sqrt{b_{n-4}^2 + 3 + 3 + 3 + 3 + 3}} = \\
+	&= \abs{\sqrt{ b_0^2 + 3n }} = \abs{\sqrt{ 64 + 3n }}
+\end{align*}
+
+\noindent \newline \textbf{Przykład 3:} Obliczmy kilka pierwszych wyrazów $\sequence{c_n}$ wiedząc, że $c_0 = 0, c_1 = 1$. Kolejne wyrazy ciągu wyrażają się wzorem rekurencyjnym: 
+\[ c_{n+1} = (n+1) \cdot c_n + (n^2 + n) \cdot c_{n-1} \]
+Mamy więc:
+\begin{align*}
+	c_0 &= 0 													&= 0! \cdot 0 \\
+	c_1 &= 1 													&= 1! \cdot 1 \\
+	c_2 &= 2\cdot 1 + (1^2 + 1) \cdot 0 = 2 + 0 = 2 			&= 2! \cdot 1 \\
+	c_3 &= 3\cdot 2 + (2^2 + 2) \cdot 1 = 6 + 6 = 12 			&= 3! \cdot 2 \\
+	c_4 &= 4\cdot 12 + (3^2 + 3) \cdot 2 = 48 + 24 = 72			&= 4! \cdot 3 \\
+	c_5 &= 5\cdot 72 + (4^2 + 4) \cdot 12 = 360 + 240 = 600		&= 5! \cdot 5 \\
+	c_6 &= 6\cdot 600 + (5^2 + 5) \cdot 72 = 3600 + 2160 = 5760 &= 6! \cdot 8 \\
+		&\enskip \vdots \\
+	c_n &= n! \cdot F_n
+\end{align*}
+Powyższy wzór należy udowodnić indukcyjnie po $n$:
+\begin{enumerate}
+	\item Podstawa indukcyjna: $n = 0$, wtedy $c_n = 0! \cdot 0 = 0$, więc się zgadza. $\checkmark$
+	\item Krok indukcyjny: załóżmy, że dla $n$ zachodzi $c_n = n! \cdot F_n$, pokażę, że dla $n+1$ zachodzi $c_{n+1} = (n+1)! \cdot F_{n+1}$:
+	\begin{align*}
+		c_{n+1} &= (n + 1)! \cdot F_{n+1} \\
+				&= (n + 1)! \cdot (F_n + F_{n-1}) = \\
+				&= (n + 1) \cdot n! \cdot (F_n + F_{n-1}) = \\
+				&= (n + 1) \cdot n! \cdot F_n + (n + 1) \cdot n! \cdot F_{n-1} = \\
+				&= (n + 1) \cdot c_n + (n + 1) \cdot n \cdot (n - 1)! \cdot F_{n-1} = \\
+				&= (n + 1) \cdot c_n + (n + 1) \cdot n \cdot c_{n-1} = \\
+				&= (n + 1) \cdot c_n + (n^2 + n) \cdot c_{n-1}, \text{ więc się zgadza. } \checkmark
+	\end{align*}
+\end{enumerate}
+Więc dla dowolnego $n$ zachodzi $c_n = n! \cdot F_n$, co kończy dowód.
+
+
+
+
+\noindent \newline \textbf{Zadanie 4} \newline
+Należy wykazać, że iloczyn kolejnych $k$ liczb naturalnych jest podzielny przez $k!$.\\
+
+\noindent Rozwiązanie zadania sprowadza się do pokazania, że
+\[ \frac{n \cdot (n-1) \cdot (n-2) \cdot \ldots \cdot (n-k+1)}{k!} \in \mathbb{N} \]
+Pomnóżmy więc to wyrażenie przez $1 = \frac{(n-k)!}{(n-k)!}$:
+\[ \frac{n \cdot (n-1) \cdot (n-2) \cdot \ldots \cdot (n-k+1)}{k!} \cdot \frac{(n-k)!}{(n-k)!} = \frac{n!}{k!(n-k)!} = \binom{n}{k} \in \mathbb{N} \]
+
+\newpage
+\noindent \textbf{Zadanie 6} \newline
+Należy rozwiązać zależność rekurencyjną $a_n^2 = 2 a_{n-1}^2 + 1$ z warunkiem początkowym $a_0 = 2$ i założeniem, że dla wszystkich $n$ jest $a_n > 0$. \\
+
+\noindent Podstawmy $b_n = a_n^2$, wtedy uproszczona zależność będzie wyrażona wzorem:
+\[ b_n = 2 b_{n-1} + 1 \]
+i rozwiążemy ją metodą anihilatorów. Przekształćmy równanie, a następnie znajdźmy anihilatory poszczególnych wyrażeń:
+\begin{align*}
+	b_n = 2 b_{n-1} + 1  \Longrightarrow  b_{n+1} = 2 b_n + 1 &\Longrightarrow b_{n+1} - 2 b_n - 1 = 0 \\
+	b_{n+1} - 2 b_n 	&\longrightarrow (\annihilator - 2) \\
+	-1					&\longrightarrow (\annihilator - 1) \\
+\end{align*}\\[-30pt]
+Mamy więc $(\annihilator - 2)(\annihilator - 1) \sequence{a_n} = 0$, a ogólną postacią równania jest:
+\[ b_n = \alpha \cdot 2^n + \beta \]
+Obliczmy więc pierwsze wyrazy ciągu $\sequence{b_n}$ a następnie znajdziemy wartości $\alpha, \beta$:
+\[
+\begin{cases}
+	b_0 = a_0^2 		&= 4 = \alpha + \beta \\
+	b_1 = 2\cdot 4 + 1 	&= 9 = 2\alpha + \beta
+\end{cases}	
+\Rightarrow \ldots \Rightarrow
+\begin{cases}
+	\alpha = 5 \\
+	\beta = -1
+\end{cases}
+\]
+Czyli ogólną postacią jest:
+\[ b_n = 5 \cdot 2^n - 1 \Longrightarrow a_n = \sqrt{5 \cdot 2^n - 1} \]
+
+
+\noindent \newline \textbf{Zadanie 7} \newline
+Ile jest wyrazów złożonych z $n$ liter należących do $25$-literowego alfabetu łacińskiego, zawierających parzystą liczbę liter $a$? \\
+
+\noindent Zwykle alfabet łaciński ma $26$ liter, dlatego rozwiązanie uogólnię dla $r$-literowego alfabetu zawierającego $a$. Wyraz złożony z $0$ liter zawiera $0$ liter $a$, a więc parzystą ilość, czyli $a_0 = 1$. Dla wyrazów złożonych z $1$ litery mamy $r-1$ takie wyrazy, gdyż zawierają jedną z $r-1$ liter w nieparzystej ilości oraz $0$ liter $a$, tzn. $a_1 = r-1$. Liczba $n$-literowych wyrazów z parzystą liczbą liter $a$ wyraża się rekurencją:
+\[ 
+a_n = 
+	\underbrace{(r-1)\cdot a_{n-1}}_{\mathclap{\text{\parbox{4cm}{\centering $a$ nie na końcu, więc\\[-4pt] rozpatrujemy ciągi\\[-4pt]długości $n-1$ o parzystej\\[-4pt]liczbie wystąpień $a$}}}} 
+	\quad + \quad 
+	\underbrace{1 \cdot \left[r^{n-1} - a_{n-1}\right]}_{\mathclap{\text{\parbox{4.2cm}{\centering $a$ na końcu, więc rozpatrujemy\\[-4pt] ciągi długości $n-1$ o\\[-4pt]nieparzystej liczbie wystąpień $a$}}}} 
+	= r^{n-1} + (r-2)\cdot a_{n-1}
+\]
+Przekształćmy najpierw zależność rekurencyjną:
+\[ a_{n} = (r-2) \cdot a_{n-1} + r^{n-1} \Longrightarrow a_{n+1} = (r-2) \cdot a_n + r^n \Longrightarrow a_{n+1} - (r-2) \cdot a_n - r^n = 0 \]
+A następnie rozwiążmy tę rekurencję wykorzystując metodę anihilatorów:
+\begin{align*}
+	a_{n+1} - (r-2) \cdot a_n 	&\longrightarrow (\annihilator - (r-2)) \\
+	-r^n						&\longrightarrow (\annihilator - r)
+\end{align*}
+Wtedy mamy
+\[ (\annihilator - (r - 2))(\annihilator - r) \sequence{a_n} = 0 \Longrightarrow a_n = \alpha \cdot (r-2)^n + \beta \cdot r^n \]
+Pozostało nam więc rozwiązać układ równań podstawiając $a_0$ i $a_1$:
+\[
+\begin{cases}
+	a_0 = 1 = \alpha + \beta \\
+	a_1 = (r-1) = \alpha\cdot (r-2)^n + r\cdot\beta
+\end{cases}	
+\Rightarrow
+\ldots
+\Rightarrow
+\begin{cases}
+	\alpha = \frac{1}{2} \\
+	\beta = \frac{1}{2} 
+\end{cases}
+\text{czyli } 
+a_n = \frac{1}{2} \cdot (r-2)^n + \frac{1}{2} \cdot r^n
+\]
+Więc dla alfabetu $25$-literowego mamy $a_n = \frac{1}{2} \cdot 23^n + \frac{1}{2} \cdot 25^n$ takich ułożeń.
+
+
+\noindent \newline \textbf{Zadanie 8} \newline
+Należy znaleźć ogólną postać rozwiązań równań rekurencyjnych za pomocą anihilatorów i jedno z nich rozwiązać:
+\begin{enumerate}
+	\item $a_{n+2} = 2 a_{n+1} - a_{n} + 3^n - 1$ dla $a_0 = a_1 = 0$
+	\item $a_{n+2} = 4 a_{n+1} - 4 a_{n} + n2^{n+1}$ dla $a_0 = a_1 = 1$
+	\item $a_{n+2} = \frac{1}{2^{n+1}} - 2 a_{n+1} - a_n$ dla $a_0 = a_1 = 1$
+\end{enumerate}
+
+\noindent \newline \textbf{Przykład 1:} Przekształćmy równanie, aby z jednej strony otrzymać $0$, a następnie znajdźmy anihilatory dla wszystkich wyrażeń:
+\[ a_{n+2} = 2 a_{n+1} - a_{n} + 3^n - 1 \Longrightarrow a_{n+2} - 2 a_{n+1} + a_{n} - 3^n + 1 = 0 \]
+Anihilatorami odpowiednich wyrażeń są wtedy:
+\begin{align*}
+	a_{n+2} - 2 a_{n+1} + a_n 	&\longrightarrow (\annihilator^2 - 2\annihilator + 1) = (\annihilator - 1)^2  \\
+	-3^n						&\longrightarrow (\annihilator - 3) \\
+	1							&\longrightarrow (\annihilator - 1)
+\end{align*}
+Mamy więc $(\annihilator^2 - 2\annihilator + 1)(\annihilator - 3)(\annihilator - 1)\sequence{a_n} = (\annihilator - 1)^3 (\annihilator - 3) \sequence{a_n} = 0$, a ogólną postacią równania jest
+\[ a_n = \alpha \cdot 1^n + \beta \cdot n \cdot 1^n \ + \gamma \cdot n^2 \cdot 1^n + \delta \cdot 3^n \]
+
+\noindent \textbf{Przykład 2:} Przekształcenie równania i anihilatory:
+\begin{align*}
+	a_{n+2} = 4 a_{n+1} - 4 a_{n} + n2^{n+1} &\Longrightarrow a_{n+2} - 4 a_{n+1} + 4 a_{n} - n2^{n+1} = 0 \\
+	a_{n+2} - 4 a_{n+1} + 4 a_{n} 	&\longrightarrow (\annihilator^2 - 4\annihilator + 4) = (\annihilator - 2)^2  \\
+	-n2^{n+1}						&\longrightarrow (\annihilator - 2)^2 \\
+\end{align*}\\[-30pt]
+Mamy więc $(\annihilator - 2)^4 \sequence{a_n} = 0$, a ogólną postacią jest
+\[ a_n = \alpha \cdot 2^n + \beta \cdot n \cdot 2^n + \gamma \cdot n^2 \cdot 2^n + \delta \cdot n^3 \cdot 2^n \]
+
+\noindent \textbf{Przykład 3:} Przekształcenie równania i anihilatory:
+\begin{align*}
+	a_{n+2} = \frac{1}{2^{n+1}} - 2 a_{n+1} - a_n 	&\Longrightarrow a_{n+2} - \frac{1}{2^{n+1}} + 2 a_{n+1} + a_n = 0 \\
+	a_{n+2} - 2 a_{n+1} + a_{n} 					&\longrightarrow (\annihilator^2 - 2\annihilator + 1) = (\annihilator + 1)^2  \\
+	-\frac{1}{2^{n+1}}								&\longrightarrow \left(\annihilator - \frac{1}{2}\right) \\
+\end{align*}\\[-30pt]
+Mamy więc $(\annihilator + 1)^2 \left(\annihilator - \frac{1}{2}\right) \sequence{a_n} = 0$, a ogólną postacią równania jest
+\[ a_n = \alpha \cdot (-1)^n + \beta \cdot (-1)^n \cdot n + \gamma \cdot \left(\frac{1}{2}\right)^n  \]
+Obliczmy $a_2 = \frac{1}{2} - 2 - 1 = -\frac{5}{2}$ i rozwiążmy układ równań:
+\[
+	\begin{cases}
+		a_0 = 1 			&= \alpha + \gamma \\
+		a_1 = 1 			&= -\alpha - \beta + \frac{1}{2} \gamma \\
+		a_2 = -\frac{5}{2} 	&= \alpha + 2 \beta + \frac{1}{4} \gamma 
+	\end{cases}	
+	\Rightarrow
+	\ldots
+	\Rightarrow
+	\begin{cases}
+		\alpha = \frac{7}{9}\\
+		\beta  = - \frac{5}{3}\\
+		\gamma = \frac{2}{9}
+	\end{cases}
+\]
+Ostatecznym wynikiem jest $a_n = \frac{7}{9} \cdot (-1)^n - \frac{5}{3} \cdot (-1)^n \cdot n + \frac{2}{9} \cdot \left(\frac{1}{2}\right)^n$.
+
+
+
+\end{document}
