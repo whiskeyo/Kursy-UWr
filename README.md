@@ -12,7 +12,7 @@
 * Logic for Computer Science
 * Computing for Computer Scientists
 * Introduction to Computer Science
-* Protection of intelectual property
+* Protection of intellectual property
 
 ## Semester 2 (Summer 2018/2019)
 * Object-oriented programming
@@ -35,7 +35,7 @@
 
 ## Semester 5 (Winter 2020/2021)
 * Operating Systems
-* Software Enginnering
+* Software Engineering
 * Advanced techniques in C++ and STL
 * Elements of software design practice
 * Project: Development of the Enrollment System
