@@ -134,7 +134,7 @@ Mamy więc:
 \end{align*}
 Powyższy wzór należy udowodnić indukcyjnie po $n$:
 \begin{enumerate}
-	\item Podstawa indukcyjna: $n = 0$, wtedy $c_n = 0! \cdot 0 = 0$, więc się zgadza. $\checkmark$
+	\item Podstawa indukcyjna: $n = 0$, wtedy $c_0 = 0! \cdot 0 = 0$, więc się zgadza. $\checkmark$
 	\item Krok indukcyjny: załóżmy, że dla $n$ zachodzi $c_n = n! \cdot F_n$, pokażę, że dla $n+1$ zachodzi $c_{n+1} = (n+1)! \cdot F_{n+1}$:
 	\begin{align*}
 		c_{n+1} &= (n + 1)! \cdot F_{n+1} \\
@@ -148,8 +148,59 @@ Powyższy wzór należy udowodnić indukcyjnie po $n$:
 \end{enumerate}
 Więc dla dowolnego $n$ zachodzi $c_n = n! \cdot F_n$, co kończy dowód.
 
+\noindent \newline \textbf{Zadanie 3} \newline
+Należy rozwiązać podane zależności rekurencyjne:
+\begin{enumerate}
+	\item $c_n = c_0 + c_1 + \ldots + c_{n-1}$ dla $c_0 = 1$,
+	\item $d_n = \frac{d_{n-1}^2}{d_{n-2}}$ dla $d_0 = 1, d_1 = 2$.
+\end{enumerate}
 
+\noindent \newline \textbf{Przykład 1:} Policzmy pierwsze kilka wyrazów:
+\begin{align*}
+	c_0 &= 1 \\
+	c_1 &= c_0 = 1 \\
+	c_2 &= c_0 + c_1 = 1 + 1 = 2	\\
+	c_3 &= c_0 + c_1 + c_2 = 1 + 1 + 2 = 4 \\
+	c_4 &= c_0 + c_1 + c_2 + c_3 = 1 + 1 + 2 + 4 = 8\\
+		&\enskip \vdots \\
+	c_n &= 2^{n-1} \text{ dla } n \geq 1 
+\end{align*}
+Powyższy wzór należy udowodnić indukcyjnie po $n$:
+\begin{enumerate}
+	\item Podstawa indukcyjna: $n = 1$, wtedy $c_1 = 2^{1-1} = 2^0 = 1$, więc się zgadza. $\checkmark$
+	\item Krok indukcyjny: załóżmy, że dla $n$ zachodzi $c_n = 2^{n-1}$, pokażę, że dla $n+1$ zachodzi $c_{n+1} = 2^n$:
+	\begin{align*}
+		c_{n+1} &= c_0 + c_1 + c_2 + \ldots + c_{n-1} + c_n = \\ 
+				&= 1 + 1 + 2 + 4 + \ldots + 2^{n-2} + 2^{n-1} = \\
+				&= 2 + 2 + 4 + \ldots + 2^{n-2} + 2^{n-1} = \\
+				&= 4 + 4 + \ldots + 2^{n-2} + 2^{n-1} = \\
+				&= 8 + \ldots + 2^{n-2} + 2^{n-1} = \\
+				&= \ldots = \\
+				&= 2^{n-1} + 2^{n-1} = \\
+				&= 2 \cdot 2^{n-1} \\
+				&= 2^n \text{ więc się zgadza. } \checkmark
+	\end{align*}
+\end{enumerate}
+W dowodzie wykorzystałem fakt, iż kolejna suma tworzy kolejną potęgę dwójki.
 
+\noindent \newline \textbf{Przykład 2:} Policzmy pierwsze kilka wyrazów:
+\begin{align*}
+	d_0 &= 1 \\
+	d_1 &= 2 \\
+	d_2 &= \frac{d_1^2}{d_0} = \frac{2^2}{1} = 4	\\
+	d_3 &= \frac{d_2^2}{d_1} = \frac{4^2}{2} = 8 	\\
+	d_4 &= \frac{d_3^2}{d_2} = \frac{8^2}{4} = 16	\\
+		&\enskip \vdots \\
+	d_n &= 2^n
+\end{align*}
+Powyższy wzór należy udowodnić indukcyjnie po $n$:
+\begin{enumerate}
+	\item Podstawa indukcyjna: $n = 0$, wtedy $d_0 = 2^0 = 1$, więc się zgadza. $\checkmark$
+	\item Krok indukcyjny: załóżmy, że dla $n$ zachodzi $d_n = 2^n$, pokażę, że dla $n+1$ zachodzi $d_{n+1} = 2^{n+1}$:
+	\begin{align*}
+		d_{n+1} &= \frac{d_n^2}{d_{n-1}^2} = \frac{\left(2^n\right)^2}{2^{n-1}} = 2^{2n - (n - 1)} = 2^{n + 1} \text{, więc się zgadza. } \checkmark
+	\end{align*}
+\end{enumerate}
 
 \noindent \newline \textbf{Zadanie 4} \newline
 Należy wykazać, że iloczyn kolejnych $k$ liczb naturalnych jest podzielny przez $k!$.\\
