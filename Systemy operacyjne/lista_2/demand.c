@@ -21,9 +21,31 @@ static void sigsegv_handler(int signum, siginfo_t *info, void *data) {
   ucontext_t *uc = data;
   intptr_t rip;
 
+  (void)rip;
+
   /* TODO: You need to get value of instruction pointer register from `uc`.
    * Print all useful data from `info` and quit in such a way that a shell
    * reports program has been terminated with SIGSEGV. */
+  greg_t rip_addr   = uc->uc_mcontext.gregs[17];
+  void* access_addr = info->si_addr;
+  int err_code      = info->si_code;
+
+  if (access_addr > ADDR_START && access_addr < ADDR_END) {
+    void* page_addr = (void*)((long)access_addr - ((long)access_addr % PAGE_SIZE));
+    if (err_code == 1) {
+      safe_printf("Fault at rip=%lx accessing %lx! Map missing page at %lx.\n",
+                  (long)rip_addr, (long)access_addr, (long)page_addr);
+      mmap_page(page_addr, PROT_WRITE);
+    } else if (err_code == 2) {
+      safe_printf("Fault at rip=%lx accessing %lx! Make page at %lx writeable.\n",
+                  (long)rip_addr, (long)access_addr, (long)page_addr);      
+      mprotect_page(page_addr, PROT_WRITE);
+    }
+  } else {
+    safe_printf("Fault at rip=%lx accessing %lx! Address not mapped - terminating!\n",
+                (long)rip_addr, (long)access_addr);
+    exit(11);
+  }
 }
 
 int main(int argc, char **argv) {

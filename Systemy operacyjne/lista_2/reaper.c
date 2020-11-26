@@ -13,8 +13,6 @@ static pid_t spawn(void (*fn)(void))
 	return pid;
 }
 
-static void handler(int x) {}
-
 static void grandchild(void)
 {
 	printf("(%d) Waiting for signal!\n", getpid());

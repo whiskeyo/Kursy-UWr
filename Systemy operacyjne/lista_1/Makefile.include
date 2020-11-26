@@ -1,0 +1,103 @@
+CC = gcc -g
+CFLAGS = -Og -Wall -Werror -Wstrict-prototypes
+AS = as -g
+ASFLAGS = 
+CPPFLAGS = -Iinclude
+LDLIBS = -Llibcsapp -lcsapp
+
+# Recognize operating system
+ifeq ($(shell uname -s), Darwin)
+CPPFLAGS += -DMACOS
+endif
+
+ifeq ($(shell uname -s), Linux)
+CPPFLAGS += -DLINUX
+endif
+
+ifeq ($(shell uname -s), FreeBSD)
+CPPFLAGS += -DFREEBSD
+endif
+
+# Pass "VERBOSE=1" at command line to display command being invoked by GNU Make
+ifneq ($(VERBOSE), 1)
+.SILENT:
+endif
+
+LIBSRC_C = $(wildcard libcsapp/*.c)
+LIBSRC_S = $(wildcard libcsapp/*.s)
+LIBSRC_H = $(wildcard include/*.h)
+LIBSRCS = $(LIBSRC_C) $(LIBSRC_S) $(LIBSRC_H)
+LIBOBJS = $(LIBSRC_C:%.c=%.o)
+ifneq ($(shell uname -s), Darwin)
+LIBOBJS += $(LIBSRC_S:%.s=%.o)
+endif
+LIB = libcsapp/libcsapp.a
+
+SRC_C = $(wildcard *.c)
+SRC_S = $(wildcard *.s)
+SRC_H = $(wildcard *.h)
+SRCS = $(SRC_C) $(SRC_S)
+OBJS = $(SRC_C:%.c=%.o) 
+
+SOURCES = $(SRCS) $(LIBSRCS)
+OBJECTS = $(OBJS) $(LIBOBJS)
+DEPFILES = $(foreach f,$(SRC_C) $(LIBSRC_C),\
+	     $(dir $(f))$(patsubst %.c,.%.d,$(notdir $(f))))
+
+ARCHIVE = so$(shell date +'%y')_$(shell basename $(PWD))
+FILES = Makefile Makefile.include $(EXTRA-FILES)
+
+all: $(DEPFILES) $(LIB) $(PROGS)
+
+$(LIB): $(LIBOBJS)
+
+# Generate dependencies automatically
+ifeq ($(words $(findstring $(MAKECMDGOALS), archive clean)), 0)
+  -include $(DEPFILES)
+endif
+
+# Disable all built-in recipes and define our own
+.SUFFIXES:
+
+.%.d: %.c
+	$(CC) $(CPPFLAGS) -MM -MG -o $@ $<
+
+%.o: %.c .%.d
+	@echo "[CC] $@ <- $<"
+	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
+
+%.o: %.s
+	@echo "[AS] $@ <- $<"
+	$(AS) $(ASFLAGS) -c -o $@ $<
+
+%.a:
+	@echo "[AR] $@ <- $^"
+	$(AR) rc $@ $^
+
+%: %.o $(LIB)
+	@echo "[LD] $@ <- $^"
+	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+
+clean:
+	rm -vf $(PROGS) $(OBJECTS) $(DEPFILES) $(LIB)
+	rm -vf $(shell find -L . -iname '*~')
+	rm -vf $(ARCHIVE).tar.gz
+	rm -vrf $(EXTRA-CLEAN) *.dSYM
+
+format:
+	clang-format --style=file -i $(LIBSRC_C) $(LIBSRC_H) $(SRC_C) $(SRC_H)
+
+archive: clean
+	mkdir -p $(ARCHIVE) $(ARCHIVE)/libcsapp $(ARCHIVE)/include
+	cp -L $(SRCS) $(SRC_H) $(FILES) $(ARCHIVE)/
+	cp -L $(LIBSRCS) $(ARCHIVE)/libcsapp/
+	cp -L $(LIBSRC_H) $(ARCHIVE)/include/
+	for f in $(SRCS:%=$(ARCHIVE)/%); do \
+	  sed --in-place='' -e '/^#if.*STUDENT/,/^#endif.*STUDENT/d' $$f; \
+	done
+	tar cvzhf $(ARCHIVE).tar.gz $(ARCHIVE)
+	rm -rf $(ARCHIVE)
+
+.PHONY: all clean format archive 
+
+# vim: ts=8 sw=8 noet

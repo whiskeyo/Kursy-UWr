@@ -47,11 +47,11 @@ static int QuickSort(long table[], size_t left, size_t right) {
   pid_t pid_left = -1, pid_right = -1, pid = -1;
 
   /* TODO: If there is more to sort than FORKSORT_MIN start a subprocess. */
-  // bool should_fork = (right - left >= FORKSORT_MIN);
-  // if (should_fork) {
-  //   if ((pid = Fork()))
-  //     return pid;
-  // }
+  bool should_fork = (right - left >= FORKSORT_MIN);
+  if (should_fork) {
+    if ((pid = Fork()))
+      return pid;
+  }
 
   if (left < right) {
     if (right - left <= INSERTSORT_MAX) {
@@ -70,17 +70,17 @@ static int QuickSort(long table[], size_t left, size_t right) {
       pid_right = QuickSort(table, split, right);
 
       /* TODO: Wait for possible children and exit if created a subprocess. */
-      (void)pid_left;
-      (void)pid_right;
+      (void)pid_left;   // leave these 2 lines to allow compiling in "older" version
+      (void)pid_right;  
 
-      // if (pid_left != -1)
-      //   Waitpid(pid_left, NULL, 0);
+      if (pid_left != -1)
+        Waitpid(pid_left, NULL, 0);
 
-      // if (pid_right != -1)
-      //   Waitpid(pid_right, NULL, 0);
+      if (pid_right != -1)
+        Waitpid(pid_right, NULL, 0);
 
-      // if (should_fork)
-      //   exit(0);
+      if (should_fork)
+        exit(0);
     }
   }
 

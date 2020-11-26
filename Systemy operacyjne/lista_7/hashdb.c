@@ -52,6 +52,12 @@ static void db_open(db_t *db, const char *name, size_t size) {
 
   /* TODO: Setup DB structure, set file size and map the file into memory.
            Inform OS that we're going to read DB in random order. */
+  Ftruncate(fd, size * sizeof(entry_t));
+  db->entry = Mmap(NULL, size * sizeof(entry_t), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+  Madvise(db->entry, size * sizeof(entry_t), MADV_RANDOM);
+  db->size = size;
+  db->name = strdup(name);
+
   Close(fd);
 }
 
@@ -75,15 +81,23 @@ static bool db_rehash(db_t *db, size_t new_size) {
 
   /* Copy everything from old database to new database. */
   /* TODO: Inform OS that we're going to read DB sequentially. */
+  Madvise(db->entry, db->size * sizeof(entry_t), MADV_SEQUENTIAL);
+
   for (size_t i = 0; i < db->size; i++) {
     if (!db_maybe_insert(new, db->entry[i])) {
       /* Oops... rehashing failed. Need to increase db size and try again. */
       /* TODO: Remove new database, since rehashing failed. */
+      db_close(new);
+      Unlink(name);
+
       return false;
     }
   }
 
-  /* TODO Replace old database with new one, remove old database. */
+  /* TODO: Replace old database with new one, remove old database. */
+  Rename(new->name, db->name); // Zastąpi stary plik, o ile nie ma RENAME_NOREPLACE.
+  Munmap(db->entry, db->size * sizeof(entry_t));
+
   db->entry = new->entry;
   db->size = new->size;
   free(new->name);
@@ -129,12 +143,21 @@ static void doit(const char *path, op_t mode) {
 
   /* If input file is a terminal device then use standard reading technique. */
   /* TODO: Use fstat instead to handle pipes correctly. */
-  if (isatty(STDIN_FILENO)) {
+  struct stat st;
+  Fstat(STDIN_FILENO, &st);
+
+  if (!S_ISREG(st.st_mode)) {// isatty?
     char buf[ENT_LENGTH + 1];
     while (fgets(buf, ENT_LENGTH + 1, stdin))
       consume_line(buf, &db, mode);
   } else {
     /* TODO: Map stdin into memory, and read it line by line. */
+    void *buf = Mmap(NULL, st.st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, STDIN_FILENO, 0);
+    char *end = buf;
+    do {
+      end = consume_line(end, &db, mode);
+    } while (end != NULL);
+    Munmap(buf, st.st_size);
   }
 
   db_close(&db);

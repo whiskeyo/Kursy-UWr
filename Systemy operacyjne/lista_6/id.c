@@ -14,7 +14,6 @@ static const char *gidname(gid_t gid) {
 
 static int getid(uid_t *uid_p, gid_t *gid_p, gid_t **gids_p) {
     gid_t *gids = NULL;
-    // int ngid = 2; // getgroups zwraca liczbe grup
     int groups;
 
     /* TODO: Something is missing here! */
