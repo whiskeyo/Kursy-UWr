@@ -128,8 +128,6 @@ int main() {
         return p.calculate_brightness() < 64;
     };
 
-    // std::copy_if(points.begin(), points.end(), dark_points, is_dark);
-
     for (auto& p : points)
         if (is_dark(p))
             dark_points.push_back(p);

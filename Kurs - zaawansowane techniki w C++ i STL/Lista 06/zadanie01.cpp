@@ -2,6 +2,7 @@
 #include <cmath>
 #include <string>
 #include <deque>
+#include <random>
 #include <algorithm>
 
 class person {
@@ -46,7 +47,7 @@ public:
 
     // other functions
     float calculate_bmi () const { 
-        return static_cast<float>(weight) / std::pow(height, 2); 
+        return weight / (height * height); 
     }
 
     void print_info () const {
@@ -61,20 +62,6 @@ void print_fighters (const std::string& info, const std::deque<person>& fighters
     std::for_each(fighters.begin(), fighters.end(), [](const person& fighter){
         fighter.print_info();
     });
-
-    std::cout << std::endl;
-}
-
-// lower: false = elements after boundary, true = elements before boundary
-void print_fighters (const std::string& info, std::deque<person> fighters,
-                    const std::deque<person>::iterator& boundary, bool lower) {
-    std::cout << info << std::endl;
-    std::deque<person>::iterator it  = lower ? fighters.begin() : boundary;
-    std::deque<person>::iterator end = lower ? boundary : fighters.end();
-
-    for (; it != end; ++it) {
-        it->print_info();
-    }
 
     std::cout << std::endl;
 }
@@ -126,17 +113,14 @@ int main() {
     for (auto iter = boundary; iter != fighters.end(); ++iter)
         iter->print_info();
 
-    // some segfaults here:
-    // print_fighters("Fighters with more than 100kg", fighters, boundary, true);
-    // print_fighters("Fighters with less than 100kg", fighters, boundary, true);
-
     // find person with median height and change order of people in deque
     auto sort_height = [](const person& a, const person& b) {
         return a.get_height() < b.get_height();
     };
 
-    std::sort(fighters.begin(), fighters.end(), sort_height);
+    // std::nth_element instead of sort (is O(n) instead of O(n log n))
     std::cout << "\nPerson with median height: ";
+    std::nth_element(fighters.begin(), fighters.begin() + 5, fighters.end(), sort_height);
     fighters[fighters.size() / 2].print_info();
 
     person median_fighter = person(fighters[fighters.size() / 2]);
@@ -150,9 +134,14 @@ int main() {
     fighters.emplace(fighters.begin() + fighters.size() / 2, median_fighter);
     print_fighters("\nChange after median height fighter swap", fighters);
 
-    // random shuffle!
-    std::random_shuffle(fighters.begin(), fighters.begin() + fighters.size() / 2);
-    std::random_shuffle(fighters.begin() + fighters.size() / 2 + 1, fighters.end());
+    // random shuffle is depracated in C++14, removed in C++17, though it
+    // surprisingly worked on gcc 8.3.0, even with -std=c++2a
+    // std::random_shuffle(fighters.begin(), fighters.begin() + fighters.size() / 2);
+    // std::random_shuffle(fighters.begin() + fighters.size() / 2 + 1, fighters.end());
+    // we have to use std::shuffle (RandomIt first, RandomIt last, URBG&& g) instead:
+    static std::random_device rd;
+    static std::mt19937 g(rd());
+    std::shuffle(fighters.begin(), fighters.end(), g);
     print_fighters("Random shuffle:", fighters);
 
     // youngest and oldest person without sorting
