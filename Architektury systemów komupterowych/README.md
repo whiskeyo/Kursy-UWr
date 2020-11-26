@@ -1,4 +1,7 @@
 # Architektury systemów komputerowych
+
+Cały dokument widoczny poniżej znajduje się [na HackMD](https://hackmd.io/@whiskeyo/B1KrUn6sI) w znacznie czytelniejszej wersji (niestety GitHub nie uwzględnia formatowania MathMode).
+
 ## Kilka słów ode mnie
 Wszystkie notatki w dużej mierze opierają się na CS:APP, tłumaczę najważniejsze fragmenty poszczególnych rozdziałów - z tego powodu mogą się znaleźć tu pewne braki, jednak nie powinno być ich za dużo.
 
