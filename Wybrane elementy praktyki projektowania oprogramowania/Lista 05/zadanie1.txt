@@ -1,0 +1,24 @@
+-------------------------------------------------------------------------------
+-------------------------------- Obsługa BURP ---------------------------------
+-------------------------------------------------------------------------------
+
+Przechwytywanie ruchu z przeglądarki: należy wejść w zakładkę Proxy i upewnić
+się, że przechwytywanie jest włączone (pole "Intercept is on"). Klikamy "Open
+Browser", po czym wchodzimy na stronę, której żądania i odpowiedzi chcemy
+przechwycić. Po wejściu na wybraną stronę zobaczymy, że się ona nie ładuje -
+- wtedy należy wcisnąć "Forward", aby przekazać żądanie do serwera. Przykładowo
+po wejściu na stronę może pojawić się taki wydruk żądania:
+
+GET / HTTP/1.1
+Host: whiskeyo.pl
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 
+            (KHTML,like Gecko) Chrome/87.0.4280.66 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,
+        image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Accept-Encoding: gzip, deflate
+Accept-Language: pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7
+Connection: close
+
+Takie żądanie możemy zmodyfikować - przechodzimy do zakładki Repeater, w której
+możemy wysłać żądanie, podając żądanie typu GET/POST. 
