@@ -1,0 +1,1 @@
+rm *.out *.csv *.png
