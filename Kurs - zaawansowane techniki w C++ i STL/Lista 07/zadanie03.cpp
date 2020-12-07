@@ -4,6 +4,8 @@
 
 // simple binary search returning letter based on the array of cumulative totals
 // and random number gotten by uniform distribution
+// std::discrete_distribution would do the job here as well, but the best
+// solution (most appropriate and fastest) would be Huffman coding
 char get_letter(const int range[], int distr_val) {
     int low = 0, mid = 0, high = 26;
     while (high != low) {
@@ -14,7 +16,8 @@ char get_letter(const int range[], int distr_val) {
             low = mid + 1;
     }
 
-    return (char)(97 + low - 1);
+    // return (char)(97 + low - 1);
+    return 'a' + low - 1;
 }
 
 int main(int argc, char* argv[]) {

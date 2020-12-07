@@ -7,8 +7,9 @@ template <typename T, size_t n>
 void shuffle_array (std::array<T, n>& array) {
     static std::mt19937 generator{std::random_device{}()};
 
-    for (unsigned int i = 0; i < array.size(); i++) {
-        int j = std::uniform_int_distribution<unsigned int>{0, i}(generator);
+    for (size_t i = array.size() - 1; i > 0; --i) {
+    // for (size_t i = 1; i < array.size(); i++) {
+        size_t j = std::uniform_int_distribution<size_t>{0, i}(generator);
         std::swap(array[i], array[j]);
     }
 }
