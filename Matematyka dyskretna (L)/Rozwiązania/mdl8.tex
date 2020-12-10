@@ -204,14 +204,15 @@ def is_identical(G, H):
 
         for neighbour in H[vertex]:
             if visited[vertex] == False:
-                return false
+                return False
             
+            visited[vertex] = False
             nodes_diff -= 1
 
         if nodes_diff != 0:
-            return false
+            return False
 
-    return true
+    return True
 \end{lstlisting}
 
 \noindent Algorytm polega na tym, że dla każdego wierzchołka ze zbioru $V$ dla
