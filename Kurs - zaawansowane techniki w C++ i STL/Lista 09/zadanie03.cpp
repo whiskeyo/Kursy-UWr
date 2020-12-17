@@ -3,15 +3,21 @@
 #include <regex>
 
 bool check_city (const std::string& str_city) {
-    std::regex regex_date(
+    const std::string upper = "[A-Z]|Ć|Ł|Ń|Ó|Ś|Ź|Ż";
+    const std::string lower = "[a-z]|ą|ć|ę|ł|ń|ó|ś|ź|ż";
+    
+    const std::string regex_pattern(
         // first part can occur 0-infty times (word starting with upper letter)
-        "^(([A-Z]|Ć|Ł|Ń|Ó|Ś|Ź|Ż)([a-z]|ą|ć|ę|ł|ń|ó|ś|ź|ż){1,}[ ]{1,}){0,}"
+        "^((" + upper + ")(" + lower + "){1,}[ ]{1,}){0,}"
         // hyphenated part, it is optional, thus "?" is at the end
-        "([A-Z]|Ć|Ł|Ń|Ó|Ś|Ź|Ż)([a-z]|ą|ć|ę|ł|ń|ó|ś|ź|ż){1,}(-([A-Z]|Ć|Ł|Ń|Ó|Ś|Ź|Ż)([a-z]|ą|ć|ę|ł|ń|ó|ś|ź|ż){1,})?"
+        "(" + upper + ")(" + lower + "){1,}(-(" + upper + ")(" + lower + "){1,})?"
         // last part can occur 0-infty times, similar to first part, but space is at the beginning
-        "([ ]{1,}([A-Z]|Ć|Ł|Ń|Ó|Ś|Ź|Ż)([a-z]|ą|ć|ę|ł|ń|ó|ś|ź|ż){1,}){0,}$"
+        "([ ]{1,}(" + upper + ")(" + lower + "){1,}){0,}$"
     );
-    return std::regex_match(str_city, regex_date);
+
+    std::regex regex_city(regex_pattern);
+
+    return std::regex_match(str_city, regex_city);
 }
 
 int main() {

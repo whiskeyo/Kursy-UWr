@@ -4,18 +4,17 @@
 #include <string>
 #include <regex>
 
-void print_tags (const std::vector<std::string> doc) {
+void print_tags (const std::vector<std::string>& doc) {
     // match <a> tag with href and any optional additional specifiers
     // closing tab can be <a /> or </a>, thus it picks one of these options
-    std::regex regex_tag(R"l(<a.*href="(.*?)".*>.*(<a \/>|(<\/a>)))l");
-    for (const auto& line : doc) {
+    std::regex regex_tag(R"l(<a.*?href="(.*?)".*?>.*?<\/a>)l");
+    for (auto line : doc) {
         std::smatch match;
-
-        // find match in line, then print it
-        if (std::regex_search(line.begin(), line.end(), match, regex_tag))
-            std::cout << match[1] << std::endl;
+        while (std::regex_search(line, match, regex_tag)) {
+            std::cout << match.str(1) << std::endl;
+            line = match.suffix().str();
+        }
     }
-
 }
 
 int main(int argc, char* argv[]) {
@@ -29,7 +28,7 @@ int main(int argc, char* argv[]) {
     std::vector<std::string> doc;
 
     while (std::getline(input_file, line)) {
-        if (line == "")
+        if (line.empty())
             continue;
         doc.push_back(line);
     }
