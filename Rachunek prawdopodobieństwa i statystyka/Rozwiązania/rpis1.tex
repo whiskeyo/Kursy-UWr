@@ -1,0 +1,115 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage[left = 3cm, right = 3cm, top = 2cm, bottom = 2cm]{geometry}
+\usepackage{enumerate}
+\usepackage{amssymb}		% pakiet do symboli
+\usepackage{mathtools}		% pakiet do matmy (rozszerza amsmath)
+\usepackage{enumitem}		% punktowanie (a), (b), ...
+\usepackage{nopageno}		% brak numerow stron
+\usepackage{graphicx}		% wstawianie obrazkow
+\usepackage{float}			% wstawianie obrazkow w dowolnym miejscu
+\usepackage{caption}
+\usepackage{esdiff}         % pochodne \diff{}{}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{adjustbox}
+\usepackage{tkz-graph}
+%\usepackage[none]{hyphenat} % usunięcie łamania wyrazów na końcu linii
+
+% nowe komendy dla wygodniejszego pisania :)
+
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}	% podłoga
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}		% sufit
+\newcommand{\fractional}[1]{\left\{ #1 \right\}}		% część ułamkowa {x}
+\newcommand{\abs}[1]{\left| #1 \right|}					% wartosc bezwzgledna / moc
+\newcommand{\set}[1]{\left \{ #1 \right \}}				% zbiór elementów {a,b,c}
+\newcommand{\pair}[1]{\left( #1 \right)}				% para elementów (a,b)
+\newcommand{\Mod}[1]{\ \mathrm{mod\ #1}}				% lekko zmodyfikowane modulo
+\newcommand{\comp}[1]{\overline{ #1 }} 					% dopełnienie zbioru 
+\newcommand{\annihilator}{\mathbf{E}}					% operator E
+\newcommand{\seqAnnihilator}[1]{\annihilator \left\langle #1 \right\rangle} % E(a_n)
+\newcommand{\sequence}[1]{\left\langle #1 \right\rangle} % <a_n>
+\DeclareMathOperator{\lcm}{lcm}							% obsługa lcm w mathmode
+
+% styl do kodu
+\lstdefinestyle{code}{%
+basicstyle=\ttfamily\small,
+commentstyle=\color{green!60!black},
+keywordstyle=\color{magenta},
+stringstyle=\color{blue!50!red},
+showstringspaces=false,
+numbers=left,
+numberstyle=\footnotesize\color{gray},
+numbersep=10pt,
+tabsize=4,
+rulecolor=\color{red},
+breaklines=true
+}
+
+\newcommand{\code}[1]{\lstinline[style=code]{#1}} % kod inline
+
+\begin{document}
+\noindent \textbf{RPiS, Lista 1 - Tomasz Woszczyński}\newline
+
+\noindent \newline \textbf{Zadanie 1} \newline
+Sprawdzić, że:
+\begin{enumerate}[label=(\alph*)]
+    \item $\sum\limits_{k=0}^{n} \binom{n}{k} p^k (1-p)^{n-k} = 1$,
+    \item $\sum\limits_{k=0}^{n} k \binom{n}{k} p^k (1-p)^{n-k} = np$.
+\end{enumerate}
+
+\noindent \textbf{Podpunkt (a):} skorzystajmy z dwumianu Newtona, a więc ze wzoru
+\[
+    (x+y)^n = \sum\limits_{k=0}^{n} \binom{n}{k} x^{n-k}y^{k}    
+\]
+i weźmy $x = 1-p$ oraz $y = p$. Wtedy, po podstawieniu mamy:
+\[
+    \sum\limits_{k=0}^{n} \binom{n}{k} p^k (1-p)^{n-k} 
+    = \left( \left( 1 - p \right) + p \right)^n = 1^n = 1,
+    \text{ co należało dowieść.} 
+\]
+
+\noindent \textbf{Podpunkt (b):} skorzystajmy z własności 
+$k \binom{n}{k} = n \binom{n-1}{k-1}$. Przekształćmy wzór:
+\begin{align*}
+    \sum\limits_{k=0}^{n} \underbrace{k \binom{n}{k} p^k (1-p)^{n-k}}
+    _{\text{dla } k = 0 \text{ jest to } 0} &=
+    \sum\limits_{k=1}^{n} n \binom{n-1}{k-1} p^k (1-p)^{n-k} = \\
+    &= \sum\limits_{k=1}^{n} n \binom{n-1}{k-1} p \cdot p^{k-1} (1-p)^{n-k} = \\
+    &= np \sum\limits_{k=1}^{n} \binom{n-1}{k-1} p^{k-1} (1-p)^{n-k} = \\
+    &= np \cdot \left( \left( 1 - p \right) + p \right)^n = 1^n = np \cdot 1^n = np
+\end{align*}
+Dowiedliśmy więc, że $\sum\limits_{k=0}^{n} k \binom{n}{k} p^k (1-p)^{n-k} = np$.
+
+\noindent \newline \textbf{Zadanie 2} \newline
+Sprawdzić, że:
+\begin{enumerate}[label=(\alph*)]
+    \item $\sum\limits_{k=0}^{\infty} e^{-\lambda} \cdot \frac{\lambda^k}{k!} = 1$,
+    \item $\sum\limits_{k=0}^{\infty} k \cdot e^{-\lambda} \cdot \frac{\lambda^k}{k!} = \lambda$.
+\end{enumerate}
+
+\noindent \textbf{Podpunkt (a):}
+\begin{align*}
+    \sum\limits_{k=0}^{\infty} e^{-\lambda} \cdot \frac{\lambda^k}{k!} &= 
+    e^{-\lambda} \cdot \sum\limits_{k=0}^{\infty} \frac{\lambda^k}{k!} = \\ 
+    &= e^{-\lambda} \cdot \underbrace{\left( \lambda^0 \cdot \frac{1}{0!} 
+    + \lambda^1 \cdot \frac{1}{1!} + \lambda^2 \cdot \frac{1}{2!} 
+    + \lambda^3 \cdot \frac{1}{3!} + \ldots \right)}_{\text{szereg Maclaurina na }
+    e^\lambda} = \\
+    &= e^{-\lambda} \cdot e^\lambda = e^{\lambda - \lambda} = e^0 = 1
+\end{align*}
+\noindent Szereg Maclaurina na $e^\lambda$ wynika z tego, że $e^\lambda = f(\lambda)
+= f'(\lambda) = f''(\lambda) = \ldots = 1 = f(0) = f'(0) = f''(0) = \ldots$, czyli 
+powyższe przekształcenie jest dowodem wzoru.\\
+
+\noindent \textbf{Podpunkt (b):}
+\begin{align*}
+    \sum\limits_{k=0}^{\infty} k \cdot e^{-\lambda} \cdot \frac{\lambda^k}{k!} &=
+    e^{-\lambda} \cdot \sum\limits_{k=1}^{\infty} \frac{\lambda^k}{(k-1)!} = \\
+    &= \lambda \cdot e^{-\lambda} \cdot \sum\limits_{k=1}^{\infty} 
+    \frac{\lambda^{k-1}}{(k-1)!} = \\
+    &= \lambda \cdot e^{-\lambda} \cdot e^{\lambda} = \lambda
+\end{align*}
+
+\end{document}
