@@ -112,4 +112,177 @@ powyższe przekształcenie jest dowodem wzoru.\\
     &= \lambda \cdot e^{-\lambda} \cdot e^{\lambda} = \lambda
 \end{align*}
 
+\noindent \newline \textbf{Zadanie 3} \newline
+\textbf{Funkcją $\Gamma$-Eulera} nazywamy wartość całki:
+\[
+    \Gamma (p) = \int\limits_{0}^{\infty} t^{p-1}e^{-t} dt, \ p > 0    
+\]
+Wykazać, że $\Gamma(n) = (n-1)!$ dla $n \in \mathbb{N}$. \\
+
+\noindent Udowodnimy to indukcyjnie po $n$:
+\begin{enumerate}
+    \item Baza indukcyjna: $n=1$, wtedy:
+    \[ 
+        \Gamma(1) = \int\limits_{0}^{\infty} t^{1-1} e^{-t} dt = 
+        \int\limits_{0}^{\infty} e^{-t} dt =
+        -e^{-t} \Big{|}_0^\infty = 0 - (-1) = 1 = 0!, \text{ czyli prawda } \checkmark
+    \]
+    \item Krok indukcyjny: załóżmy, że dla $n \in \mathbb{N}$ jest $\Gamma(n) = (n-1)!$,
+          musimy pokazać, że dla $\Gamma(n+1) = n! = n\Gamma(n)$.
+    \begin{align*}
+        \Gamma(n+1) &= \int\limits_{0}^{\infty} t^{n} e^{-t} dt =
+        \begin{vmatrix}
+            u = t^n         &   du = nt^{n-1}   \\
+            v = -e^{-t}     &   dv = e^{-t} dt
+        \end{vmatrix} = \\
+        &= \underbrace{- \frac{t^n}{e^t} \Big|_0^\infty}_{0}
+        + \underbrace{\int\limits_{0}^{\infty} t^{n-1} n e^{-t} dt}_{
+            n \int\limits_{0}^{\infty} t^{n-1} e^{-t} dt
+        } 
+        = n\Gamma(n) = n \cdot (n-1)! = n!
+    \end{align*}
+\end{enumerate}
+
+\noindent Udowodniliśmy więc, że dla wszystkich dodatnich liczb naturalnych 
+$\Gamma(n) = (n-1)!$.
+
+\newpage
+\noindent \textbf{Zadanie 4} \newline
+Niech $f(x) = \lambda \exp (-\lambda x)$, gdzie $\lambda > 0$. Obliczyć wartość całek:
+\begin{enumerate}[label=(\alph*)]
+    \item $\int\limits_{0}^{\infty} f(x) dx$,
+    \item $\int\limits_{0}^{\infty} x f(x) dx$.
+\end{enumerate}
+
+\noindent \textbf{Podpunkt (a):}
+\begin{align*}
+    \int\limits_{0}^{\infty} f(x) dx &= 
+        \int\limits_{0}^{\infty} \lambda \exp (-\lambda x) dx =
+        \lambda \int\limits_{0}^{\infty} \exp (-\lambda x) dx =
+        \lambda \cdot \frac{-\exp(-\lambda x)}{\lambda} \Big|_0^\infty = \\
+    &= -\exp(-\lambda x) \Big|_0^\infty =
+        \underbrace{\lim\limits_{b \to \infty} \exp(-\lambda b)}_{0} 
+        - \underbrace{(-\exp(0))}_{-1} = 0 - (-1) = 1
+\end{align*}
+
+\noindent \textbf{Podpunkt (b):}
+\begin{align*}
+    \int\limits_{0}^{\infty} x f(x) dx &= 
+        \int\limits_{0}^{\infty} x \lambda \exp (-\lambda x) dx =
+        \lambda \int\limits_{0}^{\infty} x \exp (-\lambda x) dx = \\
+    &= 
+    \begin{vmatrix}
+        u = x                                   &   du = 1   \\
+        v = -\frac{\exp(-\lambda x)}{\lambda}   &   dv = \exp(-\lambda x)
+    \end{vmatrix} = \\ 
+    &= \lambda \left( 
+            \left[ \frac{x \exp(-\lambda x)}{\lambda} \right]_0^\infty 
+            - \int\limits_{0}^{\infty} -\frac{\exp(-\lambda x)}{\lambda} dx 
+        \right) = \\
+    &= \lambda \left(
+        \left[ - \frac{x\exp(-\lambda x)}{\lambda} \right]_0^\infty
+        + \left[ \frac{\exp(-\lambda x)}{\lambda^2} \right]_0^\infty
+    \right) = \\
+    &= \left[ \frac{(\lambda x + 1) \exp(-\lambda x)}{\lambda} \right]_0^\infty =
+        \frac{1}{\lambda}
+\end{align*}
+
+\noindent \textbf{Zadanie 5} \newline
+Wykazać, że $D_n = n$, gdzie
+\[
+    D_n =
+    \begin{vmatrix}
+        1       & -1    & -1    & \dots     & -1    \\
+        1       &  1    &       &           &       \\
+        1       &       &  1    &           &       \\
+        \vdots  &       &       & \ddots    &       \\
+        1       &       &       &           & 1    
+    \end{vmatrix}
+\]
+
+\noindent Dodajmy do pierwszego wiersza wszystkie kolejne, a więc od drugiego do
+$n$-tego. Wtedy otrzymamy następującą macierz:
+\[
+    D_n =
+    \begin{vmatrix}
+        n       &  0    &  0    & \dots     & 0     \\
+        1       &  1    &       &           &       \\
+        1       &       &  1    &           &       \\
+        \vdots  &       &       & \ddots    &       \\
+        1       &       &       &           & 1    
+    \end{vmatrix}
+\]
+
+\noindent Otrzymana macierz jest macierzą dolnotrójkątną, a więc obliczenie 
+wyznacznika tej macierzy sprowadza się do przemnożenia wszystkich wartości
+z przekątnej. Otrzymamy więc $\det(D_n) = n \cdot 1 \cdot \ldots \cdot 1 = n$,
+co kończy dowód.
+
+\newpage
+\noindent \textbf{Zadanie 7} \newline
+Symbol $\bar{s}$ oznacza średnią ciągu $s_1, \ldots, s_n$. Udowodnić, że:
+\begin{enumerate}[label=(\alph*)]
+    \item $\sum\limits_{k=1}^{n} (x_k - \bar{x})^2 = 
+           \sum\limits_{k=1}^{n} x_k^2 - n \cdot \bar{x}^2$,
+    \item $\sum\limits_{k=1}^{n} (x_k - \bar{x})(y_k - \bar{y}) =
+           \sum\limits_{k=1}^{n} x_k y_k - n \bar{x} \bar{y}$.
+\end{enumerate}
+
+\noindent \textbf{Podpunkt (a):}
+\begin{align*}
+    \sum\limits_{k=1}^{n} (x_k - \bar{x})^2 &= 
+        \sum\limits_{k=1}^{n} (x_k^2 - 2 x_k \bar{x} + \bar{x}^2) = \\
+    &= \sum\limits_{k=1}^{n} x_k^2 - 2 x_1 \bar{x} - 2 x_2 \bar{x}
+        - 2 x_3 \bar{x} - \ldots - 2 x_n \bar{x} + n \cdot \bar{x}^2 = \\
+    &= \sum\limits_{k=1}^{n} x_k^2 
+        - 2 \bar{x} \frac{x_1 + x_2 + \ldots + x_n}{n} \cdot n + n \cdot \bar{x}^2 = \\
+    &= \sum\limits_{k=1}^{n} x_k^2 - 2 \bar{x}^2 \cdot n + n \cdot \bar{x}^2 =
+        \sum\limits_{k=1}^{n} x_k^2 - n \cdot \bar{x}^2, \text{ c.n.d. } \checkmark
+\end{align*}
+
+\noindent \textbf{Podpunkt (b):}
+\begin{align*}
+    \sum\limits_{k=1}^{n} (x_k - \bar{x})(y_k - \bar{y}) &= 
+        \sum\limits_{k=1}^{n} \left(
+            x_k y_k - \bar{x} y_k - \bar{y} x_k + \bar{x} \bar{y}
+        \right) = \\
+    &= \sum\limits_{k=1}^{n} x_k y_k - \sum\limits_{k=1}^{n} \bar{x} y_k
+       - \sum\limits_{k=1}^{n} \bar{y} x_k + \sum\limits_{k=1}^{n} \bar{x} \bar{y} = \\
+    &= \sum\limits_{k=1}^{n} x_k y_k - \bar{x} \sum\limits_{k=1}^{n} y_k
+       - \bar{y} \sum\limits_{k=1}^{n} x_k + n \bar{x} \bar{y} = \\
+    &= \sum\limits_{k=1}^{n} x_k y_k - \bar{x} n \bar{y} - \bar{y} n \bar{x} + n \bar{x} \bar{y} =
+       \sum\limits_{k=1}^{n} x_k y_k - n \bar{x} \bar{y}, \text{ c.n.d. } \checkmark
+\end{align*}
+
+\noindent \textbf{Zadanie 8} \newline
+Dane są wektory $\vec{\mu}, X \in \mathbb{R}^n$ oraz macierz $\Sigma \in 
+\mathbb{R}^{n \times n}$. Niech $S = (X - \vec{\mu})^T \Sigma^{-1} (X - \vec{\mu})$
+oraz $Y = A \cdot X$, gdzie macierz $A$ jest odwracalna. Sprawdzić, że
+\[
+    S = (Y - A\vec{\mu})^T \left(A \Sigma A^T\right)^{-1} (Y - A\vec{\mu})
+\]
+
+\noindent Przy rozwiązywaniu tego zadania skorzystajmy z dwóch ważnych własności
+macierzy transponowanych, jak i odwracalnych:
+\begin{enumerate}
+    \item $(AB)^T = B^T A^T$, podobnie $(ABC)^T = C^T B^T A^T$,
+    \item $(AB)^{-1} = B^{-1} A^{-1}$, podobnie $(ABC)^{-1} = C^{-1} B^{-1} A^{-1}$.
+\end{enumerate}
+
+\noindent Działania rozpoczniemy od końca, a następnie przekształcając równanie
+dojdziemy do postaci wyjściowej. Rozpiszmy więc:
+\begin{align*}
+    S   &= (Y - A\vec{\mu})^T \left(A \Sigma A^T\right)^{-1} (Y - A\vec{\mu}) = \\
+        &= (A X - A\vec{\mu})^T \left(A \Sigma A^T\right)^{-1} (A X - A\vec{\mu}) = \\
+        &= (A (X - \vec{\mu}))^T \left(A \Sigma A^T\right)^{-1} (A (X - \vec{\mu})) = \\
+        &= (X - \vec{\mu})^T \underbrace{
+            \underbrace{A^T (A^T)^{-1}}_{I}
+            \Sigma^{-1}
+            \underbrace{A^{-1} A}_{I}
+        }_{\Sigma^{-1}} \ (X - \vec{\mu}) = \\
+        &= (X - \vec{\mu})^T \Sigma^{-1} (X - \vec{\mu}),
+            \text{ c.n.d. } \checkmark
+\end{align*}
+
+
 \end{document}
