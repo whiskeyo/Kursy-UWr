@@ -133,7 +133,7 @@ Wykazać, że $\Gamma(n) = (n-1)!$ dla $n \in \mathbb{N}$. \\
         \Gamma(n+1) &= \int\limits_{0}^{\infty} t^{n} e^{-t} dt =
         \begin{vmatrix}
             u = t^n         &   du = nt^{n-1}   \\
-            v = -e^{-t}     &   dv = e^{-t} dt
+            dv = e^{-t}     &   v = -e^{-t}       
         \end{vmatrix} = \\
         &= \underbrace{- \frac{t^n}{e^t} \Big|_0^\infty}_{0}
         + \underbrace{\int\limits_{0}^{\infty} t^{n-1} n e^{-t} dt}_{
@@ -145,6 +145,12 @@ Wykazać, że $\Gamma(n) = (n-1)!$ dla $n \in \mathbb{N}$. \\
 
 \noindent Udowodniliśmy więc, że dla wszystkich dodatnich liczb naturalnych 
 $\Gamma(n) = (n-1)!$.
+
+\vspace*{\fill}
+\noindent\rule{\textwidth}{1pt}
+\noindent Całkowanie przez części: $\int udv = uv - \int vdu$, bierzemy łatwiejszą
+do zróżniczkowania część jako $u$ oraz łatwiejszą do scałkowania część $dv$.
+
 
 \newpage
 \noindent \textbf{Zadanie 4} \newline
