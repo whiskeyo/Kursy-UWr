@@ -225,6 +225,32 @@ z przekątnej. Otrzymamy więc $\det(D_n) = n \cdot 1 \cdot \ldots \cdot 1 = n$,
 co kończy dowód.
 
 \newpage
+\noindent \textbf{Zadanie 6} \newline
+Niech $I = \int\limits_{-\infty}^{\infty} \exp \left\{ -\frac{x^2}{2} \right\} dx$.
+Mamy $I^2 = \int\limits_{-\infty}^{\infty} \int\limits_{-\infty}^{\infty} \exp 
+\left\{ -\frac{x^2 + y^2}{2} \right\} dy dx$. Stosując podstawienie $x = r \cos 
+\theta$, $y = r \sin \theta$, wykazać, że $I^2 = 2 \pi$. \\
+
+\noindent \textbf{Rozwiązanie z ćwiczeń:} stosując podstawienie z polecenia,
+wiemy, że $\theta \in [0, 2\pi)$ oraz $r \in [0, \infty)$. Dzięki temu możemy
+policzyć następujący Jakobian:
+\[
+    \begin{vmatrix}
+        \cos \theta     &   -r \sin \theta \\
+        \sin \theta     &   r \cos \theta
+    \end{vmatrix} = r   
+\]
+\noindent Wykorzystamy go do policzenia całki podwójnej $I^2$ następująco:
+\begin{align*}
+    I^2 &= \int\limits_{0}^{\infty} \int\limits_{0}^{2\pi}
+            r \exp \left\{ -\frac{r^2}{2} \right\} d\theta dr =
+            \int\limits_{0}^{\infty} r \exp \left\{ -\frac{r^2}{2} \right\} dr
+            \cdot \int\limits_{0}^{2\pi} 1 d\theta = \\
+        &= \left( -\exp \left\{ \frac{-r^2}{2} \right\} \right)_0^\infty
+            \cdot 2\pi = 2\pi, \text{ c.n.d.}
+\end{align*}
+
+
 \noindent \textbf{Zadanie 7} \newline
 Symbol $\bar{s}$ oznacza średnią ciągu $s_1, \ldots, s_n$. Udowodnić, że:
 \begin{enumerate}[label=(\alph*)]
@@ -260,6 +286,7 @@ Symbol $\bar{s}$ oznacza średnią ciągu $s_1, \ldots, s_n$. Udowodnić, że:
        \sum\limits_{k=1}^{n} x_k y_k - n \bar{x} \bar{y}, \text{ c.n.d. } \checkmark
 \end{align*}
 
+\newpage
 \noindent \textbf{Zadanie 8} \newline
 Dane są wektory $\vec{\mu}, X \in \mathbb{R}^n$ oraz macierz $\Sigma \in 
 \mathbb{R}^{n \times n}$. Niech $S = (X - \vec{\mu})^T \Sigma^{-1} (X - \vec{\mu})$
