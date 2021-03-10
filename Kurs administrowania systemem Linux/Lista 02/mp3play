@@ -1,0 +1,28 @@
+#!/bin/bash
+# Tomasz Woszczynski Lista 2 Zadanie 1
+set -ef
+
+# Map all lines to array 'songs' from find results
+mapfile -d $'\0' songs < <(find . -name *.mp3 -print0)
+count=${#songs[@]}
+
+for (( i=0; i<$count; i++ )); do
+    echo "$(( i+1 ))) $(mp3info "${songs[i]}" -p "%l (%a): %t [%S seconds]")"
+done
+
+# Read in while loop until EOF (Ctrl + D) is pressed
+while read -p "Choose a number to play> " number; do
+    # If input is in correct range, play the song from the list,
+    # otherwise show an alert and wait for another input.
+    if [[ $number -ge 1 && $count -ge $number ]]; then
+        # All informations printed by mpg123 are dumped, as based
+        # on the exercise, there should be nothing displayed while
+        # the music is played. 
+        mpg123 "${songs[((number-1))]}" > /dev/null 2> /dev/null
+    else
+        echo "Wrong answer!"
+        continue
+    fi
+done
+
+echo ""

@@ -1,0 +1,44 @@
+#!/bin/bash
+# Tomasz Woszczynski Lista 2 Zadanie 6
+
+set -euf  # e: exit immediately if a command exits with a non-zero status
+          # u: treat unset variables as an error when substituting
+          # f: disable file name generation (globbing). Without this set,
+          # command 'echo *' could substitute any text from a variable
+          # and print it, e.g. 'echo *' would become 'echo 1 2 3' and
+          # these values would be printed. With -f being set, 'echo *'
+          # will only print '*'. It allows filenames to have special chars. 
+IFS=$'\n' # by default, IFS consits of space, tab and newline. IFS is
+          # 'internal field separator', so we can define how to do
+          # word splitting, that is how to recognize word boundaries
+
+if [[ $# -ne 2 || $1 -lt 0 ]]; then
+    echo "Wrong input. Usage: $0 <limit (bigger than 0)> <directory>"
+    exit 1
+fi
+
+# Fetch all files' paths (%p), modification times (%T@) and sizes (%s).
+# Their order is switched though: time | size | path.
+# We need these values, so we can list files that takes the most space
+# and are the oldest, so potentially we would like to delete them. Based
+# on space, we want to calculate total size of files, so we know how far
+# from the limit we are. We also look for links (-L) to files (-type f).
+# Option -name '*.mp4' might be added, but for test purposes it is off.
+FILES=$(find -L "$2" -type f -printf "%T@\t%s\t%p\n" | sort -n)
+TOTAL=0
+
+# Count total size of files in given directory and its subdirectories.
+for fileprops in $FILES; do
+    (( TOTAL += $(awk '{print $2}' <<< "$fileprops") ))
+done
+
+# If we are below the limit, just break the loop and finish the script.
+# Otherwise, "remove" (list) files and decrease total size. Repeat for all
+# entries from find's results.
+for fileprops in $FILES; do
+    if (( TOTAL < $1 )); then break; fi
+    # awk '{print $3}' <<< "$fileprops"
+    awk '{print $3" (reduces size by "$2" bytes)"}' <<< "$fileprops"
+
+    (( TOTAL -= $(awk '{print $2}' <<< "$fileprops") ))
+done

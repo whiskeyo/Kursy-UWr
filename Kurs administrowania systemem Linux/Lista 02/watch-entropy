@@ -1,0 +1,43 @@
+#!/bin/bash
+# Tomasz Woszczynski Lista 2 Zadanie 5
+set -eu
+
+# Values of entropy_avail and poolsize are just integers in files, so we can
+# use cat to read these. Then, we print the available entropy as the ratio of
+# read values. The problem in this exercise is that any keypress should turn
+# the script off, immidiately. For that, we use OR operator, as it executes
+# the command on the right only if the command on the left has failed (returned
+# an error).
+
+# Entropy is generated from multiple sources: keyboard input, mouse movement,
+# interrupts, reads and saves on disk. Random numbers are generated from two
+# different sources: blocking entropy pool (/dev/random), which uses entropy
+# and non-blocking entropy pool (/dev/urandom), which does not consume entropy.
+
+while true; do
+    entropy_avail=$(cat /proc/sys/kernel/random/entropy_avail)
+    poolsize=$(cat /proc/sys/kernel/random/poolsize)
+    avail_ratio="${entropy_avail}/${poolsize}"
+    avail_percentage=$(bc <<< "scale=10; $avail_ratio * 100")
+    printf "%s \r" "Available entropy: $avail_ratio (${avail_percentage}%)"
+
+    # read and its options are very important here. We want to stop the script
+    # if we press any key on the keyboard, and if no keys are pressed, we need
+    # to refresh values of ratio and percentage. For that, we use:
+    # -r: backslashes do not escape any characters
+    # -s: input is not being echoed to terminal
+    # -n x: return after reading x characters
+    # -t y: timeout and return failure if input is not read within y seconds
+    # -d c: continue until c is read (instead of newline)
+    # These options combined, we get:
+
+    # Wait for any input for one second, if it fails, continue to the next
+    # iteration of the loop (so refresh all data got from files).
+    # ATTENTION! If loop is continued, all commands below ARE NOT executed!
+    read -rs -n 1 -t 1 || continue
+    
+    # Otherwise, if some input was read (and the loop was not continued), it
+    # prints new line (otherwise it wouldn't look clean in terminal) and exits.
+    printf "\n"
+    exit 0
+done

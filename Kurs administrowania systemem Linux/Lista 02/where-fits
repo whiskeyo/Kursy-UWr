@@ -1,0 +1,33 @@
+#!/bin/bash
+# Tomasz Woszczynski Lista 2 Zadanie 7
+
+set -euf
+IFS=$'\n'
+
+if [[ $# == 0 ]]; then
+    echo "No arguments passed. Usage: $0 <directories/files...>"
+    exit 1
+fi
+
+# We need to use du to count the size of given files/directories. Flag -s
+# makes du count only summarized size for each argument. That means, for
+# directory 'foo' with some files and directories inside, there will be
+# given only one result for 'foo' and its contents instead of result of
+# 'foo' and all its subdirectories listed. It prints results in format:
+# size   path. This means, we can use awk to sum first column values.
+
+TOTAL=$(awk '{sum += $1} END {print sum}' < <(du -s "$@"))
+
+# df lists all file systems disk space usage. It means, for each mount point,
+# it shows columns: filesystem, 1K-blocks, used, available, use%, mounted on.
+# Thanks to it, we can compare the 'available' size with total size of given
+# arguments and if the value of 'available' space is greater, all files can
+# fit given mount point.
+
+echo "Files/directories $@ can fit:"
+for line in $(df | tail -n +2); do
+    available=$(awk '{print $4}' <<< "$line")
+    if (( available >= TOTAL )); then
+        awk '{print $1 " mounted on " $6}' <<< "$line"
+    fi
+done

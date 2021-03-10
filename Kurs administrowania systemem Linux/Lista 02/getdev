@@ -1,0 +1,68 @@
+#!/bin/bash
+# Tomasz Woszczynski Lista 2 Zadanie 2
+
+set -ef
+
+# Structure of /etc/fstab:
+# fs_spec | fs_file     | fs_vfstype      | fs_mntops     | fs_freq   | fs_passno
+# device  | mount point | filesystem type | mount options | dump freq | fsck pass no
+
+# My specs: when no argument given, print all devices parsed.
+# If argument is given, print info only about given mount point.
+
+# Assign each line from /etc/fstab, which is not a comment, to
+# an array of entries. Then, get all mount points from entries,
+# so searching for them is easier. Their indexes are the same
+# indexes as in entries, so it is easier to print results.
+
+mapfile -t entries < <(cat /etc/fstab | sed '/^#/d')
+count=${#entries[@]}
+
+mnt_points=()
+for (( i=0; i<$count; i++ )); do
+    mnt_points+=($(echo "${entries[i]}" | awk '{print $2}'))
+done
+
+function find_index {
+    for (( i=0; i<$count; i++ )); do
+        if [[ "${mnt_points[$i]}" == "${mnt_point}" ]]; then
+            idx=$i
+            return
+        fi
+    done
+}
+
+function print_info {
+    if $print_all; then
+        for (( i=0; i<$count; i++ )); do
+            echo "${entries[i]}" | awk '{print \
+                "Device: "$1\
+                "\nMount point: "$2\
+                "\nFilesystem type: "$3\
+                "\nMount options: "$4\
+                "\nDump frequency: "$5\
+                "\nFsck pass number: "$6\
+                "\n"}'
+        done
+    elif [[ $print_all != true && $idx ]]; then
+        echo "${entries[$idx]}" | awk '{print \
+            "Device: "$1\
+            "\nFilesystem type: "$3\
+            "\nMount options: "$4\
+            "\nDump frequency: "$5\
+            "\nFsck pass number: "$6\
+            "\n"}'
+    else
+        echo "Given mount point could not be found in /etc/fstab!"
+    fi
+}
+
+if [ "$1" != "" ]; then
+    mnt_point=$(echo "$1" | sed 's|\(.\)/\+$|\1|')
+    print_all=false
+    find_index "$mnt_point"
+else # no arguments given, print all devices
+    print_all=true
+fi
+
+print_info
