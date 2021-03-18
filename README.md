@@ -39,3 +39,10 @@
 * Advanced techniques in C++ and STL
 * Elements of software design practice
 * Project: Development of the Enrollment System
+
+## Semester 6 (Summer 2020/2021)
+* Computer networks
+* Probability and statistics
+* Object-oriented Software Development
+* Linux system administration
+* Game testing
