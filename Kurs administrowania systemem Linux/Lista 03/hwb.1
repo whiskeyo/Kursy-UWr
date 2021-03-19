@@ -1,0 +1,51 @@
+.\ Tomasz Woszczynski Lista 3 Zadanie 6
+.\ To run the manual page, call 'man -l hwb.1'.
+.\ .TH = title header, .SH = section header, .PP = paragraph, .IP = list marker
+.TH HWB 1 "13 Mar 2021" "1.0" "User Commands"
+
+.SH NAME
+hwb \- prepare greetings for your friends
+
+.SH SYNOPSIS
+.B hwb
+[\fI\,OPTION\/\fR]... [\fI\,NAME\/\fR]...
+
+.SH DESCRIPTION
+Say hello to everyone from [\fI\,NAME\/\fR] list.
+
+.SH OPTIONS
+.IP "-c, --capitalize"
+capitalize all given arguments
+
+.IP "-g text, --greeting[=\fI\,text\/\fR]"
+change greeting with given \fBtext\fR
+
+.IP "-w, --world"
+print 'Hello, world!' after printing greetings for [\fI\,NAME\/\fR]   
+
+.IP "--color[=\fI\,WHEN\/\fR]"
+colorize the output; WHEN can be 'always' (default if ommited), 'auto', or 'never'
+
+.IP "-h, --help"
+display help
+
+.IP "-v, --version"
+display information about version of \fBhwb\fR
+
+.SH EXIT STATUS
+.IP \fB0\fR
+Program finished without any errors.
+.IP \fB1\fR
+Program could not be started, passed wrong options or arguments.
+
+.SH EXAMPLE
+.PP 
+hwb -cwg Hi Bob Rob
+.PP 
+prints "Hi Bob!", "Hi Rob!" and "Hi world!"
+
+.SH AUTHORS
+Tomasz Woszczynski
+
+.SH SEE ALSO
+Full documentation is WIP and will be available after somebody finishes it :)

@@ -36,21 +36,21 @@ function print_info {
     if $print_all; then
         for (( i=0; i<$count; i++ )); do
             echo "${entries[i]}" | awk '{print \
-                "Device: "$1\
-                "\nMount point: "$2\
-                "\nFilesystem type: "$3\
-                "\nMount options: "$4\
-                "\nDump frequency: "$5\
-                "\nFsck pass number: "$6\
+                "Device:             "$1\
+                "\nMount point:        "$2\
+                "\nFilesystem type:    "$3\
+                "\nMount options:      "$4\
+                "\nDump frequency:     "$5\
+                "\nFsck pass number:   "$6\
                 "\n"}'
         done
     elif [[ $print_all != true && $idx ]]; then
         echo "${entries[$idx]}" | awk '{print \
-            "Device: "$1\
-            "\nFilesystem type: "$3\
-            "\nMount options: "$4\
-            "\nDump frequency: "$5\
-            "\nFsck pass number: "$6\
+            "Device:                 "$1\
+            "\nFilesystem type:        "$3\
+            "\nMount options:          "$4\
+            "\nDump frequency:         "$5\
+            "\nFsck pass number:       "$6\
             "\n"}'
     else
         echo "Given mount point could not be found in /etc/fstab!"
