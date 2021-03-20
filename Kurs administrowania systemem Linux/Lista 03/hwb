@@ -1,0 +1,105 @@
+#!/bin/bash
+# Tomasz Woszczynski Lista 3 Zadanie 4
+
+# Get all options using getopt. Letters after -o specify what options are available
+# to use, when option x: (mind colon at the end) is specified, it means that with
+# given option x, there is an argument required. Similarly it works with long options.
+# After -n there is a name of the program we execute.
+OPTIONS=$(getopt -o cg:hvw --l capitalize,greeting:,help,version,world,color: -n 'hwb' -u -- "$@")
+
+if [ $? -ne 0 ] || [ $# -eq 0 ]; then
+    # Passed invalid options
+    echo "Try '$0 --help' for more information."
+    exit 1
+fi
+
+eval set -- "$OPTIONS"
+
+# Set default values of changeable options
+CAPITALIZE=false
+COLOR=auto
+GREETING="Hello,"
+PRINT_EXTRA_WORLD=false
+
+# Iterate over all options and based on their values, change the behaviour. We
+# use 'shift' builtin, so we shift arguments. For example, if we pass arguments
+# $1, $2, $3, $4, then 'shift' will make $2 become $1, $3 become $2, $4 become $3.
+# Argument $1 is no longer valid. 'shift n' will make $m become $(m-n).
+while true; do
+    case "$1" in
+        -c|--capitalize)
+            CAPITALIZE=true
+            shift;;
+
+        -g|--greeting)
+            if [ -n "$2" ]; then
+                GREETING="$2"
+            fi
+            shift 2;;
+
+        -h|--help)
+            echo "Usage: $0 <options> <arguments>"
+            echo "Options: "
+            echo "-c, --capitalize            = capitalize first letter of string"
+            echo "-g, --greeting              = substitute 'Hello' for given text"
+            echo "--color[=auto|always|never] = colorize the output"
+            echo "-w, --world                 = print extra 'Hello, world!'"
+            echo "-v, --verison               = print version"
+            echo "-h, --help                  = print help"
+            echo "Example: $0 -cg xx abc PRINTS xx Abc!"
+            shift;;
+
+        -v|--version)
+            echo "hwb version 0.01 created by Tomasz Woszczynski"
+            shift;;
+
+        -w|--world)
+            PRINT_EXTRA_WORLD=true
+            shift;;
+
+        --color)
+            if [ -n "$2" ]; then
+                COLOR="$2"
+            fi
+            shift 2;;
+        --)
+            shift
+            break;;
+    esac
+done
+
+# Based on given options, change the output of hwb.
+function print_output {
+    OUTPUT=$1 # $1 is argument of print_output, not of hwb!!!
+
+    if [[ $CAPITALIZE == true ]]; then
+        # ${x^} means capitalize first letter, ${x^^} capitalize whole string,
+        # there is even more combinations with ^, so we can e.g. capitalize only
+        # letters from given set, etc.
+        OUTPUT=${OUTPUT^}
+    fi
+
+    if [[ $COLOR == auto ]]; then
+        # If 'color' option is set to auto, we want to colorize the output only
+        # if we print the output to terminal, this is why we make [ -t 1 ] check.
+        if [ -t 1 ]; then
+            OUTPUT="\033[0;34m$OUTPUT"
+        fi
+    fi
+
+    if [[ $COLOR == always ]]; then
+        OUTPUT="\033[0;34m$OUTPUT"
+    fi
+
+    # Print the output with specified greeting, argument and color reset.
+    echo -e "${GREETING} ${OUTPUT}\033[0m!"
+}
+
+# As we shifted arguments, we can now use remaining arguments to print them.
+for arg; do
+    print_output "$arg"
+done
+
+if $PRINT_EXTRA_WORLD; then
+    print_output "world"
+fi

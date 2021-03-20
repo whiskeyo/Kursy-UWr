@@ -19,7 +19,7 @@ while true; do
     poolsize=$(cat /proc/sys/kernel/random/poolsize)
     avail_ratio="${entropy_avail}/${poolsize}"
     avail_percentage=$(bc <<< "scale=10; $avail_ratio * 100")
-    printf "%s \r" "Available entropy: $avail_ratio (${avail_percentage}%)"
+    printf "%s    \r" "Available entropy: $avail_ratio (${avail_percentage}%)"
 
     # read and its options are very important here. We want to stop the script
     # if we press any key on the keyboard, and if no keys are pressed, we need
@@ -38,6 +38,6 @@ while true; do
     
     # Otherwise, if some input was read (and the loop was not continued), it
     # prints new line (otherwise it wouldn't look clean in terminal) and exits.
-    printf "\n"
+    echo
     exit 0
 done
