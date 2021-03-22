@@ -1,0 +1,33 @@
+class Student:
+    int index
+    Course courses[]
+    
+    function getCourses():
+        return courses
+
+class UsosWebPage:
+    function show():
+        pageLayout = GradeController.getStudentGradeInfo()
+
+class GradeController:
+    Student student
+
+    function getStudentGradeInfo():
+        int grades[]
+        int i = 0
+        courses = student.getCourses()
+        for each c in courses:
+            grades[i++] = c.getMark(student)
+        
+        return grades
+
+class Course:
+    int course_grades[]
+    Student current_student
+
+    function getMark(Student s):
+        current_student = s
+        return getValue()
+    
+    function getValue():
+        return course_grades[current_student.index]
