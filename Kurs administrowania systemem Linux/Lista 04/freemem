@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Example output of 'free':
+#              total        used        free      shared  buff/cache   available
+#Mem:       16313592     2183864    11308416      351704     2821312    13435504
+#Swap:       1000444           0     1000444
+
+# We need only second line, every 5 seconds.
+
+exec 3>/tmp/mylog.fifo
+
+while true; do
+    LOG=$(sed -n '2p' <<< $(free))
+    TOTAL=$(awk '{print $2}' <<< $LOG)
+    USED=$(awk '{print $3}' <<< $LOG)
+
+    echo "Memory used: $USED/$TOTAL" 1>&3
+    sleep 3
+done
