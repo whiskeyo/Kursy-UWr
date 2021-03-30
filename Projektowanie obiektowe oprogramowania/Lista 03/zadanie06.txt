@@ -1,0 +1,13 @@
+SRP says that one class (or module) should have just one responsibility. ISP says
+that the user of the class (or module) should not be weigh down by calling methods
+or creating classes that they do not need. 
+
+As an example, take Console.WriteLine:
+    * we do not need to create any object in order to call it
+    * we do not have to specify e.g. object of Font with its size
+
+The role of ISP is splitting big interfaces to many smallers, more specific ones.
+Thanks to it, user needs to know only these methods that are important to him. It
+may sound similar to SRP, but roles of ISP and SRP are quite different:
+    * SRP is focused on projecting data of classes and modules
+    * ISP is focused on the usage of classes and modules.
