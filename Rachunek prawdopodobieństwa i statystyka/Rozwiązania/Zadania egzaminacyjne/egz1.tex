@@ -1,0 +1,300 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage[left = 3cm, right = 3cm, top = 3cm, bottom = 3cm]{geometry}
+\usepackage{enumerate}
+\usepackage{amssymb}		% pakiet do symboli
+\usepackage{mathtools}		% pakiet do matmy (rozszerza amsmath)
+\usepackage{enumitem}		% punktowanie (a), (b), ...
+\usepackage{nopageno}		% brak numerow stron
+\usepackage{graphicx}		% wstawianie obrazkow
+\usepackage{float}			% wstawianie obrazkow w dowolnym miejscu
+\usepackage{caption}
+\usepackage{esdiff}         % pochodne \diff{}{}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{adjustbox}
+\usepackage{tkz-graph}
+\usepackage{pgfplots, pgfplotstable}
+\usepackage{esint}
+%\usepackage[none]{hyphenat} % usunięcie łamania wyrazów na końcu linii
+
+% nowe komendy dla wygodniejszego pisania :)
+\newcommand{\comment}[1]{}                              % zjedz wszystko w środku
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}	% podłoga
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}		% sufit
+\newcommand{\fractional}[1]{\left\{ #1 \right\}}		% część ułamkowa {x}
+\newcommand{\abs}[1]{\left| #1 \right|}					% wartosc bezwzgledna / moc
+\newcommand{\set}[1]{\left \{ #1 \right \}}				% zbiór elementów {a,b,c}
+\newcommand{\pair}[1]{\left( #1 \right)}				% para elementów (a,b)
+\newcommand{\Mod}[1]{\ \mathrm{mod\ #1}}				% lekko zmodyfikowane modulo
+\newcommand{\comp}[1]{\overline{ #1 }} 					% dopełnienie zbioru 
+\newcommand{\annihilator}{\mathbf{E}}					% operator E
+\newcommand{\seqAnnihilator}[1]{\annihilator \left\langle #1 \right\rangle} % E(a_n)
+\newcommand{\sequence}[1]{\left\langle #1 \right\rangle} % <a_n>
+\newcommand{\subst}[1]{}
+\DeclareMathOperator{\lcm}{lcm}							% obsługa lcm w mathmode
+
+% styl do kodu
+\lstdefinestyle{code}{%
+basicstyle=\ttfamily\small,
+commentstyle=\color{green!60!black},
+keywordstyle=\color{magenta},
+stringstyle=\color{blue!50!red},
+showstringspaces=false,
+numbers=left,
+numberstyle=\footnotesize\color{gray},
+numbersep=10pt,
+tabsize=4,
+rulecolor=\color{red},
+breaklines=true
+}
+
+\newcommand{\code}[1]{\lstinline[style=code]{#1}} % kod inline
+
+% tutaj coś do rysowania dystrybuanty
+\makeatletter
+\long\def\ifnodedefined#1#2#3{%
+    \@ifundefined{pgf@sh@ns@#1}{#3}{#2}%
+}
+
+\pgfplotsset{
+    discontinuous/.style={
+    scatter,
+    scatter/@pre marker code/.code={
+        \ifnodedefined{marker}{
+            \pgfpointdiff{\pgfpointanchor{marker}{center}}%
+             {\pgfpoint{0}{0}}%
+             \ifdim\pgf@y>0pt
+                \tikzset{options/.style={mark=*, fill=white}}
+                \draw [densely dashed] (marker-|0,0) -- (0,0);
+                \draw plot [mark=*] coordinates {(marker-|0,0)};
+             \else
+                \tikzset{options/.style={mark=none}}
+             \fi
+        }{
+            \tikzset{options/.style={mark=none}}        
+        }
+        \coordinate (marker) at (0,0);
+        \begin{scope}[options]
+    },
+    scatter/@post marker code/.code={\end{scope}}
+    }
+}
+\makeatother
+
+% a to do lepszych granic w podwojnych i wielokrotnych calkach
+\makeatletter
+%% make esint definition in line with amsmath
+\@for\next:={int,iint,iiint,iiiint,dotsint,oint,oiint,sqint,sqiint,
+  ointctrclockwise,ointclockwise,varointclockwise,varointctrclockwise,
+  fint,varoiint,landupint,landdownint}\do{%
+    \expandafter\edef\csname\next\endcsname{%
+      \noexpand\DOTSI
+      \expandafter\noexpand\csname\next op\endcsname
+      \noexpand\ilimits@
+    }%
+  }
+\makeatother
+
+\begin{document}
+\section*{Zadanie egzaminacyjne 1 - Tomasz Woszczyński}
+
+\section{Polecenie}
+Standardowy rozkład normalny ma gęstość określoną wzorem:
+\[
+    f(x) = \frac{1}{\sqrt{2\pi}} \exp \left( - \frac{x^2}{2} \right)
+    \text{ dla } x \in \mathbb{R}
+\]
+
+\noindent Dla dystrybuanty otrzymujemy wyrażenie:
+\[
+    \Phi(t) = \int\limits_{-\infty}^{t} \frac{1}{\sqrt{2\pi}} 
+                \exp \left( - \frac{x^2}{2} \right) dx
+\]
+którego to całka nie ma przedstawienia za pomocą funkcji elementarnych. 
+
+\noindent Dla ustalonego $t \in \mathbb{R}$ obliczyć wartość całki:
+\[
+    G(t) = \int\limits_{-\infty}^{t} \exp \left( - \frac{x^2}{2} \right) dx
+\]
+
+\section{Pomysł rozwiązania}
+Wiemy, że całka dla dystrybuanty $\Phi(t)$ nie ma przedstawienia za pomocą
+funkcji elementarnych, dlatego skorzystamy z całkowania numerycznego, aby
+obliczyć przybliżoną wartość całki oznaczonej. Zwykle w celu obliczenia
+wartości całki nieskończonej korzystamy z przybliżania funkcji całkowanej
+poprzez inne funkcje, których całki można w łatwy sposób policzyć. 
+
+\subsection{Wzór trapezów, złożony wzór trapezów}
+Wzór trapezów jest jednym ze wzorów przydatnych do przybliżonego obliczania
+całek oznaczonych. Dla funkcji $f$ na przedziale $x \in [a,b]$ możemy
+oszacować wartość całki $\int\limits_a^b f(x) dx$ za pomocą kwadratury:
+\[
+    Q_1 (f) = \frac{b-a}{2} \left( f(a) + f(b) \right)
+\]
+
+\begin{figure}[H]
+    \includegraphics[width=0.3\textwidth]{"../../../Analiza numeryczna (L)/Skrypt/wzortrapezow"}
+    \centering
+    \caption{Zasada działania wzoru trapezów}
+\end{figure}
+
+\noindent Niestety wzór trapezów jest dokładny tylko dla funkcji stałych 
+i liniowych, dlatego powinniśmy skorzystać z mocniejszego narzędzia, czyli
+złożonego wzoru trapezów. Oznacza to, że cały przedział $[a,b]$ dzielimy na
+równe części i na każdej z części wykorzystujemy wzór trapezów. Otrzymujemy 
+wtedy dla węzłów $t_k := a+h_nk$, $(k=0,1,\ldots, n)$, $h_n:=\frac{b-a}{n}$ 
+wzór:
+\[ 
+    \int\limits_{a}^{b} f(x)dx = T_n(f) + R_n^T
+\]
+\noindent gdzie $T_n(f)$ jest złożonym wzorem trapezów, a $R_n^T$ błędem 
+złożonego wzoru trapezów. Złożony wzór trapezów wyraża się wzorem:
+\[ 
+    T_n(f) := h_n \sum\limits_{k=0}^{n}{}^{\prime\prime} f(t_k) 
+    = h_n(\frac{1}{2}f(t_0) + f(t_1) + \ldots + f(t_{n-1}) + \frac{1}{2}f(t_n) 
+\]
+\noindent W powyższym wzorze $\sum{}^{\prime\prime}x$ oznacza, że pierwszy i ostatni 
+wyraz mnożymy przez $\frac{1}{2}$. \\
+
+\subsection{Metoda Romberga}
+Kolejną metodą na numeryczne obliczanie wartości całek oznaczonych jest metoda
+Romberga. Jest ona rozszerzeniem złożonego wzoru trapezów i daje lepsze przybliżenie
+całki poprzez zasadniczą redukcję błędu. Niech $n=2^k$ dla $k \in \mathbb{N}$, $h_k := \frac{b-a}{2^k}$, $x_i^{(k)} := a+ih_k$ dla $i=0,1,\ldots, 2^k$. Zdefiniujmy 
+$T_{0,k} := T_{2^k}(f) = h_k\sum\limits_{i=0}^{2^k}{}^{''}f(x_i^{(k)})$ 
+(złożone wzory trapezów). Kolejne elementy $T_{m,k}$ dla $k = 0,1,\ldots$ oraz
+$m=1,2,\ldots$ definiujemy rekurencyjnie za pomocą wzoru:
+\[
+    T_{m, k} := \frac{4^mT_{m-1, k+1} - T_{m-1, k}}{4^m-1}
+\]
+
+\noindent Na podstawie tych wartości możemy stworzyć tablicę Romberga:
+\[
+    \begin{array}{ccccccc} 
+        T_{0,0}	\\	
+        T_{0,1}	&	T_{1,0}	\\
+        T_{0,2}	&	T_{1,1}	&	T_{2,0}	\\
+        T_{0,3}	&	T_{1,2}	&	T_{2,1}	&	T_{3,0}	\\
+        T_{0,4}	&	T_{1,3}	&	T_{2,2}	&	T_{3,1}	&	T_{4,0}	\\
+        \vdots 	&	\vdots 	&	\vdots 	&	\vdots 	&	\vdots 	&	\ddots 	\\
+        T_{0,m}	&	T_{1, m-1}	&	T_{2, m-2}	&	\ldots 		&	\ldots 		& 	\ldots 		& 	T_{m, 0}
+    \end{array}
+\]
+
+\noindent Przeważnie każda kolejna kolumna tablicy Romberga zbiega szybciej
+do wartości całki, a najszybsza zbieżność występuje na przekątnej tablicy.
+
+\newpage
+\section{Rozwiązania zadania}
+Celem tego zadania jest obliczenie wartości całki 
+\[
+    G(t) = \int\limits_{-\infty}^{t} \exp \left( - \frac{x^2}{2} \right) dx
+\]
+\begin{figure}[H]
+    \includegraphics[width=\textwidth]{"./Pomocnicze/zadanie1a"}
+    \centering
+    \caption{Wykres funkcji podcałkowej $f(x) = \exp \left( - \frac{x^2}{2} \right)$}
+\end{figure}
+
+\subsection{Rozwiązanie nr 1}
+Zauważmy, że $f(x)$ dąży do 0 dla $-\infty$ oraz $\infty$, a wartości bardzo bliskie 
+zera osiąga dla wszystkich $x \notin [-10, 10]$ (wartość $f(10) \approx 1.92874984
+\cdot 10^{-22}$, a dla większych wartości $x$, ta wartość się jeszcze bardziej 
+zmniejsza). Oznacza to, że możemy całkę z funkcji $f(x)$ przybliżyć w na przykład
+taki sposób:
+\[
+    G(t) = \int\limits_{-\infty}^{t} \exp \left( - \frac{x^2}{2} \right) dx
+    \approx \int\limits_{-50}^{t} \exp \left( - \frac{x^2}{2} \right) dx
+\]
+
+\noindent Wprost ze wzoru pozwalającego obliczyć kolejne wyrazy tablicy Romberga
+widać, że powstała tablica będzie zawsze różna dla $t \in \mathbb{R}$, ponieważ
+jeden koniec przedziału ($a$) mamy w tym momencie ustalony, a więc różnica $b-a$
+będzie zawsze różna. Poszukiwania wartości całki kończymy, gdy dwie ostatnie
+wartości na przekątnej różnią się o mniej niż oczekiwana dokładność ($10^{-8}$).
+
+\noindent Weźmy więc $t = 1$ i obliczmy wszystkie wartości tablicy:
+
+\begin{table}[H]
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{lllllllllllll}
+    1     & 51.000000 & 15.466532 &          &          &          &          &          &          &          &          &          &          \\
+    2     & 25.500000 & 7.733266  & 5.155511 &          &          &          &          &          &          &          &          &          \\
+    4     & 12.750000 & 3.866633  & 2.577755 & 2.405905 &          &          &          &          &          &          &          &          \\
+    8     & 6.375000  & 1.933320  & 1.288882 & 1.202957 & 1.183863 &          &          &          &          &          &          &          \\
+    16    & 3.187500  & 1.257978  & 1.032863 & 1.015796 & 1.012825 & 1.012154 &          &          &          &          &          &          \\
+    32    & 1.593750  & 1.966428  & 2.202578 & 2.280559 & 2.300635 & 2.305685 & 2.306950 &          &          &          &          &          \\
+    64    & 0.796875  & 2.076131  & 2.112698 & 2.106706 & 2.103947 & 2.103175 & 2.102977 & 2.102927 &          &          &          &          \\
+    128   & 0.398438  & 2.100872  & 2.109119 & 2.108880 & 2.108914 & 2.108934 & 2.108940 & 2.108941 & 2.108941 &          &          &          \\
+    256   & 0.199219  & 2.106930  & 2.108949 & 2.108938 & 2.108939 & 2.108939 & 2.108939 & 2.108939 & 2.108939 & 2.108939 &          &          \\
+    512   & 0.099609  & 2.108437  & 2.108939 & 2.108939 & 2.108939 & 2.108939 & 2.108939 & 2.108939 & 2.108939 & 2.108939 & 2.108939 &          \\
+    1024  & 0.049805  & 2.108813  & 2.108939 & 2.108939 & 2.108939 & 2.108939 & 2.108939 & 2.108939 & 2.108939 & 2.108939 & 2.108939 & 2.108939
+    \end{tabular}}
+\end{table}
+
+\noindent Oczekiwaną dokładność otrzymujemy więc po 1025 przybliżeniach funkcji 
+i wartość całki dla $t = 1$ wynosi $G(1) = 2.1089385292093854 \pm 10^{-8}$.
+Wartością dystrybuanty jest $\Phi(t) = 5.286324946774961 \pm 10^{-8}$.
+
+\subsection{Rozwiązanie nr 2}
+
+W tym rozwiązaniu skorzystam z faktu z ćwiczeń, a więc tego, że
+\[ 
+    I = \int\limits_{-\infty}^{-\infty} \exp \left(- \frac{-x^2}{2} \right) dx
+        = \sqrt{2\pi}    
+\]
+
+\noindent Wiemy też, że funkcja podcałkowa jest symetryczna. Skorzystajmy więc
+z tego faktu i podzielmy funkcję $G(t)$ na dwa przypadki:
+
+\[ 
+    G(t) = \int\limits_{-\infty}^{t} \exp \left( - \frac{x^2}{2} \right) dx =
+    \begin{cases}
+        \frac{1}{2} \sqrt{2\pi} + \int\limits_{0}^{t} \exp \left( - \frac{x^2}{2}
+        \right) dx & \text{ dla } t \geq 0 \\
+        \frac{1}{2} \sqrt{2\pi} - \int\limits_{0}^{t} \exp \left( - \frac{x^2}{2}
+        \right) dx & \text{ dla } t < 0
+    \end{cases}
+\]
+
+\noindent Teraz podobnie jak w przypadku rozwiązania 1. możemy wziąć $t = 1$
+i obliczyć wartości tablicy Romberga. Ważne jest to, że tablica ta ma całkiem
+inne wartości niż ta z rozwiązania pierwszego, jako że pracujemy na innym,
+znacznie mniejszym przedziale.
+
+\begin{table}[H]
+    \begin{tabular}{lllllll}
+    1  & 1.000000 & 0.803265 &          &          &          &          \\
+    2  & 0.500000 & 0.842881 & 0.856086 &          &          &          \\
+    4  & 0.250000 & 0.852459 & 0.855651 & 0.855622 &          &          \\
+    8  & 0.125000 & 0.854834 & 0.855626 & 0.855624 & 0.855624 &          \\
+    16 & 0.062500 & 0.855427 & 0.855624 & 0.855624 & 0.855624 & 0.855624
+    \end{tabular}
+\end{table}
+
+\noindent W tym przypadku oczekiwaną dokładność otrzymujemy już po 17 
+przybliżeniach funkcji, a więc wykonywane obliczenia są dokładne na tym samym 
+poziomie, jednak wymagają znacznie mniej nakładu czasowego na procesorze. Wynikiem
+tego obliczenia jest $G(t) = 2.1089385292082303 \pm 10^{-8}$.
+Wartością dystrybuanty jest $\Phi(t) = 5.286324946772066 \pm 10^{-8}$.
+
+\newpage
+\section{Porównanie wyników, podsumowanie}
+Przedstawione powyżej rozwiązania przybliżają funkcję $G(t)$ z dokładnością
+do 8 cyfr po przecinku. Wyniki rozwiązań całek $G(t)$ różnią się o 
+$1.1550760348200129 \cdot 10^{-12}$, a różnica obliczonych wartości dystrybuanty
+wynosi $2.8954616482224083 \cdot 10^{-12}$,a więc są bardzo bliskie sobie, jednak
+dojście do nich różni się znacząco. Pierwsze podejście jest dość błahe,
+za $-\infty$ podstawiamy jakąś wartość bliską zeru, jednak to powoduje, że
+im mniejszą wartość wybierzemy, tym wiecej iteracji będziemy musieli wykonać
+aby obliczyć wszystkie potrzebne wartości w tablicy Romberga. Drugie podejście
+jest znacznie lepsze i sprytniejsze. Wykorzystujemy własność znanej nam funkcji
+oraz operujemy na wartościach łatwych do obliczenia, znalezienie $\sqrt{2\pi}$ 
+nie powinno sprawiać żadnych problemów, jako że dzisiejsze algorytmy są bardzo 
+dokładne. Kolejnym plusem drugiego podejścia jest to, że liczba iteracji
+znacząco się zmniejsza, dzięki czemu wielokrotne wyliczenie wartości całki 
+$G(t)$ zajęłoby nam znacznie mniej czasu, niż gdybyśmy korzystali z pierwszego
+rozwiązania.
+
+\end{document}
