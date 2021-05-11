@@ -1,0 +1,16 @@
+#!/bin/bash
+
+function infinite_calculator {
+    res=0
+    while true; do
+        res=$((res + 3))
+    done
+}
+
+for _ in $(seq 1 $1); do
+    infinite_calculator &
+done
+
+echo "Running $1 processes"
+wait # this wait is crucial, if it was not here, terminating the script
+     # would result in not killing all subprocesses in the background
